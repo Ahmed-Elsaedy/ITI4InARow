@@ -121,7 +121,7 @@
             this.ovalShape3,
             this.ovalShape2,
             this.ovalShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(819, 637);
+            this.shapeContainer1.Size = new System.Drawing.Size(788, 622);
             this.shapeContainer1.TabIndex = 0;
             this.shapeContainer1.TabStop = false;
             // 
@@ -760,8 +760,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(819, 637);
+            this.ClientSize = new System.Drawing.Size(788, 622);
             this.Controls.Add(this.shapeContainer1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GameUI";
             this.Text = "GameUI";
             this.Load += new System.EventHandler(this.GameUI_Load);
