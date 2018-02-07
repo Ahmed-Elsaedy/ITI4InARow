@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITI4InARow.Module.Client", "ITI4InARow.Module.Client\ITI4InARow.Module.Client.csproj", "{2F75DDE1-4491-4D13-AF82-FA88C60AD9AB}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITI4InARow.Game.Client", "ITI4InARow.Game.Client\ITI4InARow.Game.Client.csproj", "{3CCBEB35-5CA7-44D1-A711-3D3308EB83E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITI4InARow.Game.Server", "ITI4InARow.Game.Server\ITI4InARow.Game.Server.csproj", "{AFB2BF82-8D4F-413F-8690-816ECE34463C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITI4InARow.Game.UI", "ITI4InARow.Game.UI\ITI4InARow.Game.UI.csproj", "{504AD12D-E73B-44E3-9E4E-83758AE61BD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{AFB2BF82-8D4F-413F-8690-816ECE34463C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFB2BF82-8D4F-413F-8690-816ECE34463C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFB2BF82-8D4F-413F-8690-816ECE34463C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504AD12D-E73B-44E3-9E4E-83758AE61BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504AD12D-E73B-44E3-9E4E-83758AE61BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504AD12D-E73B-44E3-9E4E-83758AE61BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504AD12D-E73B-44E3-9E4E-83758AE61BD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
