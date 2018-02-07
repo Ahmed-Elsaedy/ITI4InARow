@@ -1,0 +1,10 @@
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\bin\Debug\ITI4InARow.Game.UI.exe
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\bin\Debug\ITI4InARow.Game.UI.pdb
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.csprojResolveAssemblyReference.cache
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.GameUI.resources
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.Properties.Resources.resources
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.csproj.GenerateResource.Cache
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.exe
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.UI\obj\Debug\ITI4InARow.Game.UI.pdb

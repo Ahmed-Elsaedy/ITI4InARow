@@ -63,6 +63,7 @@ namespace ITI4InARow.Module.Server
                         byte[] data = new byte[request.ReceiveBufferSize];
                         _RStream.Read(data, 0, request.ReceiveBufferSize);
                         OnServerStatusChanged(ServerStatus.ReadClientRequest, request);
+                        // ReadMessage(data); deserlize for object of type Message
                         byte[] response = data;
                         _RStream.Write(response, 0, response.Length);
                         _RStream.Flush();
