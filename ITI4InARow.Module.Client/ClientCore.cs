@@ -12,7 +12,7 @@ namespace ITI4InARow.Module.Client
             _Client = new TcpClient();
             try
             {
-                _Client.Connect(new IPAddress(ipAddress), port);
+                _Client.Connect("RedHawk", port);
                 OnClientStatusChanged(ClientStatus.ClientConnected);
             }
             catch (SocketException)
