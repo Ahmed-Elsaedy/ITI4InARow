@@ -13,9 +13,5 @@ namespace ITI4InARow.Module.Client
         {
 
         }
-        public void SendMessage(RegisterMessage registerMessage)
-        {
-
-        }
     }
 }

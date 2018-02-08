@@ -46,11 +46,11 @@ namespace ITI4InARow.Game.Client
             ClientProfile profile = new ClientProfile();
             if (profile.ShowDialog() == DialogResult.OK)
             {
-                m_Client.SendMessage(new RegisterMessage()
-                {
-                    Name = profile.ProfileName,
-                    Age = profile.ProfileAge
-                });
+                //m_Client.SendMessage(new RegisterMessage()
+                //{
+                //    Name = profile.ProfileName,
+                //    Age = profile.ProfileAge
+                //});
             }
         }
     }

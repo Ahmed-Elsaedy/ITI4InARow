@@ -4,17 +4,21 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using ITI4InARow.Module.Core;
+using Newtonsoft.Json;
 
 namespace ITI4InARow.Module.Server
 {
     public class ServerCore
     {
         TcpListener _Server;
-        List<TcpClient> _Clients;
+        List<ServerClient> _Clients;
         public ServerCore(byte[] ipAddress, int port)
         {
             _Server = new TcpListener(new IPAddress(ipAddress), port);
-            _Clients = new List<TcpClient>();
+            _Clients = new List<ServerClient>();
         }
         public async void StartServerAsync()
         {
@@ -60,14 +64,24 @@ namespace ITI4InARow.Module.Server
                     try
                     {
                         NetworkStream _RStream = request.GetStream();
+                        // Reading Bytes From Client
                         byte[] data = new byte[request.ReceiveBufferSize];
                         _RStream.Read(data, 0, request.ReceiveBufferSize);
                         OnServerStatusChanged(ServerStatus.ReadClientRequest, request);
-                        // ReadMessage(data); deserlize for object of type Message
-                        byte[] response = data;
-                        _RStream.Write(response, 0, response.Length);
-                        _RStream.Flush();
+
+                        // Converting Bytes To List Of Messages
+                        var clientStr = Encoding.Default.GetString(data);
+                        List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
+                        ProcessClientMessages(serverQueue);
+
+                        List<MessageBase> clientQue = this[request.Client.Handle].Queue;
+
+                        // Writing Current Queue To Stream
+                        string queueStr = JsonConvert.SerializeObject(clientQue);
+                        byte[] queueBytes = Encoding.Default.GetBytes(queueStr);
+                        _RStream.Write(queueBytes, 0, queueBytes.Length);
                         OnServerStatusChanged(ServerStatus.WriteServerResponse, request);
+                        _RStream.Flush();
                         _RStream.Close();
                     }
                     catch (IOException)
@@ -81,29 +95,34 @@ namespace ITI4InARow.Module.Server
             });
         }
 
+        private void ProcessClientMessages(List<MessageBase> serverQueue)
+        {
+            throw new NotImplementedException();
+        }
+
         public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
         private void OnServerStatusChanged(ServerStatus action, TcpClient client)
         {
-            ServerClient sClient = null;
-            if (client != null)
-            {
-                sClient = new ServerClient(client.Client.Handle);
-                if (client.Connected)
-                {
-                    sClient.LocalEndPoint = client.Client.LocalEndPoint;
-                    sClient.RemoteEndPoint = client.Client.RemoteEndPoint;
-                }
-            }
+            var serverClient = this[client.Client.Handle];
             switch (action)
             {
                 case ServerStatus.ClientConnected:
-                    _Clients.Add(client);
+                    ServerClient sClient = new ServerClient(client, client.Client.Handle)
+                    {
+                        LocalEndPoint = client.Client.LocalEndPoint,
+                        RemoteEndPoint = client.Client.RemoteEndPoint
+                    };
                     break;
                 case ServerStatus.ClientDisconnected:
-                    _Clients.Remove(client);
+                    if (serverClient != null)
+                        _Clients.Remove(serverClient);
                     break;
             }
-            ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, sClient));
+            ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, serverClient));
+        }
+        private ServerClient this[IntPtr handle]
+        {
+            get { return _Clients.SingleOrDefault(x => x.Handle == handle); }
         }
     }
     public class ServerActionEventArgs
@@ -124,12 +143,16 @@ namespace ITI4InARow.Module.Server
     }
     public class ServerClient
     {
+        private TcpClient client;
         public IntPtr Handle { get; private set; }
-        public EndPoint LocalEndPoint { get; internal set; }
-        public EndPoint RemoteEndPoint { get; internal set; }
+        public EndPoint LocalEndPoint { get; set; }
+        public EndPoint RemoteEndPoint { get; set; }
+        public List<MessageBase> Queue { get; private set; }
 
-        public ServerClient(IntPtr handle)
+        public ServerClient(TcpClient client, IntPtr handle)
         {
+            this.client = client;
+            Queue = new List<MessageBase>();
             Handle = handle;
         }
         public override string ToString()
