@@ -71,13 +71,16 @@ namespace ITI4InARow.Module.Server
 
                         // Converting Bytes To List Of Messages
                         var clientStr = Encoding.Default.GetString(data);
-                        List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
-                        ProcessClientMessages(serverQueue);
+                        List<MessageBase> clientQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
 
-                        List<MessageBase> clientQue = this[request.Client.Handle].Queue;
+                        OnServerStatusChanged(ServerStatus.ProcessingClientMessages, request);
+                        ProcessClientMessages(clientQueue);
+
+                        // Serializing Current Client Queue and Clear after that
+                        string queueStr = JsonConvert.SerializeObject(this[request.Client.Handle].Queue);
+                        this[request.Client.Handle].Queue.Clear();
 
                         // Writing Current Queue To Stream
-                        string queueStr = JsonConvert.SerializeObject(clientQue);
                         byte[] queueBytes = Encoding.Default.GetBytes(queueStr);
                         _RStream.Write(queueBytes, 0, queueBytes.Length);
                         OnServerStatusChanged(ServerStatus.WriteServerResponse, request);
@@ -94,16 +97,16 @@ namespace ITI4InARow.Module.Server
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
             });
         }
-
-        private void ProcessClientMessages(List<MessageBase> serverQueue)
+        protected virtual void ProcessClientMessages(List<MessageBase> serverQueue)
         {
-            throw new NotImplementedException();
-        }
 
+        }
         public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
         private void OnServerStatusChanged(ServerStatus action, TcpClient client)
         {
-            var serverClient = this[client.Client.Handle];
+            ServerClient serverClient = null;
+            if (client != null)
+                serverClient = this[client.Client.Handle];
             switch (action)
             {
                 case ServerStatus.ClientConnected:
@@ -172,6 +175,7 @@ namespace ITI4InARow.Module.Server
         ServerStopped,
         StartWaitingForClients,
         StopWaitingForClients,
-        ForcedClientClose
+        ForcedClientClose,
+        ProcessingClientMessages
     }
 }

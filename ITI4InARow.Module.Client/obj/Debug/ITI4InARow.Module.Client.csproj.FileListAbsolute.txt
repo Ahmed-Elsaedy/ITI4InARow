@@ -1,24 +1,8 @@
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.dll
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.pdb
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csprojResolveAssemblyReference.cache
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csproj.CoreCompileInputs.cache
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.dll
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.pdb
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.dll
-C:\Users\Ahmed Mahmoud\source\repos\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.pdb
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.dll
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.pdb
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.dll
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.pdb
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csprojResolveAssemblyReference.cache
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.dll
-C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.pdb
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.dll
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.pdb
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.dll
+C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.pdb
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csprojResolveAssemblyReference.cache
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csproj.CoreCompileInputs.cache
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.dll
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.pdb
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\Newtonsoft.Json.dll

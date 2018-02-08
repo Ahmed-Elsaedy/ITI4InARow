@@ -8,6 +8,10 @@ namespace ITI4InARow.Module.Core
 {
     public class MessageBase
     {
-
+        public MessageType MsgType { get; set; }
+    }
+    public enum MessageType
+    {
+        RegisterMsg
     }
 }

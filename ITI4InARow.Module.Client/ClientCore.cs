@@ -46,10 +46,14 @@ namespace ITI4InARow.Module.Client
                         // Converting Bytes To List Of Messages
                         var serverStr = Encoding.Default.GetString(data);
                         List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(serverStr);
+                        OnClientStatusChanged(ClientStatus.ProcessingServerMessages);
                         ProcessServerMessages(serverQueue);
 
-                        // Writing Current Queue To Stream
+                        // Serializing Current Queue and Clear after that
                         string queueStr = JsonConvert.SerializeObject(Queue);
+                        Queue.Clear();
+
+                        // Writing Current Queue To Stream
                         byte[] queueBytes = Encoding.Default.GetBytes(queueStr);
                         _RStream.Write(queueBytes, 0, queueBytes.Length);
                         OnClientStatusChanged(ClientStatus.SendClientQueue);
@@ -66,7 +70,7 @@ namespace ITI4InARow.Module.Client
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
             });
         }
-        private void ProcessServerMessages(List<MessageBase> serverQueue)
+        protected virtual void ProcessServerMessages(List<MessageBase> serverQueue)
         {
 
         }
@@ -78,7 +82,7 @@ namespace ITI4InARow.Module.Client
         public event EventHandler<ClientActionEventArgs> ClientStatusChanged;
         private void OnClientStatusChanged(ClientStatus status)
         {
-            ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status, null));
+            ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));
         }
         ~ClientCore()
         {
@@ -90,11 +94,9 @@ namespace ITI4InARow.Module.Client
     public class ClientActionEventArgs
     {
         public ClientStatus Status { get; private set; }
-        public object Data { get; private set; }
-        public ClientActionEventArgs(ClientStatus status, object data)
+        public ClientActionEventArgs(ClientStatus status)
         {
             Status = status;
-            Data = data;
         }
     }
     public enum ClientStatus
@@ -105,6 +107,7 @@ namespace ITI4InARow.Module.Client
         ListeningForServer,
         ReadServerQueue,
         SendClientQueue,
-        ClientDisconnectedError
+        ClientDisconnectedError,
+        ProcessingServerMessages
     }
 }
