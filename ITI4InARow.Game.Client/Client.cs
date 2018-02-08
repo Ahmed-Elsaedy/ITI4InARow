@@ -35,7 +35,7 @@ namespace ITI4InARow.Game.Client
         }
         private void _MenuItemConnect_Click(object sender, EventArgs e)
         {
-            m_Client.ConnectClient(new byte[] { 172, 16, 5, 18 }, 5031);
+            m_Client.ConnectClient(new byte[] { 172, 16, 5, 28 }, 5031);
         }
         private void _MenuItemDisconnect_Click(object sender, EventArgs e)
         {
