@@ -58,23 +58,26 @@ namespace ITI4InARow.Module.Server
         {
             Task.Run(() =>
             {
+                NetworkStream _RStream = request.GetStream();
                 while (request.Connected)
                 {
                     OnServerStatusChanged(ServerStatus.ListeningForClient, request);
                     try
                     {
-                        NetworkStream _RStream = request.GetStream();
-                        // Reading Bytes From Client
-                        byte[] data = new byte[request.ReceiveBufferSize];
-                        _RStream.Read(data, 0, request.ReceiveBufferSize);
-                        OnServerStatusChanged(ServerStatus.ReadClientRequest, request);
 
-                        // Converting Bytes To List Of Messages
-                        var clientStr = Encoding.Default.GetString(data);
-                        List<MessageBase> clientQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
+                        if (_RStream.DataAvailable)
+                        {
+                            // Reading Bytes From Client
+                            byte[] data = new byte[request.ReceiveBufferSize];
+                            _RStream.Read(data, 0, request.ReceiveBufferSize);
+                            OnServerStatusChanged(ServerStatus.ReadClientRequest, request);
+                            // Converting Bytes To List Of Messages
+                            var clientStr = Encoding.Default.GetString(data);
+                            List<MessageBase> clientQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
 
-                        OnServerStatusChanged(ServerStatus.ProcessingClientMessages, request);
-                        ProcessClientMessages(clientQueue);
+                            OnServerStatusChanged(ServerStatus.ProcessingClientMessages, request);
+                            ProcessClientMessages(clientQueue);
+                        }
 
                         // Serializing Current Client Queue and Clear after that
                         string queueStr = JsonConvert.SerializeObject(this[request.Client.Handle].Queue);
@@ -85,7 +88,6 @@ namespace ITI4InARow.Module.Server
                         _RStream.Write(queueBytes, 0, queueBytes.Length);
                         OnServerStatusChanged(ServerStatus.WriteServerResponse, request);
                         _RStream.Flush();
-                        _RStream.Close();
                     }
                     catch (IOException)
                     {
@@ -94,6 +96,7 @@ namespace ITI4InARow.Module.Server
                         break;
                     }
                 }
+                _RStream.Close();
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
             });
         }
@@ -110,11 +113,12 @@ namespace ITI4InARow.Module.Server
             switch (action)
             {
                 case ServerStatus.ClientConnected:
-                    ServerClient sClient = new ServerClient(client, client.Client.Handle)
+                    serverClient = new ServerClient(client, client.Client.Handle)
                     {
                         LocalEndPoint = client.Client.LocalEndPoint,
                         RemoteEndPoint = client.Client.RemoteEndPoint
                     };
+                    _Clients.Add(serverClient);
                     break;
                 case ServerStatus.ClientDisconnected:
                     if (serverClient != null)

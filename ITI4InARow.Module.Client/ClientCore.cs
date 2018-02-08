@@ -20,7 +20,7 @@ namespace ITI4InARow.Module.Client
             Queue = new List<MessageBase>();
             try
             {
-                _Client.Connect("RedHawk", port);
+                _Client.Connect(new IPAddress(ipAddress), port);
                 OnClientStatusChanged(ClientStatus.ClientConnected);
                 CreateTaskForServer(_Client);
             }
@@ -31,23 +31,26 @@ namespace ITI4InARow.Module.Client
         {
             Task.Run(() =>
             {
+                NetworkStream _RStream = request.GetStream();
                 while (request.Connected)
                 {
                     OnClientStatusChanged(ClientStatus.ListeningForServer);
                     try
                     {
-                        NetworkStream _RStream = request.GetStream();
 
-                        // Reading Bytes From Server
-                        byte[] data = new byte[request.ReceiveBufferSize];
-                        _RStream.Read(data, 0, request.ReceiveBufferSize);
-                        OnClientStatusChanged(ClientStatus.ReadServerQueue);
+                        if (_RStream.DataAvailable)
+                        {
+                            // Reading Bytes From Server
+                            byte[] data = new byte[request.ReceiveBufferSize];
+                            _RStream.Read(data, 0, request.ReceiveBufferSize);
+                            OnClientStatusChanged(ClientStatus.ReadServerQueue);
 
-                        // Converting Bytes To List Of Messages
-                        var serverStr = Encoding.Default.GetString(data);
-                        List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(serverStr);
-                        OnClientStatusChanged(ClientStatus.ProcessingServerMessages);
-                        ProcessServerMessages(serverQueue);
+                            // Converting Bytes To List Of Messages
+                            var serverStr = Encoding.Default.GetString(data);
+                            List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(serverStr);
+                            OnClientStatusChanged(ClientStatus.ProcessingServerMessages);
+                            ProcessServerMessages(serverQueue);
+                        }
 
                         // Serializing Current Queue and Clear after that
                         string queueStr = JsonConvert.SerializeObject(Queue);
@@ -58,7 +61,6 @@ namespace ITI4InARow.Module.Client
                         _RStream.Write(queueBytes, 0, queueBytes.Length);
                         OnClientStatusChanged(ClientStatus.SendClientQueue);
                         _RStream.Flush();
-                        _RStream.Close();
                     }
                     catch (IOException)
                     {
@@ -67,6 +69,7 @@ namespace ITI4InARow.Module.Client
                         break;
                     }
                 }
+                _RStream.Close();
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
             });
         }
