@@ -16,7 +16,7 @@ namespace ITI4InARow.Game.Server
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             string hostName = Dns.GetHostName();
-             m_Server = new GameServer(GetLocalIP().GetAddressBytes(), 5031);
+            m_Server = new GameServer(new byte[] { 127, 0, 0, 1 }, 5031);
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
         }
 
@@ -63,7 +63,7 @@ namespace ITI4InARow.Game.Server
         }
         private void _MenuItemStart_Click(object sender, EventArgs e)
         {
-            m_Server.StartServerAsync();
+           m_Server.StartServerAsync();
         }
         private void _MenuItemStop_Click(object sender, EventArgs e)
         {

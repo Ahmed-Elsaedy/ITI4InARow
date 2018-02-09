@@ -25,6 +25,11 @@ namespace ITI4InARow.Game.Client
                     _MenuItemDisconnect.Enabled = true;
                     Text = "Client - Connected";
                     _stl_Connection.Text = "Connected";
+
+                    //RegisterMessage msg = new RegisterMessage();
+                    //msg.MsgType = typeof(RegisterMessage);
+                    //m_Client.SendMessageToServer(msg);
+
                     break;
                 case ClientStatus.ClientDisconnected:
                     _MenuItemDisconnect.Enabled = false;
@@ -43,15 +48,7 @@ namespace ITI4InARow.Game.Client
                 m_Client = new GameClient();
                 m_Client.ClientStatusChanged += Client_ClientStatusChanged;
                 m_Client.MessageRecieved += Client_MessageRecieved;
-
-                bool cnnResult = m_Client.ConnectClient(cForm.IPAddress, cForm.Port);
-                if (cnnResult)
-                {
-                    RegisterMessage msg = new RegisterMessage();
-                    msg.MsgType = typeof(RegisterMessage);
-                    msg.Name = cForm.NickName;
-                    m_Client.SendMessageToServer(msg);
-                }
+                m_Client.ConnectClient(cForm.IPAddress, cForm.Port);
             }
         }
         private void _MenuItemDisconnect_Click(object sender, EventArgs e)

@@ -40,11 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Infrastructure\Class1.cs" />
-=======
     <Compile Include="ListofRoomsMessage.cs" />
->>>>>>> 26b3e0190de90d9eadfcd8dc813c4b6e097712bf
     <Compile Include="MessageBase.cs" />
     <Compile Include="MessageRevievedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

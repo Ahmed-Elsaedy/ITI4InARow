@@ -142,11 +142,8 @@
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
-<<<<<<< HEAD
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
-=======
             this.Load += new System.EventHandler(this.Client_Load);
->>>>>>> 26b3e0190de90d9eadfcd8dc813c4b6e097712bf
             this._MainMenu.ResumeLayout(false);
             this._MainMenu.PerformLayout();
             this._StatusStrip.ResumeLayout(false);

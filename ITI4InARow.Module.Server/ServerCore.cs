@@ -26,14 +26,11 @@ namespace ITI4InARow.Module.Server
             OnServerStatusChanged(ServerStatus.ServerStarted, null);
             while (true)
             {
-                if (_Server.Pending())
-                {
-                    OnServerStatusChanged(ServerStatus.IncommingClient, null);
-                    TcpClient clientRequest = await _Server.AcceptTcpClientAsync();
-                    var serverClient = new ServerClient(clientRequest);
-                    OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
-                    CreateTaskForClient(serverClient);
-                }
+                OnServerStatusChanged(ServerStatus.WaitingForClients, null);
+                TcpClient clientRequest = await _Server.AcceptTcpClientAsync();
+                var serverClient = new ServerClient(clientRequest);
+                OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
+                CreateTaskForClient(serverClient);
             }
         }
         private void CreateTaskForClient(ServerClient request)
@@ -209,6 +206,7 @@ namespace ITI4InARow.Module.Server
         StopWaitingForClients,
         LostConnection,
         ProcessingClientMessage,
-        IncommingClient
-    }
+        IncommingClient,
+    WaitingForClients
+}
 }

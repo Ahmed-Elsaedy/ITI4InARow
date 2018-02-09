@@ -25,6 +25,7 @@ namespace ITI4InARow.Module.Client
             try
             {
                 _Client.Connect(new IPAddress(ipAddress), port);
+                _IsConnected = true;
                 OnClientStatusChanged(ClientStatus.ClientConnected);
                 CreateTaskForServer(_Client);
             }
@@ -62,7 +63,7 @@ namespace ITI4InARow.Module.Client
                             _Writer.Write(resStr);
                             _Writer.Flush();
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
                             OnClientStatusChanged(ClientStatus.ClientDisconnectedError);
                             break;
