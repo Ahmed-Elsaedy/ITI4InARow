@@ -16,7 +16,7 @@ namespace ITI4InARow.Game.Server
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             string hostName = Dns.GetHostName();
-             m_Server = new GameServer(new byte[] { 172, 16, 5, 18 }, 5031);
+             m_Server = new GameServer(new byte[] { 127, 0, 0, 1}, 5031);
             // m_Server = new ServerCore(Dns.GetHostByName(hostName).AddressList[0].MapToIPv4().GetAddressBytes(), 5031);
            // m_Server = new GameServer(Dns.GetHostEntry(hostName).AddressList[0].GetAddressBytes(), 5031);
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
@@ -42,7 +42,7 @@ namespace ITI4InARow.Game.Server
                     _lbxConnectClients.Items.Add(e.Client);
                     break;
                 case ServerStatus.ClientDisconnected:
-                    var target = _lbxConnectClients.Items.Cast<ServerClient>().Single(x => x.Handle == e.Client.Handle);
+                    var target = _lbxConnectClients.Items.Cast<ServerClient>().Single(x => x.ClientID == e.Client.ClientID);
                     _lbxConnectClients.Items.Remove(target);
                     break;
             }

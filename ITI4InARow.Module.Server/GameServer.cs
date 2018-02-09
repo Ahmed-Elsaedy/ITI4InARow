@@ -14,21 +14,10 @@ namespace ITI4InARow.Module.Server
         {
 
         }
-
-        protected override void ProcessClientMessages(List<MessageBase> clientQueue)
+        protected override void ProcessClientMessage(ServerClient client, MessageBase msgBase)
         {
-            base.ProcessClientMessages(clientQueue);
-            foreach (MessageBase msg in clientQueue)
-            {
-                switch (msg.MsgType)
-                {
-                    case MessageType.RegisterMsg:
-                        RegisterMessage clientMsg = (RegisterMessage)msg;
-                        break;
-                    default:
-                        break;
-                }
-            }
+            msgBase.ClientID = client.ClientID;
+            SendMessageToClient(client, msgBase);
         }
     }
 }

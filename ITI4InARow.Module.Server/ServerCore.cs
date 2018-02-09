@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace ITI4InARow.Module.Server
 {
-    public class ServerCore
+    public class ServerCore : IDisposable
     {
         TcpListener _Server;
         List<ServerClient> _Clients;
@@ -26,12 +26,13 @@ namespace ITI4InARow.Module.Server
             OnServerStatusChanged(ServerStatus.ServerStarted, null);
             while (true)
             {
-                OnServerStatusChanged(ServerStatus.StartWaitingForClients, null);
+                OnServerStatusChanged(ServerStatus.WaitingForClients, null);
                 try
                 {
                     TcpClient clientRequest = await _Server.AcceptTcpClientAsync();
-                    OnServerStatusChanged(ServerStatus.ClientConnected, clientRequest);
-                    CreateTaskForClient(clientRequest);
+                    var serverClient = new ServerClient(clientRequest);
+                    OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
+                    CreateTaskForClient(serverClient);
                 }
                 catch (ObjectDisposedException)
                 {
@@ -49,87 +50,96 @@ namespace ITI4InARow.Module.Server
             }
             else
             {
-                _Server.Stop();
                 OnServerStatusChanged(ServerStatus.ServerStopped, null);
                 return true;
             }
         }
-        private void CreateTaskForClient(TcpClient request)
+        private void CreateTaskForClient(ServerClient request)
         {
             Task.Run(() =>
             {
-                NetworkStream _RStream = request.GetStream();
-                while (request.Connected)
+                OnServerStatusChanged(ServerStatus.ListeningForClient, request);
+                while (request.Client.Connected)
                 {
-                    OnServerStatusChanged(ServerStatus.ListeningForClient, request);
                     try
                     {
-
-                        if (_RStream.DataAvailable)
+                        request.Stream = request.Client.GetStream();
+                        if (request.Stream.DataAvailable)
                         {
-                            // Reading Bytes From Client
-                            byte[] data = new byte[request.ReceiveBufferSize];
-                            _RStream.Read(data, 0, request.ReceiveBufferSize);
-                            OnServerStatusChanged(ServerStatus.ReadClientRequest, request);
-                            // Converting Bytes To List Of Messages
-                            var clientStr = Encoding.Default.GetString(data);
-                            List<MessageBase> clientQueue = JsonConvert.DeserializeObject<List<MessageBase>>(clientStr);
-
-                            OnServerStatusChanged(ServerStatus.ProcessingClientMessages, request);
-                            ProcessClientMessages(clientQueue);
+                            OnServerStatusChanged(ServerStatus.ReadingClientStream, request);
+                            request.Reader = new BinaryReader(request.Stream);
+                            var clientStr = request.Reader.ReadString();
+                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
+                            object obj = JsonConvert.DeserializeObject(clientStr, msgBase.MsgType);
+                            OnMessageRecieved(request, msgBase);
                         }
-
-                        // Serializing Current Client Queue and Clear after that
-                        string queueStr = JsonConvert.SerializeObject(this[request.Client.Handle].Queue);
-                        this[request.Client.Handle].Queue.Clear();
-
-                        // Writing Current Queue To Stream
-                        byte[] queueBytes = Encoding.Default.GetBytes(queueStr);
-                        _RStream.Write(queueBytes, 0, queueBytes.Length);
-                        OnServerStatusChanged(ServerStatus.WriteServerResponse, request);
-                        _RStream.Flush();
+                        if (request.Queue.Count > 0)
+                        {
+                            OnServerStatusChanged(ServerStatus.SendingServerMessage, request);
+                            string resStr = JsonConvert.SerializeObject(request.Queue[0]);
+                            request.Queue.RemoveAt(0);
+                            request.Writer = new BinaryWriter(request.Stream);
+                            request.Writer.Write(resStr);
+                            request.Writer.Flush();
+                        }
                     }
                     catch (IOException)
                     {
-                        request.Close();
                         OnServerStatusChanged(ServerStatus.ForcedClientClose, request);
                         break;
                     }
                 }
-                _RStream.Close();
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
             });
         }
-        protected virtual void ProcessClientMessages(List<MessageBase> serverQueue)
+        public void SendMessageToClient(ServerClient client, MessageBase msg)
+        {
+            client.Queue.Add(msg);
+        }
+        protected virtual void ProcessClientMessage(ServerClient client, MessageBase msgBase)
         {
 
         }
         public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
-        private void OnServerStatusChanged(ServerStatus action, TcpClient client)
+        public event EventHandler<MessageRevievedEventArgs> MessageRecieved;
+        private void OnServerStatusChanged(ServerStatus action, ServerClient client)
         {
-            ServerClient serverClient = null;
-            if (client != null)
-                serverClient = this[client.Client.Handle];
             switch (action)
             {
                 case ServerStatus.ClientConnected:
-                    serverClient = new ServerClient(client, client.Client.Handle)
-                    {
-                        LocalEndPoint = client.Client.LocalEndPoint,
-                        RemoteEndPoint = client.Client.RemoteEndPoint
-                    };
-                    _Clients.Add(serverClient);
+                    _Clients.Add(client);
+                    break;
+                case ServerStatus.ServerStopped:
+                    Dispose();
                     break;
                 case ServerStatus.ClientDisconnected:
-                    if (serverClient != null)
-                        _Clients.Remove(serverClient);
+                case ServerStatus.ForcedClientClose:
+                    client.Dispose();
+                    _Clients.Remove(client);
                     break;
             }
-            ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, serverClient));
+            ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, client));
         }
-        private ServerClient this[IntPtr handle]
+        private void OnMessageRecieved(ServerClient client, MessageBase msgBase)
         {
-            get { return _Clients.SingleOrDefault(x => x.Handle == handle); }
+            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgBase, client.Client.Client.Handle.ToInt32()));
+            OnServerStatusChanged(ServerStatus.ProcessingClientMessage, client);
+            ProcessClientMessage(client, msgBase);
+        }
+        public void Dispose()
+        {
+            foreach (ServerClient client in _Clients)
+                client.Dispose();
+            _Server.Stop();
+        }
+        ~ServerCore()
+        {
+            try { Dispose(); }
+            catch { }
+        }
+        private ServerClient this[int handle]
+        {
+            get { return _Clients.SingleOrDefault(x => x.ClientID == handle); }
         }
     }
     public class ServerActionEventArgs
@@ -148,23 +158,35 @@ namespace ITI4InARow.Module.Server
             return $"{TimeStamp.ToLongTimeString()}: {Status.ToString()}";
         }
     }
-    public class ServerClient
+    public class ServerClient : IDisposable
     {
-        private TcpClient client;
-        public IntPtr Handle { get; private set; }
-        public EndPoint LocalEndPoint { get; set; }
-        public EndPoint RemoteEndPoint { get; set; }
+        public NetworkStream Stream { get; set; }
+        public BinaryReader Reader { get; set; }
+        public BinaryWriter Writer { get; set; }
+        public TcpClient Client { get; private set; }
+        public int ClientID { get; private set; }
         public List<MessageBase> Queue { get; private set; }
-
-        public ServerClient(TcpClient client, IntPtr handle)
+        public ServerClient(TcpClient client)
         {
-            this.client = client;
+            Client = client;
             Queue = new List<MessageBase>();
-            Handle = handle;
+            ClientID = client.Client.Handle.ToInt32();
         }
         public override string ToString()
         {
-            return string.Format("{0}: {1} => {1}", Handle, LocalEndPoint, RemoteEndPoint);
+            return string.Format("{0}: {1} => {1}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
+        }
+        public void Dispose()
+        {
+            if (Writer != null) Writer.Dispose();
+            if (Reader != null) Reader.Dispose();
+            if (Stream != null) Stream.Dispose();
+            Client.Dispose();
+        }
+        ~ServerClient()
+        {
+            try { Dispose(); }
+            catch { }
         }
     }
     public enum ServerStatus
@@ -172,14 +194,14 @@ namespace ITI4InARow.Module.Server
         ServerStarted,
         ClientConnected,
         ListeningForClient,
-        ReadClientRequest,
-        WriteServerResponse,
+        ReadingClientStream,
+        SendingServerMessage,
         ClientDisconnected,
         ServerStopCancelled,
         ServerStopped,
-        StartWaitingForClients,
+        WaitingForClients,
         StopWaitingForClients,
         ForcedClientClose,
-        ProcessingClientMessages
+        ProcessingClientMessage
     }
 }

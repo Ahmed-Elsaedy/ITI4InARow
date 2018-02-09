@@ -33,8 +33,10 @@
             this._MenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this._MenuItemRegister = new System.Windows.Forms.ToolStripMenuItem();
+            this._StatusStrip = new System.Windows.Forms.StatusStrip();
+            this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
             this._MainMenu.SuspendLayout();
+            this._StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // _MainMenu
@@ -60,44 +62,53 @@
             // _MenuItemConnect
             // 
             this._MenuItemConnect.Name = "_MenuItemConnect";
-            this._MenuItemConnect.Size = new System.Drawing.Size(133, 22);
-            this._MenuItemConnect.Text = "Connect";
+            this._MenuItemConnect.Size = new System.Drawing.Size(152, 22);
+            this._MenuItemConnect.Text = "Connect...";
             this._MenuItemConnect.Click += new System.EventHandler(this._MenuItemConnect_Click);
             // 
             // _MenuItemDisconnect
             // 
             this._MenuItemDisconnect.Enabled = false;
             this._MenuItemDisconnect.Name = "_MenuItemDisconnect";
-            this._MenuItemDisconnect.Size = new System.Drawing.Size(133, 22);
+            this._MenuItemDisconnect.Size = new System.Drawing.Size(152, 22);
             this._MenuItemDisconnect.Text = "Disconnect";
             this._MenuItemDisconnect.Click += new System.EventHandler(this._MenuItemDisconnect_Click);
             // 
             // gameToolStripMenuItem
             // 
-            this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._MenuItemRegister});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             this.gameToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.gameToolStripMenuItem.Text = "Game";
             // 
-            // _MenuItemRegister
+            // _StatusStrip
             // 
-            this._MenuItemRegister.Name = "_MenuItemRegister";
-            this._MenuItemRegister.Size = new System.Drawing.Size(152, 22);
-            this._MenuItemRegister.Text = "Register..";
-            this._MenuItemRegister.Click += new System.EventHandler(this._MenuItemRegister_Click);
+            this._StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._stl_Connection});
+            this._StatusStrip.Location = new System.Drawing.Point(0, 239);
+            this._StatusStrip.Name = "_StatusStrip";
+            this._StatusStrip.Size = new System.Drawing.Size(284, 22);
+            this._StatusStrip.TabIndex = 1;
+            this._StatusStrip.Text = "statusStrip1";
+            // 
+            // _stl_Connection
+            // 
+            this._stl_Connection.Name = "_stl_Connection";
+            this._stl_Connection.Size = new System.Drawing.Size(0, 17);
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this._StatusStrip);
             this.Controls.Add(this._MainMenu);
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
             this._MainMenu.ResumeLayout(false);
             this._MainMenu.PerformLayout();
+            this._StatusStrip.ResumeLayout(false);
+            this._StatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -110,6 +121,7 @@
         private System.Windows.Forms.ToolStripMenuItem _MenuItemConnect;
         private System.Windows.Forms.ToolStripMenuItem _MenuItemDisconnect;
         private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem _MenuItemRegister;
+        private System.Windows.Forms.StatusStrip _StatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel _stl_Connection;
     }
 }
