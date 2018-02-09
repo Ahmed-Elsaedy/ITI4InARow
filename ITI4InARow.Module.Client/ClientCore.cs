@@ -10,90 +10,114 @@ using System.Threading.Tasks;
 
 namespace ITI4InARow.Module.Client
 {
-    public class ClientCore
+    public class ClientCore : IDisposable
     {
-        TcpClient _Client;
-        public List<MessageBase> Queue { get; private set; }
-        public void ConnectClient(byte[] ipAddress, int port)
+        private TcpClient _Client;
+        private NetworkStream _RStream = null;
+        private BinaryReader _Reader = null;
+        private BinaryWriter _Writer = null;
+        private List<MessageBase> _Queue = null;
+        public bool ConnectClient(byte[] ipAddress, int port)
         {
+            bool retVal = false;
             _Client = new TcpClient();
-            Queue = new List<MessageBase>();
+            _Queue = new List<MessageBase>();
             try
             {
                 _Client.Connect(new IPAddress(ipAddress), port);
                 OnClientStatusChanged(ClientStatus.ClientConnected);
                 CreateTaskForServer(_Client);
+                retVal = true;
             }
             catch (SocketException)
             { OnClientStatusChanged(ClientStatus.ConnectionError); }
+            return retVal;
+        }
+        public void SendMessageToServer(MessageBase message)
+        {
+            _Queue.Add(message);
         }
         private void CreateTaskForServer(TcpClient request)
         {
             Task.Run(() =>
             {
-                NetworkStream _RStream = request.GetStream();
+                OnClientStatusChanged(ClientStatus.ListeningForServer);
                 while (request.Connected)
                 {
-                    OnClientStatusChanged(ClientStatus.ListeningForServer);
                     try
                     {
-
+                        _RStream = request.GetStream();
                         if (_RStream.DataAvailable)
                         {
-                            // Reading Bytes From Server
-                            byte[] data = new byte[request.ReceiveBufferSize];
-                            _RStream.Read(data, 0, request.ReceiveBufferSize);
-                            OnClientStatusChanged(ClientStatus.ReadServerQueue);
-
-                            // Converting Bytes To List Of Messages
-                            var serverStr = Encoding.Default.GetString(data);
-                            List<MessageBase> serverQueue = JsonConvert.DeserializeObject<List<MessageBase>>(serverStr);
-                            OnClientStatusChanged(ClientStatus.ProcessingServerMessages);
-                            ProcessServerMessages(serverQueue);
+                            OnClientStatusChanged(ClientStatus.ReadingServerStream);
+                            _Reader = new BinaryReader(_RStream);
+                            var serverStr = _Reader.ReadString();
+                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(serverStr);
+                            object obj = JsonConvert.DeserializeObject(serverStr, msgBase.MsgType);
+                            OnMessageRecieved(msgBase);
                         }
-
-                        // Serializing Current Queue and Clear after that
-                        string queueStr = JsonConvert.SerializeObject(Queue);
-                        Queue.Clear();
-
-                        // Writing Current Queue To Stream
-                        byte[] queueBytes = Encoding.Default.GetBytes(queueStr);
-                        _RStream.Write(queueBytes, 0, queueBytes.Length);
-                        OnClientStatusChanged(ClientStatus.SendClientQueue);
-                        _RStream.Flush();
+                        if (_Queue.Count > 0)
+                        {
+                            OnClientStatusChanged(ClientStatus.SendingClientMessage);
+                            string resStr = JsonConvert.SerializeObject(_Queue[0]);
+                            _Queue.RemoveAt(0);
+                            _Writer = new BinaryWriter(_RStream);
+                            _Writer.Write(resStr);
+                            _Writer.Flush();
+                        }
                     }
                     catch (IOException)
                     {
-                        request.Close();
                         OnClientStatusChanged(ClientStatus.ClientDisconnectedError);
                         break;
                     }
                 }
-                _RStream.Close();
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
             });
         }
-        protected virtual void ProcessServerMessages(List<MessageBase> serverQueue)
+        protected virtual void ProcessServerMessage(MessageBase msgBase)
         {
 
         }
         public void DisconnectClient()
         {
-            _Client.Close();
             OnClientStatusChanged(ClientStatus.ClientDisconnected);
         }
         public event EventHandler<ClientActionEventArgs> ClientStatusChanged;
+        public event EventHandler<MessageRevievedEventArgs> MessageRecieved;
         private void OnClientStatusChanged(ClientStatus status)
         {
+            switch (status)
+            {
+                case ClientStatus.ClientDisconnected:
+                case ClientStatus.ClientDisconnectedError:
+                    Dispose();
+                    break;
+            }
             ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));
+        }
+        private void OnMessageRecieved(MessageBase msgBase)
+        {
+            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgBase, msgBase.ClientID));
+            OnClientStatusChanged(ClientStatus.ProcessingServerMessage);
+            ProcessServerMessage(msgBase);
+        }
+        public void Dispose()
+        {
+            if (_Client != null)
+            {
+                _Reader.Dispose();
+                _Writer.Dispose();
+                _RStream.Dispose();
+                _Client.Dispose();
+            }
         }
         ~ClientCore()
         {
-            try { _Client.Close(); }
+            try { Dispose(); }
             catch { }
         }
     }
-
     public class ClientActionEventArgs
     {
         public ClientStatus Status { get; private set; }
@@ -107,10 +131,10 @@ namespace ITI4InARow.Module.Client
         ClientConnected,
         ClientDisconnected,
         ConnectionError,
-        ListeningForServer,
-        ReadServerQueue,
-        SendClientQueue,
+        ReadingServerStream,
+        SendingClientMessage,
         ClientDisconnectedError,
-        ProcessingServerMessages
+        ProcessingServerMessage,
+        ListeningForServer
     }
 }

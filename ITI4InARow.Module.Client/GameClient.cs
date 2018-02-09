@@ -13,17 +13,9 @@ namespace ITI4InARow.Module.Client
         {
 
         }
-        protected override void ProcessServerMessages(List<MessageBase> serverQueue)
+        protected override void ProcessServerMessage(MessageBase msgBase)
         {
-            base.ProcessServerMessages(serverQueue);
-            foreach (MessageBase msg in serverQueue)
-            {
-                switch (msg.MsgType)
-                {
-                    default:
-                        break;
-                }
-            }
+            
         }
     }
 }

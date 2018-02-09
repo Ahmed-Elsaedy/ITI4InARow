@@ -12,8 +12,6 @@ namespace ITI4InARow.Game.Client
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
-            m_Client = new GameClient();
-            m_Client.ClientStatusChanged += Client_ClientStatusChanged;
         }
         private void Client_ClientStatusChanged(object sender, ClientActionEventArgs e)
         {
@@ -26,30 +24,45 @@ namespace ITI4InARow.Game.Client
                     _MenuItemConnect.Enabled = false;
                     _MenuItemDisconnect.Enabled = true;
                     Text = "Client - Connected";
+                    _stl_Connection.Text = "Connected";
                     break;
                 case ClientStatus.ClientDisconnected:
                     _MenuItemDisconnect.Enabled = false;
                     _MenuItemConnect.Enabled = true;
                     Text = "Client - Disconnected";
+                    _stl_Connection.Text = "Disconnected";
                     break;
             }
         }
         private void _MenuItemConnect_Click(object sender, EventArgs e)
         {
-            m_Client.ConnectClient(new byte[] { 172, 16, 5, 18 }, 5031);
+            ConnectForm cForm = new ConnectForm();
+            DialogResult result = cForm.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                m_Client = new GameClient();
+                m_Client.ClientStatusChanged += Client_ClientStatusChanged;
+                m_Client.MessageRecieved += Client_MessageRecieved;
+
+                bool cnnResult = m_Client.ConnectClient(cForm.IPAddress, cForm.Port);
+                if (cnnResult)
+                {
+                    RegisterMessage msg = new RegisterMessage();
+                    msg.MsgType = typeof(RegisterMessage);
+                    msg.Name = cForm.NickName;
+                    m_Client.SendMessageToServer(msg);
+                }
+            }
         }
         private void _MenuItemDisconnect_Click(object sender, EventArgs e)
         {
             m_Client.DisconnectClient();
+            m_Client.ClientStatusChanged -= Client_ClientStatusChanged;
+            m_Client.MessageRecieved -= Client_MessageRecieved;
         }
-        private void _MenuItemRegister_Click(object sender, EventArgs e)
+        private void Client_MessageRecieved(object sender, MessageRevievedEventArgs e)
         {
-            m_Client.Queue.Add(new RegisterMessage()
-            {
-                Name = "df",
-                IP = "156.51.5.0",
-                Color = "Red"
-            });
+            _stl_Connection.Text = $"Connected - ({e.ClientHandle})";
         }
     }
 }
