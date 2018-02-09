@@ -16,11 +16,24 @@ namespace ITI4InARow.Game.Server
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             string hostName = Dns.GetHostName();
-             m_Server = new GameServer(new byte[] { 127, 0, 0, 1}, 5031);
-            // m_Server = new ServerCore(Dns.GetHostByName(hostName).AddressList[0].MapToIPv4().GetAddressBytes(), 5031);
-           // m_Server = new GameServer(Dns.GetHostEntry(hostName).AddressList[0].GetAddressBytes(), 5031);
+             m_Server = new GameServer(GetLocalIP().GetAddressBytes(), 5031);
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
         }
+
+        public IPAddress GetLocalIP()
+        {
+            IPHostEntry host;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            return IPAddress.Parse("127.0.0.1");
+        }
+
         private void Server_ServerStatusChanged(object sender, ServerActionEventArgs e)
         {
             switch (e.Status)

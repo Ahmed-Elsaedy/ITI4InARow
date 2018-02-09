@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +21,20 @@ namespace ITI4InARow.Game.Client
         public ConnectForm()
         {
             InitializeComponent();
+        }
+
+        public IPAddress GetLocalIP()
+        {
+            IPHostEntry host;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip;
+                }
+            }
+            return System.Net.IPAddress.Parse("127.0.0.1");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -42,6 +58,15 @@ namespace ITI4InARow.Game.Client
                 DialogResult = DialogResult.OK;
                 Close();
             }
+        }
+
+        private void ConnectForm_Load(object sender, EventArgs e)
+        {
+            IPAddress = GetLocalIP().GetAddressBytes();
+            _numIP1.Value = IPAddress[0];
+            _numIP2.Value = IPAddress[1];
+            _numIP3.Value = IPAddress[2];
+            _numIP4.Value = IPAddress[3];
         }
     }
 }
