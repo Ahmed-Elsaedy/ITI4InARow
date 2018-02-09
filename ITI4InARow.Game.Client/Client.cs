@@ -63,6 +63,38 @@ namespace ITI4InARow.Game.Client
         private void Client_MessageRecieved(object sender, MessageRevievedEventArgs e)
         {
             _stl_Connection.Text = $"Connected - ({e.ClientHandle})";
+
+            switch (e.Message.MsgType.Name)
+            {
+                case "ListofRoomsMessage":
+
+                    ListofRoomsMessage mylist = (ListofRoomsMessage)e.Message;
+                    for (int i = 0; i < mylist.availableRooms.Count; i++)
+                    {
+                        ListViewItem room = new ListViewItem();
+                        room.SubItems.Add(mylist.availableRooms[i].RoomID.ToString());
+                        room.SubItems.Add(mylist.availableRooms[i].name);
+                        room.SubItems.Add(mylist.availableRooms[i].roomState.ToString());
+                        if (mylist.availableRooms[i].isSpectator)
+                        {
+                            room.SubItems.Add("view available");
+                        }
+                        else
+                        {
+                            room.SubItems.Add("view Not available");
+                        }
+
+                        listView1.Items.Add(room);
+                    }
+                    break;
+            }
+
+
+        }
+
+        private void Client_Load(object sender, EventArgs e)
+        {
+
         }
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {

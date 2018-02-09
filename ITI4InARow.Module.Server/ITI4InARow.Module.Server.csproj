@@ -49,6 +49,10 @@
     <Compile Include="ServerCore.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ITI4InARow.Game.Client\ITI4InARow.Game.Client.csproj">
+      <Project>{3CCBEB35-5CA7-44D1-A711-3D3308EB83E6}</Project>
+      <Name>ITI4InARow.Game.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITI4InARow.Module.Core\ITI4InARow.Module.Core.csproj">
       <Project>{bafff900-5e70-43e0-8570-00d46ad32318}</Project>
       <Name>ITI4InARow.Module.Core</Name>

@@ -3,4 +3,12 @@ C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Core\bin\De
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.csproj.CoreCompileInputs.cache
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.dll
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.pdb
+<<<<<<< HEAD
 C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.csprojResolveAssemblyReference.cache
+=======
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.csprojResolveAssemblyReference.cache
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.dll
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Core\obj\Debug\ITI4InARow.Module.Core.pdb
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Core\bin\Debug\ITI4InARow.Module.Core.dll
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Core\bin\Debug\ITI4InARow.Module.Core.pdb
+>>>>>>> 26b3e0190de90d9eadfcd8dc813c4b6e097712bf
