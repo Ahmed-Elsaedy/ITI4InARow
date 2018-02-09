@@ -15,7 +15,17 @@ namespace ITI4InARow.Module.Client
         }
         protected override void ProcessServerMessage(MessageBase msgBase)
         {
-            
+            string msgType = msgBase.MsgType.Name;
+            switch (msgType)
+            {
+                case "ListofRoomsMessage":
+                    ListofRoomsMessage AvalableRooms = (ListofRoomsMessage)msgBase;
+                    //now you have here the list of all the rooms in server 
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
