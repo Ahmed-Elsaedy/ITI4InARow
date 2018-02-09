@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace ITI4InARow.Module.Client
 {
-    public class ClientCore : IDisposable
+    public class ClientCore
     {
         private TcpClient _Client;
+        private bool _IsConnected;
         private NetworkStream _RStream = null;
         private BinaryReader _Reader = null;
         private BinaryWriter _Writer = null;
         private List<MessageBase> _Queue = null;
-        public bool ConnectClient(byte[] ipAddress, int port)
+        public void ConnectClient(byte[] ipAddress, int port)
         {
-            bool retVal = false;
             _Client = new TcpClient();
             _Queue = new List<MessageBase>();
             try
@@ -27,11 +27,9 @@ namespace ITI4InARow.Module.Client
                 _Client.Connect(new IPAddress(ipAddress), port);
                 OnClientStatusChanged(ClientStatus.ClientConnected);
                 CreateTaskForServer(_Client);
-                retVal = true;
             }
             catch (SocketException)
             { OnClientStatusChanged(ClientStatus.ConnectionError); }
-            return retVal;
         }
         public void SendMessageToServer(MessageBase message)
         {
@@ -42,38 +40,56 @@ namespace ITI4InARow.Module.Client
             Task.Run(() =>
             {
                 OnClientStatusChanged(ClientStatus.ListeningForServer);
-                while (request.Connected)
+                _RStream = request.GetStream();
+                while (_IsConnected)
                 {
-                    try
+                    if (_RStream.DataAvailable)
                     {
-                        _RStream = request.GetStream();
-                        if (_RStream.DataAvailable)
+                        OnClientStatusChanged(ClientStatus.ReadingServerStream);
+                        _Reader = new BinaryReader(_RStream);
+                        var serverStr = _Reader.ReadString();
+                        MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(serverStr);
+                        PreProcessServerMessage(serverStr, msgBase);
+                    }
+                    if (_Queue.Count > 0)
+                    {
+                        OnClientStatusChanged(ClientStatus.SendingClientMessage);
+                        try
                         {
-                            OnClientStatusChanged(ClientStatus.ReadingServerStream);
-                            _Reader = new BinaryReader(_RStream);
-                            var serverStr = _Reader.ReadString();
-                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(serverStr);
-                            object obj = JsonConvert.DeserializeObject(serverStr, msgBase.MsgType);
-                            OnMessageRecieved(msgBase);
-                        }
-                        if (_Queue.Count > 0)
-                        {
-                            OnClientStatusChanged(ClientStatus.SendingClientMessage);
                             string resStr = JsonConvert.SerializeObject(_Queue[0]);
                             _Queue.RemoveAt(0);
                             _Writer = new BinaryWriter(_RStream);
                             _Writer.Write(resStr);
                             _Writer.Flush();
                         }
-                    }
-                    catch (IOException)
-                    {
-                        OnClientStatusChanged(ClientStatus.ClientDisconnectedError);
-                        break;
+                        catch (Exception)
+                        {
+                            OnClientStatusChanged(ClientStatus.ClientDisconnectedError);
+                            break;
+                        }
                     }
                 }
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
             });
+        }
+        private void PreProcessServerMessage(string serverStr, MessageBase msgBase)
+        {
+            if (msgBase.Flag == 1)
+                OnClientStatusChanged(ClientStatus.ClientDisconnected);
+            {
+                object obj = JsonConvert.DeserializeObject(serverStr, msgBase.MsgType);
+                OnMessageRecieved(msgBase);
+            }
+        }
+        private void PreProcessClientMessage(string msgStr, MessageBase msgObj)
+        {
+            if (msgObj.Flag == 1)
+                OnClientStatusChanged(ClientStatus.ClientDisconnected);
+            else
+            {
+                object obj = JsonConvert.DeserializeObject(msgStr, msgObj.MsgType);
+                OnMessageRecieved(msgObj);
+            }
         }
         protected virtual void ProcessServerMessage(MessageBase msgBase)
         {
@@ -91,6 +107,7 @@ namespace ITI4InARow.Module.Client
             {
                 case ClientStatus.ClientDisconnected:
                 case ClientStatus.ClientDisconnectedError:
+                    _IsConnected = false;
                     Dispose();
                     break;
             }
@@ -102,20 +119,13 @@ namespace ITI4InARow.Module.Client
             OnClientStatusChanged(ClientStatus.ProcessingServerMessage);
             ProcessServerMessage(msgBase);
         }
-        public void Dispose()
+        private void Dispose()
         {
-            if (_Client != null)
-            {
-                _Reader.Dispose();
-                _Writer.Dispose();
-                _RStream.Dispose();
-                _Client.Dispose();
-            }
-        }
-        ~ClientCore()
-        {
-            try { Dispose(); }
-            catch { }
+            _Reader.Dispose();
+            _Writer.Dispose();
+            _RStream.Dispose();
+            _Client.Close();
+            _Client.Dispose();
         }
     }
     public class ClientActionEventArgs

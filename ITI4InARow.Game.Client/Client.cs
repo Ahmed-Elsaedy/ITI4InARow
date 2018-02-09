@@ -64,5 +64,11 @@ namespace ITI4InARow.Game.Client
         {
             _stl_Connection.Text = $"Connected - ({e.ClientHandle})";
         }
+        private void Client_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            m_Client.DisconnectClient();
+            m_Client.ClientStatusChanged -= Client_ClientStatusChanged;
+            m_Client.MessageRecieved -= Client_MessageRecieved;
+        }
     }
 }

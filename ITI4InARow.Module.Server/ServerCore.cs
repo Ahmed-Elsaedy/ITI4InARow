@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace ITI4InARow.Module.Server
 {
-    public class ServerCore : IDisposable
+    public class ServerCore
     {
         TcpListener _Server;
         List<ServerClient> _Clients;
@@ -26,20 +26,52 @@ namespace ITI4InARow.Module.Server
             OnServerStatusChanged(ServerStatus.ServerStarted, null);
             while (true)
             {
-                OnServerStatusChanged(ServerStatus.WaitingForClients, null);
-                try
+                if (_Server.Pending())
                 {
+                    OnServerStatusChanged(ServerStatus.IncommingClient, null);
                     TcpClient clientRequest = await _Server.AcceptTcpClientAsync();
                     var serverClient = new ServerClient(clientRequest);
                     OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
                     CreateTaskForClient(serverClient);
                 }
-                catch (ObjectDisposedException)
-                {
-                    OnServerStatusChanged(ServerStatus.StopWaitingForClients, null);
-                    break;
-                }
             }
+        }
+        private void CreateTaskForClient(ServerClient request)
+        {
+            Task.Run(() =>
+            {
+                OnServerStatusChanged(ServerStatus.ListeningForClient, request);
+                request.Stream = request.Client.GetStream();
+                while (request.IsConnected)
+                {
+                    if (request.Stream.DataAvailable)
+                    {
+                        OnServerStatusChanged(ServerStatus.ReadingClientStream, request);
+                        request.Reader = new BinaryReader(request.Stream);
+                        var clientStr = request.Reader.ReadString();
+                        MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
+                        PreProcessClientMessage(request, clientStr, msgBase);
+                    }
+                    if (request.Queue.Count > 0)
+                    {
+                        OnServerStatusChanged(ServerStatus.SendingServerMessage, request);
+                        try
+                        {
+                            string resStr = JsonConvert.SerializeObject(request.Queue[0]);
+                            request.Queue.RemoveAt(0);
+                            request.Writer = new BinaryWriter(request.Stream);
+                            request.Writer.Write(resStr);
+                            request.Writer.Flush();
+                        }
+                        catch (Exception)
+                        {
+                            OnServerStatusChanged(ServerStatus.LostConnection, request);
+                            break;
+                        }
+                    }
+                }
+                OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
+            });
         }
         public bool StopServer()
         {
@@ -54,47 +86,19 @@ namespace ITI4InARow.Module.Server
                 return true;
             }
         }
-        private void CreateTaskForClient(ServerClient request)
-        {
-            Task.Run(() =>
-            {
-                OnServerStatusChanged(ServerStatus.ListeningForClient, request);
-                while (request.Client.Connected)
-                {
-                    try
-                    {
-                        request.Stream = request.Client.GetStream();
-                        if (request.Stream.DataAvailable)
-                        {
-                            OnServerStatusChanged(ServerStatus.ReadingClientStream, request);
-                            request.Reader = new BinaryReader(request.Stream);
-                            var clientStr = request.Reader.ReadString();
-                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
-                            object obj = JsonConvert.DeserializeObject(clientStr, msgBase.MsgType);
-                            OnMessageRecieved(request, msgBase);
-                        }
-                        if (request.Queue.Count > 0)
-                        {
-                            OnServerStatusChanged(ServerStatus.SendingServerMessage, request);
-                            string resStr = JsonConvert.SerializeObject(request.Queue[0]);
-                            request.Queue.RemoveAt(0);
-                            request.Writer = new BinaryWriter(request.Stream);
-                            request.Writer.Write(resStr);
-                            request.Writer.Flush();
-                        }
-                    }
-                    catch (IOException)
-                    {
-                        OnServerStatusChanged(ServerStatus.ForcedClientClose, request);
-                        break;
-                    }
-                }
-                OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
-            });
-        }
         public void SendMessageToClient(ServerClient client, MessageBase msg)
         {
             client.Queue.Add(msg);
+        }
+        private void PreProcessClientMessage(ServerClient client, string msgStr, MessageBase msgObj)
+        {
+            if (msgObj.Flag == 1)
+                OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
+            else
+            {
+                object obj = JsonConvert.DeserializeObject(msgStr, msgObj.MsgType);
+                OnMessageRecieved(client, msgObj);
+            }
         }
         protected virtual void ProcessClientMessage(ServerClient client, MessageBase msgBase)
         {
@@ -113,7 +117,8 @@ namespace ITI4InARow.Module.Server
                     Dispose();
                     break;
                 case ServerStatus.ClientDisconnected:
-                case ServerStatus.ForcedClientClose:
+                case ServerStatus.LostConnection:
+                    client.IsConnected = false;
                     client.Dispose();
                     _Clients.Remove(client);
                     break;
@@ -137,7 +142,7 @@ namespace ITI4InARow.Module.Server
             try { Dispose(); }
             catch { }
         }
-        private ServerClient this[int handle]
+        protected ServerClient this[int handle]
         {
             get { return _Clients.SingleOrDefault(x => x.ClientID == handle); }
         }
@@ -166,6 +171,7 @@ namespace ITI4InARow.Module.Server
         public TcpClient Client { get; private set; }
         public int ClientID { get; private set; }
         public List<MessageBase> Queue { get; private set; }
+        public bool IsConnected { get; internal set; }
         public ServerClient(TcpClient client)
         {
             Client = client;
@@ -199,9 +205,10 @@ namespace ITI4InARow.Module.Server
         ClientDisconnected,
         ServerStopCancelled,
         ServerStopped,
-        WaitingForClients,
+        PendingForClients,
         StopWaitingForClients,
-        ForcedClientClose,
-        ProcessingClientMessage
+        LostConnection,
+        ProcessingClientMessage,
+        IncommingClient
     }
 }

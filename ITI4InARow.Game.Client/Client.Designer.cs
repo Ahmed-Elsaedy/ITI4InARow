@@ -62,7 +62,7 @@
             // _MenuItemConnect
             // 
             this._MenuItemConnect.Name = "_MenuItemConnect";
-            this._MenuItemConnect.Size = new System.Drawing.Size(152, 22);
+            this._MenuItemConnect.Size = new System.Drawing.Size(133, 22);
             this._MenuItemConnect.Text = "Connect...";
             this._MenuItemConnect.Click += new System.EventHandler(this._MenuItemConnect_Click);
             // 
@@ -70,7 +70,7 @@
             // 
             this._MenuItemDisconnect.Enabled = false;
             this._MenuItemDisconnect.Name = "_MenuItemDisconnect";
-            this._MenuItemDisconnect.Size = new System.Drawing.Size(152, 22);
+            this._MenuItemDisconnect.Size = new System.Drawing.Size(133, 22);
             this._MenuItemDisconnect.Text = "Disconnect";
             this._MenuItemDisconnect.Click += new System.EventHandler(this._MenuItemDisconnect_Click);
             // 
@@ -105,6 +105,7 @@
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
             this._MainMenu.ResumeLayout(false);
             this._MainMenu.PerformLayout();
             this._StatusStrip.ResumeLayout(false);

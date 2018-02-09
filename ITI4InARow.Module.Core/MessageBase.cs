@@ -8,11 +8,12 @@ namespace ITI4InARow.Module.Core
 {
     public class MessageBase
     {
+        public int Flag { get; set; }
         public Type MsgType { get; set; }
         public int ClientID { get; set; }
         public MessageBase()
         {
-            MsgType = this.GetType();
+            MsgType = GetType();
         }
     }
 }
