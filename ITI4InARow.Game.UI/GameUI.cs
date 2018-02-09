@@ -12,9 +12,19 @@ namespace ITI4InARow.Game.UI
 {
     public partial class GameUI : Form
     {
+        int[] columns;
+        bool playerTurn;
+        Color player1Color;
+        Color player2Color;
+        bool isGameRunning;
         public GameUI()
         {
             InitializeComponent();
+            columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
+            playerTurn = true;
+            player1Color = Color.Purple;
+            player2Color = Color.SpringGreen;
+            isGameRunning = true;
             //OvalShape ovalShape3 = new OvalShape(shapeContainer1);
             //ovalShape3.Size = new Size(90, 90);
             //ovalShape3.Location = new Point(150, 90);
@@ -22,10 +32,10 @@ namespace ITI4InARow.Game.UI
             //ovalShape3.FillStyle = FillStyle.Solid;
             //ovalShape3.FillColor = Color.Azure;
             //shapeContainer1.ForeColor = Color.Green;
-           
+
         }
 
-     
+
         private void ovalShape2_Click(object sender, EventArgs e)
         {
             //ovalShape1.FillColor = Color.Aqua;
@@ -46,7 +56,7 @@ namespace ITI4InARow.Game.UI
 
         private void GameUI_Load(object sender, EventArgs e)
         {
-            for(int i = 0;i< 42; i++)
+            for (int i = 0; i < 42; i++)
             {
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).Tag = i + 1;
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseClick += GameUI_MouseClick;
@@ -55,7 +65,105 @@ namespace ITI4InARow.Game.UI
 
         private void GameUI_MouseClick(object sender, MouseEventArgs e)
         {
-            MessageBox.Show(((OvalShape)sender).Tag.ToString());
+            GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+            // MessageBox.Show(((OvalShape)sender).Tag.ToString());
+        }
+        private void GameLogic(int TokenPosition)
+        {
+            Color TokenColor;
+            if (playerTurn)
+            {
+                TokenColor = player1Color;
+
+            }
+            else
+            {
+                TokenColor = player2Color;
+            }
+            playerTurn = !playerTurn;
+            if (TokenPosition >= 1 && TokenPosition <= 6)
+            {
+                if (columns[0] > 0)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = TokenColor;
+                    columns[0]--;
+                }
+
+            }
+            else if (TokenPosition >= 7 && TokenPosition <= 12)
+            {
+                if (columns[1] > 6)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = TokenColor;
+                    columns[1]--;
+                }
+
+            }
+            else if (TokenPosition >= 13 && TokenPosition <= 18)
+            {
+                if (columns[2] > 12)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = TokenColor;
+                    // ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillStyle = FillStyle.Cross;
+                    columns[2]--;
+                }
+
+            }
+            else if (TokenPosition >= 19 && TokenPosition <= 24)
+            {
+                if (columns[3] > 18)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = TokenColor;
+                    // ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillStyle = FillStyle.Cross;
+                    columns[3]--;
+                }
+
+            }
+            else if (TokenPosition >= 25 && TokenPosition <= 30)
+            {
+                if (columns[4] > 24)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = TokenColor;
+                    // ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillStyle = FillStyle.Cross;
+                    columns[4]--;
+                }
+
+            }
+            else if (TokenPosition >= 31 && TokenPosition <= 36)
+            {
+                if (columns[5] > 30)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = TokenColor;
+                    // ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillStyle = FillStyle.Cross;
+                    columns[5]--;
+                }
+
+            }
+            else if (TokenPosition >= 37 && TokenPosition <= 42)
+            {
+                if (columns[6] > 36)
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = TokenColor;
+                    // ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillStyle = FillStyle.Cross;
+                    columns[6]--;
+                }
+
+            }
+
+        }
+
+        private void GameUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult res = MessageBox.Show("you will lose the game !", "watch out!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (res == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+
         }
     }
 }

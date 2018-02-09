@@ -771,6 +771,7 @@
             this.Name = "GameUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameUI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameUI_FormClosing);
             this.Load += new System.EventHandler(this.GameUI_Load);
             this.ResumeLayout(false);
 
