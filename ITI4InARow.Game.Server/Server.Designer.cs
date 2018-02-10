@@ -138,7 +138,6 @@
             // 
             // _lbxOutput
             // 
-            this._lbxOutput.Enabled = false;
             this._lbxOutput.FormattingEnabled = true;
             this._lbxOutput.Location = new System.Drawing.Point(12, 186);
             this._lbxOutput.Name = "_lbxOutput";

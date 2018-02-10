@@ -17,27 +17,10 @@ namespace ITI4InARow.Module.Server
             availableRooms = new List<ServerRoom>();
 
         }
-        protected override void ProcessClientMessage(ServerClient client, MessageBase msgBase)
+        protected override void OnRegisterMessage(ServerClient client, RegisterMessage msg)
         {
-            RegisterMessage registerationMessage = (RegisterMessage)msgBase;
-            //Client Req handling 
-            switch (registerationMessage.MsgType.Name)
-            {
-                case "RegisterMessage":
-                    ListofRoomsMessage ListOfAvalableRooms = new ListofRoomsMessage(availableRooms);
-                    SendMessageToClient(client, ListOfAvalableRooms);
-                    break;
-
-                case "":
-
-                    break;
-
-                default:
-                    break;
-            }
-
-            //SendMessageToClient(client, my message object  );
-
+            ListofRoomsMessage ListOfAvalableRooms = new ListofRoomsMessage(availableRooms);
+            SendMessageToClient(client, ListOfAvalableRooms);
         }
     }
 }
