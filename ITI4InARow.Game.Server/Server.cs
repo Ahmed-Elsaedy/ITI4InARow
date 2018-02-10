@@ -20,20 +20,6 @@ namespace ITI4InARow.Game.Server
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
         }
 
-        public IPAddress GetLocalIP()
-        {
-            IPHostEntry host;
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip;
-                }
-            }
-            return IPAddress.Parse("127.0.0.1");
-        }
-
         private void Server_ServerStatusChanged(object sender, ServerActionEventArgs e)
         {
             switch (e.Status)
