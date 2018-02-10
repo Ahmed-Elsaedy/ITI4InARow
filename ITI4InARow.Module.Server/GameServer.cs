@@ -19,12 +19,17 @@ namespace ITI4InARow.Module.Server
         }
         protected override void ProcessClientMessage(ServerClient client, MessageBase msgBase)
         {
+            RegisterMessage registerationMessage = (RegisterMessage)msgBase;
             //Client Req handling 
-            switch (msgBase.MsgType.Name)
+            switch (registerationMessage.MsgType.Name)
             {
                 case "RegisterMessage":
                     ListofRoomsMessage ListOfAvalableRooms = new ListofRoomsMessage(availableRooms);
                     SendMessageToClient(client, ListOfAvalableRooms);
+                    break;
+
+                case "":
+
                     break;
 
                 default:

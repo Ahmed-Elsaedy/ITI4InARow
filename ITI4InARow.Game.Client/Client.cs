@@ -50,6 +50,7 @@ namespace ITI4InARow.Game.Client
                     RegisterMessage msg = new RegisterMessage();
                     msg.MsgType = typeof(RegisterMessage);
                     msg.Name = cForm.NickName;
+                    msg.ipaddress = Helper.GetLocalIP().ToString();
                     m_Client.SendMessageToServer(msg);
                 }
             }
