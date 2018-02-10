@@ -63,7 +63,7 @@ namespace ITI4InARow.Game.Server
         }
         private void _MenuItemStart_Click(object sender, EventArgs e)
         {
-           m_Server.StartServerAsync();
+           m_Server.StartServer();
         }
         private void _MenuItemStop_Click(object sender, EventArgs e)
         {

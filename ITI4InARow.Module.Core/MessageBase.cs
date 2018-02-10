@@ -8,12 +8,18 @@ namespace ITI4InARow.Module.Core
 {
     public class MessageBase
     {
-        public int Flag { get; set; }
+        public MessageFlag Flag { get; set; }
         public Type MsgType { get; set; }
         public int ClientID { get; set; }
         public MessageBase()
         {
             MsgType = GetType();
         }
+    }
+
+    public enum MessageFlag
+    {
+        ClientData = 0,
+        KeepAlive = 1
     }
 }

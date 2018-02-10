@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using ITI4InARow.Module.Core;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace ITI4InARow.Module.Server
 {
@@ -20,86 +21,93 @@ namespace ITI4InARow.Module.Server
             _Server = new TcpListener(new IPAddress(ipAddress), port);
             _Clients = new List<ServerClient>();
         }
-        public async void StartServerAsync()
+        public void StartServer()
         {
             _Server.Start();
             OnServerStatusChanged(ServerStatus.ServerStarted, null);
+            Task.Run(new Action(ServerMainThread));
+        }
+        private void ServerMainThread()
+        {
+            OnServerStatusChanged(ServerStatus.StartWaitingForClients, null);
             while (true)
             {
-                OnServerStatusChanged(ServerStatus.WaitingForClients, null);
-                TcpClient clientRequest = await _Server.AcceptTcpClientAsync();
-                var serverClient = new ServerClient(clientRequest);
-                OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
-                CreateTaskForClient(serverClient);
+                if (_Server.Pending())
+                {
+                    OnServerStatusChanged(ServerStatus.IncommingClient, null);
+                    TcpClient clientRequest = _Server.AcceptTcpClient();
+                    ServerClient serverClient = new ServerClient(clientRequest);
+                    OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
+                    Task.Run(() => ServerClientThread(serverClient));
+                }
             }
         }
-        private void CreateTaskForClient(ServerClient request)
+        private void ServerClientThread(ServerClient serverClient)
         {
-            Task.Run(() =>
-            {
-                OnServerStatusChanged(ServerStatus.ListeningForClient, request);
-                request.Stream = request.Client.GetStream();
-                while (request.IsConnected)
+            OnServerStatusChanged(ServerStatus.ListeningForClient, serverClient);
+            using (NetworkStream stream = serverClient.Client.GetStream())
+            using (BinaryReader reader = new BinaryReader(stream))
+            using (BinaryWriter writer = new BinaryWriter(stream))
+                while (true)
                 {
-                    if (request.Stream.DataAvailable)
+                    MonitorKeepALiveTime(serverClient);
+                    try
                     {
-                        OnServerStatusChanged(ServerStatus.ReadingClientStream, request);
-                        request.Reader = new BinaryReader(request.Stream);
-                        var clientStr = request.Reader.ReadString();
-                        MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
-                        PreProcessClientMessage(request, clientStr, msgBase);
+                        if (stream.DataAvailable)
+                        {
+                            var clientStr = reader.ReadString();
+                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
+                            ReadingMessageFlag(serverClient, clientStr, msgBase);
+                        }
+                        if (serverClient.Queue.Count > 0)
+                        {
+                            var msg = serverClient.Queue[0];
+                            if (msg.Flag == MessageFlag.KeepAlive)
+                                OnServerStatusChanged(ServerStatus.SendingKeepALiveFlag, serverClient);
+                            else
+                                OnServerStatusChanged(ServerStatus.SendingServerMessage, serverClient);
+
+                            string resStr = JsonConvert.SerializeObject(msg);
+                            serverClient.Queue.RemoveAt(0);
+                            writer.Write(resStr);
+                            writer.Flush();
+                        }
                     }
-                    if (request.Queue.Count > 0)
+                    catch (Exception ex)
                     {
-                        OnServerStatusChanged(ServerStatus.SendingServerMessage, request);
-                        try
-                        {
-                            string resStr = JsonConvert.SerializeObject(request.Queue[0]);
-                            request.Queue.RemoveAt(0);
-                            request.Writer = new BinaryWriter(request.Stream);
-                            request.Writer.Write(resStr);
-                            request.Writer.Flush();
-                        }
-                        catch (Exception)
-                        {
-                            OnServerStatusChanged(ServerStatus.LostConnection, request);
-                            break;
-                        }
+                        OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
+                        break;
                     }
                 }
-                OnServerStatusChanged(ServerStatus.ClientDisconnected, request);
-            });
+            OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
         }
-        public bool StopServer()
+        public void StopServer()
         {
-            if (_Clients.Count > 0)
-            {
-                OnServerStatusChanged(ServerStatus.ServerStopCancelled, null);
-                return false;
-            }
-            else
-            {
-                OnServerStatusChanged(ServerStatus.ServerStopped, null);
-                return true;
-            }
+            OnServerStatusChanged(ServerStatus.ServerStopped, null);
         }
         public void SendMessageToClient(ServerClient client, MessageBase msg)
         {
             client.Queue.Add(msg);
         }
-        private void PreProcessClientMessage(ServerClient client, string msgStr, MessageBase msgObj)
+        private void ReadingMessageFlag(ServerClient client, string msgStr, MessageBase msgObj)
         {
-            if (msgObj.Flag == 1)
-                OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
+            if (msgObj.Flag == MessageFlag.KeepAlive)
+                OnServerStatusChanged(ServerStatus.ReceivingKeepALiveFlag, client);
             else
             {
                 object obj = JsonConvert.DeserializeObject(msgStr, msgObj.MsgType);
                 OnMessageRecieved(client, msgObj);
             }
         }
-        protected virtual void ProcessClientMessage(ServerClient client, MessageBase msgBase)
+        private void MonitorKeepALiveTime(ServerClient client)
         {
-
+            var period = DateTime.Now - client.LastKeepALive;
+            if (period.TotalSeconds > 2)
+            {
+                client.LastKeepALive = DateTime.Now;
+                MessageBase keepAliveMsg = new MessageBase() { Flag = MessageFlag.KeepAlive };
+                SendMessageToClient(client, keepAliveMsg);
+            }
         }
         public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
         public event EventHandler<MessageRevievedEventArgs> MessageRecieved;
@@ -111,12 +119,14 @@ namespace ITI4InARow.Module.Server
                     _Clients.Add(client);
                     break;
                 case ServerStatus.ServerStopped:
-                    Dispose();
+                    foreach (ServerClient sClient in _Clients)
+                        client.Client.Close();
+                    _Server.Stop();
                     break;
                 case ServerStatus.ClientDisconnected:
-                case ServerStatus.LostConnection:
-                    client.IsConnected = false;
-                    client.Dispose();
+                case ServerStatus.ConnectionException:
+                    try { client.Client.Close(); }
+                    catch { }
                     _Clients.Remove(client);
                     break;
             }
@@ -125,24 +135,23 @@ namespace ITI4InARow.Module.Server
         private void OnMessageRecieved(ServerClient client, MessageBase msgBase)
         {
             MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgBase, client.Client.Client.Handle.ToInt32()));
-            OnServerStatusChanged(ServerStatus.ProcessingClientMessage, client);
+            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, client);
             ProcessClientMessage(client, msgBase);
-        }
-        public void Dispose()
-        {
-            foreach (ServerClient client in _Clients)
-                client.Dispose();
-            _Server.Stop();
-        }
-        ~ServerCore()
-        {
-            try { Dispose(); }
-            catch { }
         }
         protected ServerClient this[int handle]
         {
             get { return _Clients.SingleOrDefault(x => x.ClientID == handle); }
         }
+        protected void ProcessClientMessage(ServerClient client, MessageBase msgBase)
+        {
+            switch (msgBase.MsgType.Name)
+            {
+                case "RegisterMessage":
+                    OnRegisterMessage(client, (RegisterMessage)msgBase);
+                    break;
+            }
+        }
+        protected virtual void OnRegisterMessage(ServerClient client, RegisterMessage msg) { }
     }
     public class ServerActionEventArgs
     {
@@ -157,39 +166,25 @@ namespace ITI4InARow.Module.Server
         }
         public override string ToString()
         {
-            return $"{TimeStamp.ToLongTimeString()}: {Status.ToString()}";
+            return $"{TimeStamp.ToLongTimeString()}: - {Status.ToString()}";
         }
     }
-    public class ServerClient : IDisposable
+    public class ServerClient
     {
-        public NetworkStream Stream { get; set; }
-        public BinaryReader Reader { get; set; }
-        public BinaryWriter Writer { get; set; }
         public TcpClient Client { get; private set; }
         public int ClientID { get; private set; }
+        public DateTime LastKeepALive { get; set; }
         public List<MessageBase> Queue { get; private set; }
-        public bool IsConnected { get; internal set; }
         public ServerClient(TcpClient client)
         {
             Client = client;
             Queue = new List<MessageBase>();
             ClientID = client.Client.Handle.ToInt32();
+            LastKeepALive = DateTime.Now;
         }
         public override string ToString()
         {
             return string.Format("{0}: {1} => {1}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
-        }
-        public void Dispose()
-        {
-            if (Writer != null) Writer.Dispose();
-            if (Reader != null) Reader.Dispose();
-            if (Stream != null) Stream.Dispose();
-            Client.Dispose();
-        }
-        ~ServerClient()
-        {
-            try { Dispose(); }
-            catch { }
         }
     }
     public enum ServerStatus
@@ -204,9 +199,11 @@ namespace ITI4InARow.Module.Server
         ServerStopped,
         PendingForClients,
         StopWaitingForClients,
-        LostConnection,
-        ProcessingClientMessage,
+        ConnectionException,
+        ProcessingIncommingMessage,
         IncommingClient,
-    WaitingForClients
-}
+        StartWaitingForClients,
+        ReceivingKeepALiveFlag,
+        SendingKeepALiveFlag
+    }
 }

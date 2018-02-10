@@ -25,11 +25,6 @@ namespace ITI4InARow.Game.Client
                     _MenuItemDisconnect.Enabled = true;
                     Text = "Client - Connected";
                     _stl_Connection.Text = "Connected";
-
-                    //RegisterMessage msg = new RegisterMessage();
-                    //msg.MsgType = typeof(RegisterMessage);
-                    //m_Client.SendMessageToServer(msg);
-
                     break;
                 case ClientStatus.ClientDisconnected:
                     _MenuItemDisconnect.Enabled = false;

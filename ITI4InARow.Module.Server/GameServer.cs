@@ -34,5 +34,11 @@ namespace ITI4InARow.Module.Server
             //SendMessageToClient(client, my message object  );
 
         }
+
+        protected override void OnRegisterMessage(RegisterMessage msg)
+        {
+            ListofRoomsMessage ListOfAvalableRooms = new ListofRoomsMessage(availableRooms);
+            SendMessageToClient(client, ListOfAvalableRooms);
+        }
     }
 }
