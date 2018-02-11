@@ -51,7 +51,8 @@ namespace ITI4InARow.Game.Server
         }
         private void _MenuItemStart_Click(object sender, EventArgs e)
         {
-           m_Server.StartServer();
+            m_Server.StartServer();
+            lblIP.Text = Helper.GetLocalIP().ToString();
         }
         private void _MenuItemStop_Click(object sender, EventArgs e)
         {

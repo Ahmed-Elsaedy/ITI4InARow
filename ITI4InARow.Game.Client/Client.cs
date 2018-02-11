@@ -80,8 +80,6 @@ namespace ITI4InARow.Game.Client
                     }
                     break;
             }
-
-
         }
 
         private void Client_Load(object sender, EventArgs e)

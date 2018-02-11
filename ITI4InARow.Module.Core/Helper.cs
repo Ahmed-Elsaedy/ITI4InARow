@@ -21,7 +21,7 @@ namespace ITI4InARow.Module.Core
                     return ip;
                 }
             }
-            return System.Net.IPAddress.Parse("127.0.0.1");
+            return IPAddress.Parse("127.0.0.1");
         }
     }
 }

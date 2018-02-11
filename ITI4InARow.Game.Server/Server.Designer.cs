@@ -40,6 +40,7 @@
             this._MenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
             this._lbxConnectClients = new System.Windows.Forms.ListBox();
             this._lbxOutput = new System.Windows.Forms.ListBox();
+            this.lblIP = new System.Windows.Forms.Label();
             this._MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             this._lblListBox.AutoSize = true;
             this._lblListBox.Location = new System.Drawing.Point(12, 35);
             this._lblListBox.Name = "_lblListBox";
-            this._lblListBox.Size = new System.Drawing.Size(93, 13);
+            this._lblListBox.Size = new System.Drawing.Size(94, 13);
             this._lblListBox.TabIndex = 4;
             this._lblListBox.Text = "Connected Clients";
             // 
@@ -57,7 +58,7 @@
             this._lblOutput.AutoSize = true;
             this._lblOutput.Location = new System.Drawing.Point(12, 169);
             this._lblOutput.Name = "_lblOutput";
-            this._lblOutput.Size = new System.Drawing.Size(73, 13);
+            this._lblOutput.Size = new System.Drawing.Size(76, 13);
             this._lblOutput.TabIndex = 6;
             this._lblOutput.Text = "Server Output";
             // 
@@ -85,7 +86,7 @@
             // _MenuItemStart
             // 
             this._MenuItemStart.Name = "_MenuItemStart";
-            this._MenuItemStart.Size = new System.Drawing.Size(98, 22);
+            this._MenuItemStart.Size = new System.Drawing.Size(152, 22);
             this._MenuItemStart.Text = "Start";
             this._MenuItemStart.Click += new System.EventHandler(this._MenuItemStart_Click);
             // 
@@ -93,7 +94,7 @@
             // 
             this._MenuItemStop.Enabled = false;
             this._MenuItemStop.Name = "_MenuItemStop";
-            this._MenuItemStop.Size = new System.Drawing.Size(98, 22);
+            this._MenuItemStop.Size = new System.Drawing.Size(152, 22);
             this._MenuItemStop.Text = "Stop";
             this._MenuItemStop.Click += new System.EventHandler(this._MenuItemStop_Click);
             // 
@@ -144,11 +145,21 @@
             this._lbxOutput.Size = new System.Drawing.Size(389, 186);
             this._lbxOutput.TabIndex = 9;
             // 
+            // lblIP
+            // 
+            this.lblIP.AutoSize = true;
+            this.lblIP.Location = new System.Drawing.Point(320, 35);
+            this.lblIP.Name = "lblIP";
+            this.lblIP.Size = new System.Drawing.Size(31, 13);
+            this.lblIP.TabIndex = 10;
+            this.lblIP.Text = "MyIP";
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(413, 388);
+            this.Controls.Add(this.lblIP);
             this.Controls.Add(this._lbxOutput);
             this.Controls.Add(this._lbxConnectClients);
             this.Controls.Add(this._lblOutput);
@@ -177,5 +188,6 @@
         private System.Windows.Forms.ListBox _lbxOutput;
         private System.Windows.Forms.ToolStripMenuItem outputToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _MenuItemClear;
+        private System.Windows.Forms.Label lblIP;
     }
 }
