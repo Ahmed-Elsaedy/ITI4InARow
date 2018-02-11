@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using ITI4InARow.Module.Server;
+using ITI4InARow.Module.Core;
 
 namespace ITI4InARow.Game.Server
 {
@@ -16,7 +17,8 @@ namespace ITI4InARow.Game.Server
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             string hostName = Dns.GetHostName();
-            m_Server = new GameServer(new byte[] { 127, 0, 0, 1 }, 5031);
+            //m_Server = new GameServer(new byte[] { 127, 0, 0, 1 }, 5031);
+            m_Server = new GameServer(Helper.GetLocalIP().GetAddressBytes(), 5031);
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
         }
 

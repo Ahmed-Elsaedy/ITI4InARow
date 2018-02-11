@@ -15,7 +15,13 @@ namespace ITI4InARow.Module.Server
             : base(ipAddress, port)
         {
             availableRooms = new List<ServerRoom>();
-
+            ServerRoom testroom = new ServerRoom();
+            //testroom.name = "mrwan";
+            //testroom.isSpectator = true;
+            //testroom.RoomID = 0;
+            //testroom.roomState = RoomState.wating;
+            //testroom.spectatorCount = 0;
+            //availableRooms.Add(testroom);
         }
         protected override void OnRegisterMessage(ServerClient client, RegisterMessage msg)
         {
