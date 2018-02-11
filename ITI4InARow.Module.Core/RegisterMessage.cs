@@ -9,5 +9,7 @@ namespace ITI4InARow.Module.Core
     public class RegisterMessage : MessageBase
     {
         public string Name { get; set; }
+        public string ipaddress { get; set; }
+
     }
 }

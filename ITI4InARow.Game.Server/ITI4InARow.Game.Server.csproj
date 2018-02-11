@@ -79,6 +79,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ITI4InARow.Module.Core\ITI4InARow.Module.Core.csproj">
+      <Project>{BAFFF900-5E70-43E0-8570-00D46AD32318}</Project>
+      <Name>ITI4InARow.Module.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITI4InARow.Module.Server\ITI4InARow.Module.Server.csproj">
       <Project>{11046dc4-25c2-4273-9fe7-2d75e5bd8c22}</Project>
       <Name>ITI4InARow.Module.Server</Name>

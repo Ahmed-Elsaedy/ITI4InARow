@@ -1,9 +1,12 @@
-﻿using System;
+﻿using ITI4InARow.Module.Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,6 +45,15 @@ namespace ITI4InARow.Game.Client
                 DialogResult = DialogResult.OK;
                 Close();
             }
+        }
+
+        private void ConnectForm_Load(object sender, EventArgs e)
+        {
+            IPAddress = Helper.GetLocalIP().GetAddressBytes();
+            _numIP1.Value = IPAddress[0];
+            _numIP2.Value = IPAddress[1];
+            _numIP3.Value = IPAddress[2];
+            _numIP4.Value = IPAddress[3];
         }
     }
 }
