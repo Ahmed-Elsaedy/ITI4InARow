@@ -1,6 +1,6 @@
 ﻿namespace ITI4InARow.Game.UI
 {
-    partial class GameUI
+    public partial class GameUI
     {
         /// <summary>
         /// Required designer variable.
@@ -73,6 +73,7 @@
             this.ovalShape2 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.BtnReset = new System.Windows.Forms.Button();
+            this.btnclose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // shapeContainer1
@@ -768,12 +769,25 @@
             this.BtnReset.UseVisualStyleBackColor = true;
             this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
+            // btnclose
+            // 
+            this.btnclose.BackColor = System.Drawing.Color.Red;
+            this.btnclose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnclose.Location = new System.Drawing.Point(838, 12);
+            this.btnclose.Name = "btnclose";
+            this.btnclose.Size = new System.Drawing.Size(21, 23);
+            this.btnclose.TabIndex = 2;
+            this.btnclose.Text = "X";
+            this.btnclose.UseVisualStyleBackColor = false;
+            this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
+            // 
             // GameUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(885, 622);
+            this.Controls.Add(this.btnclose);
             this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.shapeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -835,5 +849,6 @@
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape3;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape2;
         private System.Windows.Forms.Button BtnReset;
+        private System.Windows.Forms.Button btnclose;
     }
 }
