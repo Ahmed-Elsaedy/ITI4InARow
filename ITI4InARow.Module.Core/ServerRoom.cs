@@ -11,8 +11,8 @@ namespace ITI4InARow.Module.Core
         public int RoomID { get; set; }
         public string name { get; set; }
         public RoomState roomState { get; set; }
-        public int player1ID { get; set; }
-        public int player2ID { get; set; }
+        public string player1Name { get; set; }
+        public string player2Name { get; set; }
         public bool isSpectator { get; set; }
         public int spectatorCount { get; set; }
         public List<int> spectatorsID { get; set; }

@@ -184,7 +184,7 @@ namespace ITI4InARow.Module.Server
         }
         public override string ToString()
         {
-            return string.Format("{0}: {1} => {1}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
+            return string.Format("{0}: {1} => {2}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
         }
     }
     public enum ServerStatus
