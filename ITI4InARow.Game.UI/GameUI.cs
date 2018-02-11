@@ -18,6 +18,9 @@ namespace ITI4InARow.Game.UI
         Color player2Color;
         bool isGameRunning;
         int playersMovesCount;
+        Color defaultOvalColor;
+        internal enum CheckPosition { NORTH=1,SOUTH=(-1),EAST=(-6),WEST=6,NORTH_EAST=(-6-1),NORTH_WEST=(6-1),SOUTH_EAST=(-6+1),SOUTH_WEST=(6+1)};
+
         public GameUI()
         {
             InitializeComponent();
@@ -27,6 +30,7 @@ namespace ITI4InARow.Game.UI
             player2Color = Color.SpringGreen;
             isGameRunning = true;
             playersMovesCount = 0;
+            defaultOvalColor = ((OvalShape)shapeContainer1.Shapes.get_Item(0)).FillColor;
             //OvalShape ovalShape3 = new OvalShape(shapeContainer1);
             //ovalShape3.Size = new Size(90, 90);
             //ovalShape3.Location = new Point(150, 90);
@@ -62,6 +66,27 @@ namespace ITI4InARow.Game.UI
             {
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).Tag = i + 1;
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseClick += GameUI_MouseClick;
+                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseEnter += GameUI_MouseEnter;
+                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseLeave += GameUI_Leave;
+
+             }
+        }
+
+        private void GameUI_Leave(object sender, EventArgs e)
+        {
+            ((OvalShape)sender).FillColor = defaultOvalColor;
+        }
+
+        private void GameUI_MouseEnter(object sender, EventArgs e)
+        {
+            if(playerTurn)
+            {
+                    ((OvalShape)sender).FillColor =  player1Color;
+
+            }
+            else
+            {
+                    ((OvalShape)sender).FillColor = player2Color;
             }
         }
 
@@ -77,7 +102,7 @@ namespace ITI4InARow.Game.UI
             if (isGameRunning)
             {
 
-                playersMovesCount++; 
+                playersMovesCount++;
                 if (playerTurn)
                 {
                     TokenColor = player1Color;
@@ -170,27 +195,94 @@ namespace ITI4InARow.Game.UI
                     }
 
                 }
-            }
-            if (playersMovesCount == 42)
-            {
-                isGameRunning = false;
-                MessageBox.Show("Game End");
+
+                if (playersMovesCount == 42)
+                {
+                    isGameRunning = false;
+                    MessageBox.Show("Game End");
+                    return;
+                }
+                int x = 1;
+                if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
+                }
+                if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
+                    return;
+                }
+                /////////////////////////////////////////////
+                x = 1;
+                if (GamePlan(ovalClicked, ref x, CheckPosition.WEST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
+                }
+                if (GamePlan(ovalClicked, ref x, CheckPosition.EAST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win east");
+                   return;
+                }
+                //////////////////////////////////////////////
+                x = 1;
+                if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH_EAST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                }
+                if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_WEST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south west");
+                    return;
+                }
+                ////////////////////////////////////////////////
+                x = 1;
+                if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH_WEST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                }
+                if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_EAST))
+                {
+                    isGameRunning = false;
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
+                    return;
+                }
+                /////////////////
+               
             }
 
-            GamePlan(ovalClicked);
         }
-        void GamePlan(OvalShape ovalClicked)
+        bool GamePlan(OvalShape ovalClicked,ref int x,CheckPosition cp)
         {
-            int TokenIndex =int.Parse(ovalClicked.Tag.ToString()) - 1;
-
-            int loopTimes = 4;
-            //Left Condition
-            while ( loopTimes != 0 )
+            if (x < 4)
             {
-
-                loopTimes--;
-            }
-             MessageBox.Show(ovalClicked.Tag.ToString());
+                int TokenIndex = int.Parse(ovalClicked.Tag.ToString()) - 1;
+                int leftTokenIndex = TokenIndex +(int)cp;
+                if (leftTokenIndex >= 0 && leftTokenIndex < 42)
+                {
+                    if (ovalClicked.FillColor == ((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor)
+                    {
+                         x++;
+                        MessageBox.Show("" + x + " " + ovalClicked.FillColor);
+                        return GamePlan(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)), ref x,cp);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else return false;
+                
+             }
+            
+                return true;
+            
         }
 
         private void GameUI_FormClosing(object sender, FormClosingEventArgs e)
