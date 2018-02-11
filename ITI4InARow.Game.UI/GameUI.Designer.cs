@@ -72,6 +72,7 @@
             this.ovalShape3 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape2 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
+            this.BtnReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // shapeContainer1
@@ -122,7 +123,7 @@
             this.ovalShape3,
             this.ovalShape2,
             this.ovalShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(788, 622);
+            this.shapeContainer1.Size = new System.Drawing.Size(885, 622);
             this.shapeContainer1.TabIndex = 0;
             this.shapeContainer1.TabStop = false;
             // 
@@ -757,12 +758,23 @@
             this.ovalShape1.Tag = "A1";
             this.ovalShape1.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
+            // BtnReset
+            // 
+            this.BtnReset.Location = new System.Drawing.Point(784, 265);
+            this.BtnReset.Name = "BtnReset";
+            this.BtnReset.Size = new System.Drawing.Size(75, 23);
+            this.BtnReset.TabIndex = 1;
+            this.BtnReset.Text = "Reset Game";
+            this.BtnReset.UseVisualStyleBackColor = true;
+            this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
+            // 
             // GameUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(788, 622);
+            this.ClientSize = new System.Drawing.Size(885, 622);
+            this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.shapeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -822,5 +834,6 @@
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape4;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape3;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape2;
+        private System.Windows.Forms.Button BtnReset;
     }
 }

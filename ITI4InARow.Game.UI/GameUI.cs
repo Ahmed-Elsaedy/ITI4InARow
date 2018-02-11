@@ -19,18 +19,12 @@ namespace ITI4InARow.Game.UI
         bool isGameRunning;
         int playersMovesCount;
         Color defaultOvalColor;
-        internal enum CheckPosition { NORTH=1,SOUTH=(-1),EAST=(-6),WEST=6,NORTH_EAST=(-6-1),NORTH_WEST=(6-1),SOUTH_EAST=(-6+1),SOUTH_WEST=(6+1)};
+        internal enum CheckPosition { NORTH=1,SOUTH=(-1),EAST=(-6),WEST=6,NORTH_EAST=(-6+1),NORTH_WEST=(6+1),SOUTH_EAST=(-6-1),SOUTH_WEST=(6-1)};
 
         public GameUI()
         {
             InitializeComponent();
-            columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
-            playerTurn = true;
-            player1Color = Color.Purple;
-            player2Color = Color.SpringGreen;
-            isGameRunning = true;
-            playersMovesCount = 0;
-            defaultOvalColor = ((OvalShape)shapeContainer1.Shapes.get_Item(0)).FillColor;
+            InitGame();
             //OvalShape ovalShape3 = new OvalShape(shapeContainer1);
             //ovalShape3.Size = new Size(90, 90);
             //ovalShape3.Location = new Point(150, 90);
@@ -41,7 +35,16 @@ namespace ITI4InARow.Game.UI
 
         }
 
-
+        private void InitGame()
+        {
+            columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
+            playerTurn = true;
+            player1Color = Color.Purple;
+            player2Color = Color.SpringGreen;
+            isGameRunning = true;
+            playersMovesCount = 0;
+            defaultOvalColor = Color.White;
+        }
         private void ovalShape2_Click(object sender, EventArgs e)
         {
             //ovalShape1.FillColor = Color.Aqua;
@@ -62,14 +65,24 @@ namespace ITI4InARow.Game.UI
 
         private void GameUI_Load(object sender, EventArgs e)
         {
+            /*
             for (int i = 0; i < 42; i++)
             {
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).Tag = i + 1;
                 ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseClick += GameUI_MouseClick;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseEnter += GameUI_MouseEnter;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseLeave += GameUI_Leave;
+                //((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseEnter += GameUI_MouseEnter;
+              // ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseLeave += GameUI_Leave;
 
-             }
+             }*/
+            int index = 1;
+            foreach (OvalShape oval in shapeContainer1.Shapes)
+            {
+                oval.Tag = index;
+                index++;
+                oval.MouseClick+= GameUI_MouseClick;
+               // oval.MouseEnter += GameUI_MouseEnter;
+               /// oval.MouseLeave+= GameUI_Leave; 
+            }
         }
 
         private void GameUI_Leave(object sender, EventArgs e)
@@ -99,6 +112,8 @@ namespace ITI4InARow.Game.UI
         {
             Color TokenColor;
             OvalShape ovalClicked = new OvalShape();
+            //mouse enter issue when it considrate fill
+           // ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)).FillColor = defaultOvalColor;
             if (isGameRunning)
             {
 
@@ -205,7 +220,7 @@ namespace ITI4InARow.Game.UI
                 int x = 1;
                 if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH))
                 {
-                    isGameRunning = false;
+                    //isGameRunning = false;
                     MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
                 }
                 if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH))
@@ -218,7 +233,7 @@ namespace ITI4InARow.Game.UI
                 x = 1;
                 if (GamePlan(ovalClicked, ref x, CheckPosition.WEST))
                 {
-                    isGameRunning = false;
+                    //isGameRunning = false;
                     MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
                 }
                 if (GamePlan(ovalClicked, ref x, CheckPosition.EAST))
@@ -231,7 +246,7 @@ namespace ITI4InARow.Game.UI
                 x = 1;
                 if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH_EAST))
                 {
-                    isGameRunning = false;
+                    //isGameRunning = false;
                     MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
                 }
                 if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_WEST))
@@ -244,7 +259,7 @@ namespace ITI4InARow.Game.UI
                 x = 1;
                 if (GamePlan(ovalClicked, ref x, CheckPosition.NORTH_WEST))
                 {
-                    isGameRunning = false;
+                    //isGameRunning = false;
                     MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
                 }
                 if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_EAST))
@@ -266,10 +281,10 @@ namespace ITI4InARow.Game.UI
                 int leftTokenIndex = TokenIndex +(int)cp;
                 if (leftTokenIndex >= 0 && leftTokenIndex < 42)
                 {
-                    if (ovalClicked.FillColor == ((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor)
+                    if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
                     {
                          x++;
-                        MessageBox.Show("" + x + " " + ovalClicked.FillColor);
+                       // MessageBox.Show("" + x + " " + ovalClicked.FillColor);
                         return GamePlan(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)), ref x,cp);
                     }
                     else
@@ -280,9 +295,35 @@ namespace ITI4InARow.Game.UI
                 else return false;
                 
              }
-            
+           // MessageBox.Show(x + " " + ovalClicked.FillColor.ToString());
                 return true;
             
+        }
+        bool GamePlan2(OvalShape ovalClicked, ref int x, CheckPosition cp)
+        {
+            if (x < 4)
+            {
+                int TokenIndex = int.Parse(ovalClicked.Tag.ToString()) - 1;
+                int leftTokenIndex = TokenIndex + (int)cp;
+                if (leftTokenIndex >= 0 && leftTokenIndex < 42)
+                {
+                    if (ovalClicked.FillColor.Equals (((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
+                    {
+                        x++;
+                        // MessageBox.Show("" + x + " " + ovalClicked.FillColor);
+                        return GamePlan2(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)), ref x, cp);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else return false;
+
+            }
+            // MessageBox.Show(x + " " + ovalClicked.FillColor.ToString());
+            return true;
+
         }
 
         private void GameUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -297,6 +338,16 @@ namespace ITI4InARow.Game.UI
                 e.Cancel = false;
             }
 
+        }
+
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            InitGame();
+            foreach(OvalShape oval in shapeContainer1.Shapes)
+            {
+                oval.Enabled = true;
+                oval.FillColor = defaultOvalColor;
+            }
         }
     }
 }
