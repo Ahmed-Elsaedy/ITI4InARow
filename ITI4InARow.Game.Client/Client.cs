@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using ITI4InARow.Module.Core;
 using ITI4InARow.Module.Client;
+using System.Drawing;
+
 
 namespace ITI4InARow.Game.Client
 {
@@ -10,10 +12,12 @@ namespace ITI4InARow.Game.Client
         private GameClient m_Client;
         private GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
+        private Color ChosenColor;
         public Client()
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+
         }
         private void _MenuItemConnect_Click(object sender, EventArgs e)
         {
@@ -114,6 +118,7 @@ namespace ITI4InARow.Game.Client
         private void Client_Load(object sender, EventArgs e)
         {
             this.panel_GameSurface.Hide();
+            
         }
 
         private void SwitchToGamingMode()
@@ -131,6 +136,23 @@ namespace ITI4InARow.Game.Client
                 this.m_RoomsForm.Show();
             }
             this.panel_GameSurface.Hide();
+        }
+
+        private void userCustomizationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            colorDialog1.ShowDialog();
+
+            if (colorDialog1.Color != null)
+            {
+                 
+                m_Client.SendMessageToServer(new ProfileUpdateMessage()
+                { UserColor = colorDialog1.Color.Name
+
+
+                });
+            
+            }
+
         }
     }
 }

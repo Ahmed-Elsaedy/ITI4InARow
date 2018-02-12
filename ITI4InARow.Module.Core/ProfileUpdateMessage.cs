@@ -3,6 +3,8 @@
     using System;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+    using System.Drawing;
+    
 
     public class ProfileUpdateMessage : MessageBase
     {
@@ -12,6 +14,7 @@
         }
 
         public string Name { get; set; }
+        public string UserColor { get; set; }
     }
 }
 
