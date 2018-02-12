@@ -85,31 +85,11 @@ namespace ITI4InARow.Game.UI
             {
                 oval.Tag = index;
                 index++;
-                //oval.MouseClick += GameUI_MouseClick;
-                //oval.MouseEnter += GameUI_MouseEnter;
-                //oval.MouseLeave += GameUI_Leave;
-            }
-            enableOvalEvents();
-        }
-
-        public void enableOvalEvents()
-        {
-            foreach (OvalShape oval in shapeContainer1.Shapes)
-            {
                 oval.MouseClick += GameUI_MouseClick;
                 oval.MouseEnter += GameUI_MouseEnter;
                 oval.MouseLeave += GameUI_Leave;
             }
-        }
-
-        public void DisableOvalEvents()
-        {
-            foreach (OvalShape oval in shapeContainer1.Shapes)
-            {
-                oval.MouseClick -= GameUI_MouseClick;
-                oval.MouseEnter -= GameUI_MouseEnter;
-                oval.MouseLeave -= GameUI_Leave;
-            }
+            
         }
 
         private void GameUI_Leave(object sender, EventArgs e)

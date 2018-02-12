@@ -790,7 +790,7 @@
             this.Controls.Add(this.btnclose);
             this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.shapeContainer1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
