@@ -22,8 +22,8 @@
 
         private void ClientMainThread(TcpClient request)
         {
-            this._LastKeepALive = DateTime.Now;
-            this.OnClientStatusChanged(ClientStatus.ListeningForServer);
+            _LastKeepALive = DateTime.Now;
+            OnClientStatusChanged(ClientStatus.ListeningForServer);
             using (NetworkStream stream = request.GetStream())
             {
                 using (BinaryReader reader = new BinaryReader(stream))
@@ -32,7 +32,7 @@
                     {
                         bool flag4;
                         goto Label_00E6;
-                    Label_002E:
+                        Label_002E:
                         this.MonitorKeepALiveTime();
                         try
                         {
@@ -44,45 +44,45 @@
                             }
                             if (this._Queue.Count > 0)
                             {
-                                MessageBase base3 = this._Queue[0];
+                                MessageBase base3 = _Queue[0];
                                 if (base3.Flag == MessageFlag.KeepAlive)
                                 {
-                                    this.OnClientStatusChanged(ClientStatus.SendingKeepALiveFlag);
+                                    OnClientStatusChanged(ClientStatus.SendingKeepALiveFlag);
                                 }
                                 else
                                 {
-                                    this.OnClientStatusChanged(ClientStatus.SendingClientMessage);
+                                    OnClientStatusChanged(ClientStatus.SendingClientMessage);
                                 }
-                                string str2 = JsonConvert.SerializeObject(this._Queue[0]);
-                                this._Queue.RemoveAt(0);
+                                string str2 = JsonConvert.SerializeObject(_Queue[0]);
+                                _Queue.RemoveAt(0);
                                 writer.Write(str2);
                                 writer.Flush();
                             }
                         }
                         catch (Exception)
                         {
-                            this.OnClientStatusChanged(ClientStatus.ConnectionException);
+                            OnClientStatusChanged(ClientStatus.ConnectionException);
                             goto Label_0115;
                         }
-                    Label_00E6:
+                        Label_00E6:
                         flag4 = true;
                         goto Label_002E;
                     }
                 }
             }
-        Label_0115:
-            this.OnClientStatusChanged(ClientStatus.ClientDisconnected);
+            Label_0115:
+            OnClientStatusChanged(ClientStatus.ClientDisconnected);
         }
 
         public void ConnectClient(byte[] ipAddress, int port)
         {
-            this._Client = new TcpClient();
-            this._Queue = new List<MessageBase>();
+            _Client = new TcpClient();
+            _Queue = new List<MessageBase>();
             try
             {
-                this._Client.Connect(new IPAddress(ipAddress), port);
-                this.OnClientStatusChanged(ClientStatus.ClientConnected);
-                Task.Run(() => this.ClientMainThread(this._Client));
+                _Client.Connect(new IPAddress(ipAddress), port);
+                OnClientStatusChanged(ClientStatus.ClientConnected);
+                Task.Run(() => ClientMainThread(_Client));
             }
             catch (SocketException)
             {
@@ -97,11 +97,12 @@
 
         private void MonitorKeepALiveTime()
         {
-            TimeSpan span = (TimeSpan) (DateTime.Now - this._LastKeepALive);
+            TimeSpan span = (TimeSpan)(DateTime.Now - this._LastKeepALive);
             if (span.TotalSeconds > 2.0)
             {
                 this._LastKeepALive = DateTime.Now;
-                MessageBase message = new MessageBase {
+                MessageBase message = new MessageBase
+                {
                     Flag = MessageFlag.KeepAlive
                 };
                 this.SendMessageToServer(message);
