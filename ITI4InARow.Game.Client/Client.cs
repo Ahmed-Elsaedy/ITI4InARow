@@ -3,13 +3,13 @@ using System.Windows.Forms;
 using ITI4InARow.Module.Core;
 using ITI4InARow.Module.Client;
 using System.Drawing;
-
+using Microsoft.VisualBasic.PowerPacks;
 
 namespace ITI4InARow.Game.Client
 {
     public partial class Client : Form
     {
-        private GameClient m_Client;
+        private  GameClient m_Client;
         private GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
@@ -56,6 +56,12 @@ namespace ITI4InARow.Game.Client
         {
             this.m_Client.SendMessageToServer(this.m_GameMove);
             this.btn_GameMove.Enabled = false;
+
+            // f2.TopLevel = false;
+            // f2.Location = new Point(5, 5);
+            // f2.FormBorderStyle = FormBorderStyle.None;
+            //f2.Visible = true;
+            // this.Controls.Add(f2);
         }
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
@@ -73,14 +79,14 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case ClientStatus.ClientConnected:
-                    this._MenuItemConnect.Enabled = false;
-                    this._MenuItemDisconnect.Enabled = true;
+                    // this._MenuItemConnect.Enabled = false;
+                    //   this._MenuItemDisconnect.Enabled = true;
                     this.Text = "Client - Connected";
                     break;
 
                 case ClientStatus.ClientDisconnected:
-                    this._MenuItemDisconnect.Enabled = false;
-                    this._MenuItemConnect.Enabled = true;
+                    //  this._MenuItemDisconnect.Enabled = false;
+                    // this._MenuItemConnect.Enabled = true;
                     this.SwitchToIdleMode();
                     this.Text = "Client - Disconnected";
                     break;
@@ -118,7 +124,6 @@ namespace ITI4InARow.Game.Client
         private void Client_Load(object sender, EventArgs e)
         {
             this.panel_GameSurface.Hide();
-            
         }
 
         private void SwitchToGamingMode()
@@ -135,7 +140,10 @@ namespace ITI4InARow.Game.Client
             {
                 this.m_RoomsForm.Show();
             }
-            this.panel_GameSurface.Hide();
+            else
+            {
+                this.panel_GameSurface.Hide();
+            }
         }
 
         private void userCustomizationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -144,15 +152,23 @@ namespace ITI4InARow.Game.Client
 
             if (colorDialog1.Color != null)
             {
-                 
+
                 m_Client.SendMessageToServer(new ProfileUpdateMessage()
-                { UserColor = colorDialog1.Color.Name
+                {
+                    UserColor = colorDialog1.Color.Name
 
 
                 });
-            
+
             }
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

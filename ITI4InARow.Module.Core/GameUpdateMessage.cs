@@ -22,6 +22,8 @@
 
         public int RoomID { get; set; }
 
+        public int GameMove { get; set; }
+
         public GameUpdateStatus UpdateStatus { get; set; }
     }
 }

@@ -67,6 +67,13 @@
             {
                 tag.UpdateState = RoomUpdateState.Player2Connected;
                 this._GameClient.SendMessageToServer(tag);
+
+                //var f2 = new UI.GameUI();
+                //f2.TopLevel = false;
+                //f2.Location = new Point(5, 5);
+                //f2.FormBorderStyle = FormBorderStyle.None;
+                //f2.Visible = true;
+                //this.Controls.Add(f2);
             }
             else
             {
@@ -80,7 +87,7 @@
             {
                 this.components.Dispose();
             }
-            base.Dispose(disposing);
+            base.Dispose(disposing); // exception hena lama bn2fl 3alatool 
         }
 
         private void GameClient_RoomUpdateMessage(object sender, RoomUpdateMessage msg)
@@ -132,140 +139,207 @@
 
         private void InitializeComponent()
         {
-            this.panel_Rooms = new Panel();
-            this.numRoomId = new NumericUpDown();
-            this._btnNew = new Button();
-            this.btnView = new Button();
-            this.btnJoin = new Button();
-            this.groupBox1 = new GroupBox();
-            this.panel_Waiting = new Panel();
-            this.label3 = new Label();
-            this.btnCancel = new Button();
-            this.label2 = new Label();
-            this.lbl_Pass = new Label();
-            this._ListViewRooms = new ListView();
-            this.col_RState = new ColumnHeader();
-            this.col_Player1 = new ColumnHeader();
-            this.col_Player2 = new ColumnHeader();
-            this.col_Viewers = new ColumnHeader();
+            this.panel_Rooms = new System.Windows.Forms.Panel();
+            this.panel_Waiting = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lbl_Pass = new System.Windows.Forms.Label();
+            this.numRoomId = new System.Windows.Forms.NumericUpDown();
+            this.btnJoin = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this._ListViewRooms = new System.Windows.Forms.ListView();
+            this.col_RState = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.col_Player1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.col_Player2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.col_Viewers = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnView = new System.Windows.Forms.Button();
+            this._btnNew = new System.Windows.Forms.Button();
             this.panel_Rooms.SuspendLayout();
-            this.numRoomId.BeginInit();
-            this.groupBox1.SuspendLayout();
             this.panel_Waiting.SuspendLayout();
-            base.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numRoomId)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel_Rooms
+            // 
             this.panel_Rooms.Controls.Add(this.panel_Waiting);
             this.panel_Rooms.Controls.Add(this.numRoomId);
             this.panel_Rooms.Controls.Add(this.btnJoin);
             this.panel_Rooms.Controls.Add(this.groupBox1);
             this.panel_Rooms.Controls.Add(this.btnView);
             this.panel_Rooms.Controls.Add(this._btnNew);
-            this.panel_Rooms.Location = new Point(1, 1);
+            this.panel_Rooms.Location = new System.Drawing.Point(1, 1);
             this.panel_Rooms.Name = "panel_Rooms";
-            this.panel_Rooms.Size = new Size(450, 0x105);
+            this.panel_Rooms.Size = new System.Drawing.Size(450, 261);
             this.panel_Rooms.TabIndex = 0;
-            this.numRoomId.Location = new Point(15, 0xe3);
-            int[] bits = new int[4];
-            bits[0] = 0x270f;
-            this.numRoomId.Maximum = new decimal(bits);
-            this.numRoomId.Name = "numRoomId";
-            this.numRoomId.Size = new Size(100, 20);
-            this.numRoomId.TabIndex = 11;
-            this._btnNew.Location = new Point(0x162, 0xe2);
-            this._btnNew.Name = "_btnNew";
-            this._btnNew.Size = new Size(0x4b, 0x17);
-            this._btnNew.TabIndex = 10;
-            this._btnNew.Text = "New";
-            this._btnNew.UseVisualStyleBackColor = true;
-            this._btnNew.Click += new EventHandler(this._btnNew_Click);
-            this.btnView.Location = new Point(0x111, 0xe2);
-            this.btnView.Name = "btnView";
-            this.btnView.Size = new Size(0x4b, 0x17);
-            this.btnView.TabIndex = 9;
-            this.btnView.Text = "View";
-            this.btnView.UseVisualStyleBackColor = true;
-            this.btnJoin.Location = new Point(0x79, 0xe2);
-            this.btnJoin.Name = "btnJoin";
-            this.btnJoin.Size = new Size(0x4b, 0x17);
-            this.btnJoin.TabIndex = 8;
-            this.btnJoin.Text = "Join";
-            this.btnJoin.UseVisualStyleBackColor = true;
-            this.btnJoin.Click += new EventHandler(this.btnJoin_Click);
-            this.groupBox1.Controls.Add(this._ListViewRooms);
-            this.groupBox1.Location = new Point(9, 11);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new Size(0x1aa, 0xcf);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Server Rooms";
+            // 
+            // panel_Waiting
+            // 
             this.panel_Waiting.Controls.Add(this.label3);
             this.panel_Waiting.Controls.Add(this.btnCancel);
             this.panel_Waiting.Controls.Add(this.label2);
             this.panel_Waiting.Controls.Add(this.lbl_Pass);
-            this.panel_Waiting.Location = new Point(0, 0);
+            this.panel_Waiting.Location = new System.Drawing.Point(0, 0);
             this.panel_Waiting.Name = "panel_Waiting";
-            this.panel_Waiting.Size = new Size(450, 0x102);
+            this.panel_Waiting.Size = new System.Drawing.Size(450, 258);
             this.panel_Waiting.TabIndex = 13;
+            // 
+            // label3
+            // 
             this.label3.AutoSize = true;
-            this.label3.Location = new Point(0xa3, 0x8e);
+            this.label3.Location = new System.Drawing.Point(163, 142);
             this.label3.Name = "label3";
-            this.label3.Size = new Size(0x6f, 13);
+            this.label3.Size = new System.Drawing.Size(111, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Waiting For Player 2...";
-            this.btnCancel.Location = new Point(0xb5, 0xa5);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(181, 165);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new Size(0x4b, 0x17);
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // label2
+            // 
             this.label2.AutoSize = true;
-            this.label2.Location = new Point(0x4f, 0x77);
+            this.label2.Location = new System.Drawing.Point(79, 119);
             this.label2.Name = "label2";
-            this.label2.Size = new Size(0x116, 13);
+            this.label2.Size = new System.Drawing.Size(278, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Please Inform Player 2 With Your New Room`s Password.";
+            // 
+            // lbl_Pass
+            // 
             this.lbl_Pass.AutoSize = true;
-            this.lbl_Pass.Font = new Font("Microsoft Sans Serif", 25f, FontStyle.Bold, GraphicsUnit.Point, 0);
-            this.lbl_Pass.Location = new Point(180, 70);
+            this.lbl_Pass.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Pass.Location = new System.Drawing.Point(180, 70);
             this.lbl_Pass.Name = "lbl_Pass";
-            this.lbl_Pass.Size = new Size(0x4d, 0x27);
+            this.lbl_Pass.Size = new System.Drawing.Size(77, 39);
             this.lbl_Pass.TabIndex = 4;
             this.lbl_Pass.Text = "153";
-            ColumnHeader[] values = new ColumnHeader[] { this.col_RState, this.col_Player1, this.col_Player2, this.col_Viewers };
-            this._ListViewRooms.Columns.AddRange(values);
+            // 
+            // numRoomId
+            // 
+            this.numRoomId.Location = new System.Drawing.Point(15, 227);
+            this.numRoomId.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.numRoomId.Name = "numRoomId";
+            this.numRoomId.Size = new System.Drawing.Size(100, 20);
+            this.numRoomId.TabIndex = 11;
+            // 
+            // btnJoin
+            // 
+            this.btnJoin.Location = new System.Drawing.Point(121, 226);
+            this.btnJoin.Name = "btnJoin";
+            this.btnJoin.Size = new System.Drawing.Size(75, 23);
+            this.btnJoin.TabIndex = 8;
+            this.btnJoin.Text = "Join";
+            this.btnJoin.UseVisualStyleBackColor = true;
+            this.btnJoin.Click += new System.EventHandler(this.btnJoin_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this._ListViewRooms);
+            this.groupBox1.Location = new System.Drawing.Point(9, 11);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(426, 207);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Server Rooms";
+            // 
+            // _ListViewRooms
+            // 
+            this._ListViewRooms.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.col_RState,
+            this.col_Player1,
+            this.col_Player2,
+            this.col_Viewers});
             this._ListViewRooms.FullRowSelect = true;
-            this._ListViewRooms.Location = new Point(6, 0x13);
+            this._ListViewRooms.Location = new System.Drawing.Point(6, 19);
             this._ListViewRooms.MultiSelect = false;
             this._ListViewRooms.Name = "_ListViewRooms";
-            this._ListViewRooms.Size = new Size(0x19e, 0xb6);
+            this._ListViewRooms.Size = new System.Drawing.Size(414, 182);
             this._ListViewRooms.TabIndex = 0;
             this._ListViewRooms.UseCompatibleStateImageBehavior = false;
-            this._ListViewRooms.View = View.Details;
+            this._ListViewRooms.View = System.Windows.Forms.View.Details;
+            // 
+            // col_RState
+            // 
             this.col_RState.Text = "State";
-            this.col_RState.Width = 0x54;
+            this.col_RState.Width = 84;
+            // 
+            // col_Player1
+            // 
             this.col_Player1.Text = "Player 1";
             this.col_Player1.Width = 120;
+            // 
+            // col_Player2
+            // 
             this.col_Player2.Text = "Player 2";
             this.col_Player2.Width = 120;
+            // 
+            // col_Viewers
+            // 
             this.col_Viewers.Text = "Viewers";
             this.col_Viewers.Width = 80;
-            base.AutoScaleDimensions = new SizeF(6f, 13f);
-            base.AutoScaleMode = AutoScaleMode.Font;
-            base.ClientSize = new Size(0x1c3, 0x105);
-            base.Controls.Add(this.panel_Rooms);
-            base.MaximizeBox = false;
-            base.MinimizeBox = false;
-            base.Name = "RoomsForm";
-            base.ShowInTaskbar = false;
-            base.StartPosition = FormStartPosition.CenterParent;
+            // 
+            // btnView
+            // 
+            this.btnView.Location = new System.Drawing.Point(273, 226);
+            this.btnView.Name = "btnView";
+            this.btnView.Size = new System.Drawing.Size(75, 23);
+            this.btnView.TabIndex = 9;
+            this.btnView.Text = "Watch Game";
+            this.btnView.UseVisualStyleBackColor = true;
+            // 
+            // _btnNew
+            // 
+            this._btnNew.Location = new System.Drawing.Point(354, 226);
+            this._btnNew.Name = "_btnNew";
+            this._btnNew.Size = new System.Drawing.Size(75, 23);
+            this._btnNew.TabIndex = 10;
+            this._btnNew.Text = "New";
+            this._btnNew.UseVisualStyleBackColor = true;
+            this._btnNew.Click += new System.EventHandler(this._btnNew_Click);
+            // 
+            // RoomsForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(451, 261);
+            this.Controls.Add(this.panel_Rooms);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "RoomsForm";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Server Rooms";
-            base.Load += new EventHandler(this.RoomsForm_Load);
+            this.Load += new System.EventHandler(this.RoomsForm_Load);
             this.panel_Rooms.ResumeLayout(false);
-            this.numRoomId.EndInit();
-            this.groupBox1.ResumeLayout(false);
             this.panel_Waiting.ResumeLayout(false);
             this.panel_Waiting.PerformLayout();
-            base.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numRoomId)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private void BtnView_Click(object sender, EventArgs e)
+        {
+            /////////////////////////////////////////////////////////////////////////////
+            /////////////////////-_-/////////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////
+            //this._MyRoomUpdate. = RoomUpdateState.Broadcast;
+            //this._GameClient.SendMessageToServer(this._MyRoomUpdate);
+            
         }
 
         private void RoomsForm_Load(object sender, EventArgs e)

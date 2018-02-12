@@ -145,7 +145,7 @@
             this._numPort.Size = new System.Drawing.Size(175, 20);
             this._numPort.TabIndex = 5;
             this._numPort.Value = new decimal(new int[] {
-            63210,
+            5252,
             0,
             0,
             0});
@@ -208,6 +208,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Connect To Game Server";
+            this.Load += new System.EventHandler(this.ConnectForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this._numIP4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._numIP2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._numIP3)).EndInit();

@@ -15,7 +15,7 @@ namespace ITI4InARow.Game.UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameUI());
+            Application.Run(new Form1());
         }
     }
 }
