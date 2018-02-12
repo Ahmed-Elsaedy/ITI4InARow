@@ -32,109 +32,161 @@ namespace ITI4InARow.Game.Client
         /// </summary>
         private void InitializeComponent()
         {
-            this._MainMenu = new MenuStrip();
-            this.menuItem_Server = new ToolStripMenuItem();
-            this._MenuItemConnect = new ToolStripMenuItem();
-            this._MenuItemDisconnect = new ToolStripMenuItem();
-            this.menuItem_Game = new ToolStripMenuItem();
-            this._MenuItemSRooms = new ToolStripMenuItem();
-            this._StatusStrip = new StatusStrip();
-            this._stl_Connection = new ToolStripStatusLabel();
-            this.panel_GameSurface = new Panel();
-            this.btn_LeaveGame = new Button();
-            this.btn_GameMove = new Button();
-            this.lbl_Title = new Label();
+            this._MainMenu = new System.Windows.Forms.MenuStrip();
+            this.menuItem_Server = new System.Windows.Forms.ToolStripMenuItem();
+            this._MenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this._MenuItemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItem_Game = new System.Windows.Forms.ToolStripMenuItem();
+            this._MenuItemSRooms = new System.Windows.Forms.ToolStripMenuItem();
+            this._StatusStrip = new System.Windows.Forms.StatusStrip();
+            this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panel_GameSurface = new System.Windows.Forms.Panel();
+            this.btn_LeaveGame = new System.Windows.Forms.Button();
+            this.btn_GameMove = new System.Windows.Forms.Button();
+            this.lbl_Title = new System.Windows.Forms.Label();
+            this.userCustomizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this._MainMenu.SuspendLayout();
             this._StatusStrip.SuspendLayout();
             this.panel_GameSurface.SuspendLayout();
-            base.SuspendLayout();
-            ToolStripItem[] toolStripItems = new ToolStripItem[] { this.menuItem_Server, this.menuItem_Game };
-            this._MainMenu.Items.AddRange(toolStripItems);
-            this._MainMenu.Location = new Point(0, 0);
+            this.SuspendLayout();
+            // 
+            // _MainMenu
+            // 
+            this._MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItem_Server,
+            this.menuItem_Game});
+            this._MainMenu.Location = new System.Drawing.Point(0, 0);
             this._MainMenu.Name = "_MainMenu";
-            this._MainMenu.Size = new Size(0x210, 0x18);
+            this._MainMenu.Size = new System.Drawing.Size(528, 24);
             this._MainMenu.TabIndex = 0;
             this._MainMenu.Text = "menuStrip1";
-            ToolStripItem[] itemArray2 = new ToolStripItem[] { this._MenuItemConnect, this._MenuItemDisconnect };
-            this.menuItem_Server.DropDownItems.AddRange(itemArray2);
+            // 
+            // menuItem_Server
+            // 
+            this.menuItem_Server.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._MenuItemConnect,
+            this._MenuItemDisconnect});
             this.menuItem_Server.Name = "menuItem_Server";
-            this.menuItem_Server.Size = new Size(0x33, 20);
+            this.menuItem_Server.Size = new System.Drawing.Size(51, 20);
             this.menuItem_Server.Text = "Server";
+            // 
+            // _MenuItemConnect
+            // 
             this._MenuItemConnect.Name = "_MenuItemConnect";
-            this._MenuItemConnect.Size = new Size(0x85, 0x16);
+            this._MenuItemConnect.Size = new System.Drawing.Size(133, 22);
             this._MenuItemConnect.Text = "Connect...";
-            this._MenuItemConnect.Click += new EventHandler(this._MenuItemConnect_Click);
+            this._MenuItemConnect.Click += new System.EventHandler(this._MenuItemConnect_Click);
+            // 
+            // _MenuItemDisconnect
+            // 
             this._MenuItemDisconnect.Enabled = false;
             this._MenuItemDisconnect.Name = "_MenuItemDisconnect";
-            this._MenuItemDisconnect.Size = new Size(0x85, 0x16);
+            this._MenuItemDisconnect.Size = new System.Drawing.Size(133, 22);
             this._MenuItemDisconnect.Text = "Disconnect";
-            this._MenuItemDisconnect.Click += new EventHandler(this._MenuItemDisconnect_Click);
-            ToolStripItem[] itemArray3 = new ToolStripItem[] { this._MenuItemSRooms };
-            this.menuItem_Game.DropDownItems.AddRange(itemArray3);
+            this._MenuItemDisconnect.Click += new System.EventHandler(this._MenuItemDisconnect_Click);
+            // 
+            // menuItem_Game
+            // 
+            this.menuItem_Game.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._MenuItemSRooms,
+            this.userCustomizationToolStripMenuItem});
             this.menuItem_Game.Name = "menuItem_Game";
-            this.menuItem_Game.Size = new Size(50, 20);
+            this.menuItem_Game.Size = new System.Drawing.Size(50, 20);
             this.menuItem_Game.Text = "Game";
+            // 
+            // _MenuItemSRooms
+            // 
             this._MenuItemSRooms.Name = "_MenuItemSRooms";
-            this._MenuItemSRooms.Size = new Size(0x9b, 0x16);
+            this._MenuItemSRooms.Size = new System.Drawing.Size(177, 22);
             this._MenuItemSRooms.Text = "Server Rooms...";
-            this._MenuItemSRooms.Click += new EventHandler(this._MenuItemSRooms_Click);
-            ToolStripItem[] itemArray4 = new ToolStripItem[] { this._stl_Connection };
-            this._StatusStrip.Items.AddRange(itemArray4);
-            this._StatusStrip.Location = new Point(0, 0x176);
+            this._MenuItemSRooms.Click += new System.EventHandler(this._MenuItemSRooms_Click);
+            // 
+            // _StatusStrip
+            // 
+            this._StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._stl_Connection});
+            this._StatusStrip.Location = new System.Drawing.Point(0, 374);
             this._StatusStrip.Name = "_StatusStrip";
-            this._StatusStrip.Size = new Size(0x210, 0x16);
+            this._StatusStrip.Size = new System.Drawing.Size(528, 22);
             this._StatusStrip.TabIndex = 1;
             this._StatusStrip.Text = "statusStrip1";
+            // 
+            // _stl_Connection
+            // 
             this._stl_Connection.Name = "_stl_Connection";
-            this._stl_Connection.Size = new Size(0, 0x11);
-            this.panel_GameSurface.BorderStyle = BorderStyle.FixedSingle;
+            this._stl_Connection.Size = new System.Drawing.Size(0, 17);
+            // 
+            // panel_GameSurface
+            // 
+            this.panel_GameSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel_GameSurface.Controls.Add(this.btn_LeaveGame);
             this.panel_GameSurface.Controls.Add(this.btn_GameMove);
             this.panel_GameSurface.Controls.Add(this.lbl_Title);
-            this.panel_GameSurface.Location = new Point(0x9f, 0x86);
+            this.panel_GameSurface.Location = new System.Drawing.Point(159, 134);
             this.panel_GameSurface.Name = "panel_GameSurface";
-            this.panel_GameSurface.Size = new Size(0xd8, 0x90);
+            this.panel_GameSurface.Size = new System.Drawing.Size(216, 144);
             this.panel_GameSurface.TabIndex = 2;
-            this.btn_LeaveGame.Location = new Point(0x3a, 0x56);
+            // 
+            // btn_LeaveGame
+            // 
+            this.btn_LeaveGame.Location = new System.Drawing.Point(58, 86);
             this.btn_LeaveGame.Name = "btn_LeaveGame";
-            this.btn_LeaveGame.Size = new Size(0x6d, 0x17);
+            this.btn_LeaveGame.Size = new System.Drawing.Size(109, 23);
             this.btn_LeaveGame.TabIndex = 2;
             this.btn_LeaveGame.Text = "Leave Game";
             this.btn_LeaveGame.UseVisualStyleBackColor = true;
-            this.btn_LeaveGame.Click += new EventHandler(this.btn_LeaveGame_Click);
-            this.btn_GameMove.Location = new Point(0x2b, 0x3a);
+            this.btn_LeaveGame.Click += new System.EventHandler(this.btn_LeaveGame_Click);
+            // 
+            // btn_GameMove
+            // 
+            this.btn_GameMove.Location = new System.Drawing.Point(43, 58);
             this.btn_GameMove.Name = "btn_GameMove";
-            this.btn_GameMove.Size = new Size(0x8a, 0x17);
+            this.btn_GameMove.Size = new System.Drawing.Size(138, 23);
             this.btn_GameMove.TabIndex = 1;
             this.btn_GameMove.Text = "Simulate Game Move";
             this.btn_GameMove.UseVisualStyleBackColor = true;
-            this.btn_GameMove.Click += new EventHandler(this.btn_GameMove_Click);
+            this.btn_GameMove.Click += new System.EventHandler(this.btn_GameMove_Click);
+            // 
+            // lbl_Title
+            // 
             this.lbl_Title.AutoSize = true;
-            this.lbl_Title.Font = new Font("Microsoft Sans Serif", 14f, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.lbl_Title.Location = new Point(0x2f, 0x1d);
+            this.lbl_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Title.Location = new System.Drawing.Point(47, 29);
             this.lbl_Title.Name = "lbl_Title";
-            this.lbl_Title.Size = new Size(130, 0x18);
+            this.lbl_Title.Size = new System.Drawing.Size(130, 24);
             this.lbl_Title.TabIndex = 0;
             this.lbl_Title.Text = "Gaming Mode";
-            base.AutoScaleDimensions = new SizeF(6f, 13f);
-            base.AutoScaleMode = AutoScaleMode.Font;
-            base.ClientSize = new Size(0x210, 0x18c);
-            base.Controls.Add(this.panel_GameSurface);
-            base.Controls.Add(this._StatusStrip);
-            base.Controls.Add(this._MainMenu);
-            base.Name = "Client";
-            base.StartPosition = FormStartPosition.CenterScreen;
+            // 
+            // userCustomizationToolStripMenuItem
+            // 
+            this.userCustomizationToolStripMenuItem.Name = "userCustomizationToolStripMenuItem";
+            this.userCustomizationToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.userCustomizationToolStripMenuItem.Text = "User Customization";
+            this.userCustomizationToolStripMenuItem.Click += new System.EventHandler(this.userCustomizationToolStripMenuItem_Click);
+            // 
+            // Client
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(528, 396);
+            this.Controls.Add(this.panel_GameSurface);
+            this.Controls.Add(this._StatusStrip);
+            this.Controls.Add(this._MainMenu);
+            this.Name = "Client";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
-            base.FormClosing += new FormClosingEventHandler(this.Client_FormClosing);
-            base.Load += new System.EventHandler(this.Client_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Client_FormClosing);
+            this.Load += new System.EventHandler(this.Client_Load);
             this._MainMenu.ResumeLayout(false);
             this._MainMenu.PerformLayout();
             this._StatusStrip.ResumeLayout(false);
             this._StatusStrip.PerformLayout();
             this.panel_GameSurface.ResumeLayout(false);
             this.panel_GameSurface.PerformLayout();
-            base.ResumeLayout(false);
-            base.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
@@ -151,5 +203,7 @@ namespace ITI4InARow.Game.Client
         private ToolStripMenuItem menuItem_Game;
         private ToolStripMenuItem menuItem_Server;
         private Panel panel_GameSurface;
+        private ToolStripMenuItem userCustomizationToolStripMenuItem;
+        private ColorDialog colorDialog1;
     }
 }

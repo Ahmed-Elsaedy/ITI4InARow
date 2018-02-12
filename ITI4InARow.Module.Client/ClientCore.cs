@@ -115,7 +115,7 @@
             {
                 try
                 {
-                    this._Client.Close();
+                    //this._Client.Close();
                 }
                 catch
                 {
