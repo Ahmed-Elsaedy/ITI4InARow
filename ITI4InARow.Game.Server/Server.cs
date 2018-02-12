@@ -17,11 +17,9 @@ namespace ITI4InARow.Game.Server
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             string hostName = Dns.GetHostName();
-            //m_Server = new GameServer(new byte[] { 127, 0, 0, 1 }, 5031);
-            m_Server = new GameServer(Helper.GetLocalIP().GetAddressBytes(), 5031);
+            m_Server = new GameServer(new byte[] { 172, 16, 5, 18 }, 63210);
             m_Server.ServerStatusChanged += Server_ServerStatusChanged;
         }
-
         private void Server_ServerStatusChanged(object sender, ServerActionEventArgs e)
         {
             switch (e.Status)

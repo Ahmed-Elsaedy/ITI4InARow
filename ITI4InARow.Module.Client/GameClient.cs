@@ -1,33 +1,51 @@
-﻿using ITI4InARow.Module.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITI4InARow.Module.Client
+﻿namespace ITI4InARow.Module.Client
 {
+    using ITI4InARow.Module.Core;
+    using System;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+    using System.Threading;
+
     public class GameClient : ClientCore
     {
-        public GameClient()
-        {
+        public event EventHandler<ITI4InARow.Module.Core.GameUpdateMessage> GameUpdateMessage;
+        public event EventHandler<ITI4InARow.Module.Core.RoomUpdateMessage> RoomUpdateMessage;
 
-        }
-        protected override void ProcessServerMessage(MessageBase msgBase)
+        protected override void OnGameUpdateMessage(ITI4InARow.Module.Core.GameUpdateMessage msg)
         {
-            string msgType = msgBase.MsgType.Name;
-            switch (msgType)
+            if (this.GameUpdateMessage != null)
             {
-                case "ListofRoomsMessage": 
-                    ListofRoomsMessage AvailableRooms = (ListofRoomsMessage)msgBase;
-                    //now you have here the list of all the rooms in server 
-
-                    
-
-                    break;
-                default:
-                    break;
+                EventHandler<ITI4InARow.Module.Core.GameUpdateMessage> gameUpdateMessage = this.GameUpdateMessage;
+                gameUpdateMessage(this, msg);
+            }
+            else
+            {
+                EventHandler<ITI4InARow.Module.Core.GameUpdateMessage> expressionStack_A_0 = this.GameUpdateMessage;
             }
         }
+
+        protected override void OnRegisterMessage(ProfileUpdateMessage msg)
+        {
+            this.ClientID = msg.ClientID;
+            this.NickName = msg.Name;
+        }
+
+        protected override void OnRoomUpdateMessage(ITI4InARow.Module.Core.RoomUpdateMessage msg)
+        {
+            if (this.RoomUpdateMessage != null)
+            {
+                EventHandler<ITI4InARow.Module.Core.RoomUpdateMessage> roomUpdateMessage = this.RoomUpdateMessage;
+                roomUpdateMessage(this, msg);
+            }
+            else
+            {
+                EventHandler<ITI4InARow.Module.Core.RoomUpdateMessage> expressionStack_A_0 = this.RoomUpdateMessage;
+            }
+        }
+
+        public int ClientID { get; private set; }
+
+        public string NickName { get; private set; }
     }
 }
+

@@ -82,7 +82,7 @@
             this._numIP4.Size = new System.Drawing.Size(40, 20);
             this._numIP4.TabIndex = 4;
             this._numIP4.Value = new decimal(new int[] {
-            1,
+            18,
             0,
             0,
             0});
@@ -93,6 +93,11 @@
             this._numIP2.Name = "_numIP2";
             this._numIP2.Size = new System.Drawing.Size(40, 20);
             this._numIP2.TabIndex = 2;
+            this._numIP2.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
             // 
             // _numIP3
             // 
@@ -100,6 +105,11 @@
             this._numIP3.Name = "_numIP3";
             this._numIP3.Size = new System.Drawing.Size(40, 20);
             this._numIP3.TabIndex = 3;
+            this._numIP3.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // _numIP1
             // 
@@ -113,7 +123,7 @@
             this._numIP1.Size = new System.Drawing.Size(40, 20);
             this._numIP1.TabIndex = 1;
             this._numIP1.Value = new decimal(new int[] {
-            127,
+            172,
             0,
             0,
             0});
@@ -122,7 +132,7 @@
             // 
             this._numPort.Location = new System.Drawing.Point(71, 64);
             this._numPort.Maximum = new decimal(new int[] {
-            50000,
+            65000,
             0,
             0,
             0});
@@ -135,7 +145,7 @@
             this._numPort.Size = new System.Drawing.Size(175, 20);
             this._numPort.TabIndex = 5;
             this._numPort.Value = new decimal(new int[] {
-            5031,
+            63210,
             0,
             0,
             0});

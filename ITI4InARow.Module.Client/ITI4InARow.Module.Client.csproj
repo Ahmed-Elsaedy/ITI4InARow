@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientActionEventArgs.cs" />
     <Compile Include="ClientCore.cs" />
+    <Compile Include="ClientStatus.cs" />
     <Compile Include="GameClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

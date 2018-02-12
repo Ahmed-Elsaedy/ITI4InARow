@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITI4InARow.Module.Core
+﻿namespace ITI4InARow.Module.Core
 {
+    using System;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+
     public class MessageRevievedEventArgs
     {
-        public MessageBase Message { get; private set; }
-        public int ClientHandle { get; private set; }
         public MessageRevievedEventArgs(MessageBase msg, int clientHandle)
         {
-            Message = msg;
-            ClientHandle = clientHandle;
+            this.Message = msg;
+            this.ClientHandle = clientHandle;
         }
+
+        public int ClientHandle { get; private set; }
+
+        public MessageBase Message { get; private set; }
     }
 }
+

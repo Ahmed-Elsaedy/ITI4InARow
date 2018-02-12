@@ -7,12 +7,59 @@ namespace ITI4InARow.Game.Client
 {
     public partial class Client : Form
     {
-        GameClient m_Client;
+        private GameClient m_Client;
+        private GameUpdateMessage m_GameMove;
+        private RoomsForm m_RoomsForm;
         public Client()
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
         }
+        private void _MenuItemConnect_Click(object sender, EventArgs e)
+        {
+            ConnectForm form = new ConnectForm();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                this.m_Client = new GameClient();
+                this.m_RoomsForm = new RoomsForm(this.m_Client);
+                this.m_Client.ClientStatusChanged += new EventHandler<ClientActionEventArgs>(this.Client_ClientStatusChanged);
+                this.m_Client.GameUpdateMessage += new EventHandler<GameUpdateMessage>(this.Client_GameUpdateMessage);
+                this.m_Client.ConnectClient(form.IPAddress, form.Port);
+                ProfileUpdateMessage message = new ProfileUpdateMessage
+                {
+                    Name = form.NickName
+                };
+                this.m_Client.SendMessageToServer(message);
+            }
+        }
+
+        private void _MenuItemDisconnect_Click(object sender, EventArgs e)
+        {
+            this.m_Client.ClientStatusChanged -= new EventHandler<ClientActionEventArgs>(this.Client_ClientStatusChanged);
+            this.m_Client.GameUpdateMessage -= new EventHandler<GameUpdateMessage>(this.Client_GameUpdateMessage);
+            this.m_Client.DisconnectClient();
+            this.m_RoomsForm.UnloadForm();
+            this.m_RoomsForm = null;
+            this.m_Client = null;
+        }
+
+        private void _MenuItemSRooms_Click(object sender, EventArgs e)
+        {
+            this.m_RoomsForm.ShowDialog();
+        }
+
+        private void btn_GameMove_Click(object sender, EventArgs e)
+        {
+            this.m_Client.SendMessageToServer(this.m_GameMove);
+            this.btn_GameMove.Enabled = false;
+        }
+
+        private void btn_LeaveGame_Click(object sender, EventArgs e)
+        {
+            this.m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
+            this.m_Client.SendMessageToServer(this.m_GameMove);
+        }
+
         private void Client_ClientStatusChanged(object sender, ClientActionEventArgs e)
         {
             switch (e.Status)
@@ -20,77 +67,70 @@ namespace ITI4InARow.Game.Client
                 case ClientStatus.ConnectionError:
                     MessageBox.Show("Connection Error");
                     break;
+
                 case ClientStatus.ClientConnected:
-                    _MenuItemConnect.Enabled = false;
-                    _MenuItemDisconnect.Enabled = true;
-                    Text = "Client - Connected";
-                    _stl_Connection.Text = "Connected";
+                    this._MenuItemConnect.Enabled = false;
+                    this._MenuItemDisconnect.Enabled = true;
+                    this.Text = "Client - Connected";
                     break;
+
                 case ClientStatus.ClientDisconnected:
-                    _MenuItemDisconnect.Enabled = false;
-                    _MenuItemConnect.Enabled = true;
-                    Text = "Client - Disconnected";
-                    _stl_Connection.Text = "Disconnected";
+                    this._MenuItemDisconnect.Enabled = false;
+                    this._MenuItemConnect.Enabled = true;
+                    this.SwitchToIdleMode();
+                    this.Text = "Client - Disconnected";
                     break;
             }
         }
-        private void _MenuItemConnect_Click(object sender, EventArgs e)
+
+        private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ConnectForm cForm = new ConnectForm();
-            DialogResult result = cForm.ShowDialog();
-            if (result == DialogResult.OK)
+            if (this.m_Client != null)
             {
-                m_Client = new GameClient();
-                m_Client.ClientStatusChanged += Client_ClientStatusChanged;
-                m_Client.MessageRecieved += Client_MessageRecieved;
-                m_Client.ConnectClient(cForm.IPAddress, cForm.Port);
+                this._MenuItemDisconnect_Click(null, null);
             }
         }
-        private void _MenuItemDisconnect_Click(object sender, EventArgs e)
-        {
-            m_Client.DisconnectClient();
-            m_Client.ClientStatusChanged -= Client_ClientStatusChanged;
-            m_Client.MessageRecieved -= Client_MessageRecieved;
-        }
-        private void Client_MessageRecieved(object sender, MessageRevievedEventArgs e)
-        {
-            _stl_Connection.Text = $"Connected - ({e.ClientHandle})";
 
-            switch (e.Message.MsgType.Name)
+        private void Client_GameUpdateMessage(object sender, GameUpdateMessage e)
+        {
+            switch (e.UpdateStatus)
             {
-                case "ListofRoomsMessage":
+                case GameUpdateStatus.GameStarted:
+                    this.SwitchToGamingMode();
+                    break;
 
-                    ListofRoomsMessage mylist = (ListofRoomsMessage)e.Message;
-                    for (int i = 0; i < mylist.availableRooms.Count; i++)
-                    {
-                        ListViewItem room = new ListViewItem();
-                        room.SubItems.Add(mylist.availableRooms[i].RoomID.ToString());
-                        room.SubItems.Add(mylist.availableRooms[i].name);
-                        room.SubItems.Add(mylist.availableRooms[i].roomState.ToString());
-                        if (mylist.availableRooms[i].isSpectator)
-                        {
-                            room.SubItems.Add("view available");
-                        }
-                        else
-                        {
-                            room.SubItems.Add("view Not available");
-                        }
+                case GameUpdateStatus.PlayerMove:
+                    this.btn_GameMove.Enabled = true;
+                    this.m_GameMove = e;
+                    break;
 
-                        listView1.Items.Add(room);
-                    }
+                case GameUpdateStatus.GameLeave:
+                    this.m_GameMove = null;
+                    this.SwitchToIdleMode();
                     break;
             }
         }
 
         private void Client_Load(object sender, EventArgs e)
         {
-
+            this.panel_GameSurface.Hide();
         }
-        private void Client_FormClosing(object sender, FormClosingEventArgs e)
+
+        private void SwitchToGamingMode()
         {
-            m_Client.DisconnectClient();
-            m_Client.ClientStatusChanged -= Client_ClientStatusChanged;
-            m_Client.MessageRecieved -= Client_MessageRecieved;
+            this.m_RoomsForm.Hide();
+            this.panel_GameSurface.Show();
+            this.btn_GameMove.Enabled = false;
+            this.m_GameMove = null;
+        }
+
+        private void SwitchToIdleMode()
+        {
+            if (this.m_RoomsForm != null)
+            {
+                this.m_RoomsForm.Show();
+            }
+            this.panel_GameSurface.Hide();
         }
     }
 }

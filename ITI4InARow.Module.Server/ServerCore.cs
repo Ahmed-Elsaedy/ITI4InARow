@@ -1,209 +1,258 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using ITI4InARow.Module.Core;
-using Newtonsoft.Json;
-using System.Diagnostics;
-
-namespace ITI4InARow.Module.Server
+﻿namespace ITI4InARow.Module.Server
 {
+    using ITI4InARow.Module.Core;
+    using Newtonsoft.Json;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.InteropServices;
+    using System.Threading;
+    using System.Threading.Tasks;
+
     public class ServerCore
     {
-        TcpListener _Server;
-        List<ServerClient> _Clients;
+        private List<ServerClient> _Clients;
+        private TcpListener _Server;
+
+        [field: CompilerGenerated, DebuggerBrowsable(0)]
+        public event EventHandler<MessageRevievedEventArgs> MessageRecieved;
+
+        [field: CompilerGenerated, DebuggerBrowsable(0)]
+        public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
+
         public ServerCore(byte[] ipAddress, int port)
         {
-            _Server = new TcpListener(new IPAddress(ipAddress), port);
-            _Clients = new List<ServerClient>();
+            this._Server = new TcpListener(new IPAddress(ipAddress), port);
+            this._Clients = new List<ServerClient>();
         }
-        public void StartServer()
-        {
-            _Server.Start();
-            OnServerStatusChanged(ServerStatus.ServerStarted, null);
-            Task.Run(new Action(ServerMainThread));
-        }
-        private void ServerMainThread()
-        {
-            OnServerStatusChanged(ServerStatus.StartWaitingForClients, null);
-            while (true)
-            {
-                if (_Server.Pending())
-                {
-                    OnServerStatusChanged(ServerStatus.IncommingClient, null);
-                    TcpClient clientRequest = _Server.AcceptTcpClient();
-                    ServerClient serverClient = new ServerClient(clientRequest);
-                    OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
-                    Task.Run(() => ServerClientThread(serverClient));
-                }
-            }
-        }
-        private void ServerClientThread(ServerClient serverClient)
-        {
-            OnServerStatusChanged(ServerStatus.ListeningForClient, serverClient);
-            using (NetworkStream stream = serverClient.Client.GetStream())
-            using (BinaryReader reader = new BinaryReader(stream))
-            using (BinaryWriter writer = new BinaryWriter(stream))
-                while (true)
-                {
-                    MonitorKeepALiveTime(serverClient);
-                    try
-                    {
-                        if (stream.DataAvailable)
-                        {
-                            var clientStr = reader.ReadString();
-                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(clientStr);
-                            ReadingMessageFlag(serverClient, clientStr, msgBase);
-                        }
-                        if (serverClient.Queue.Count > 0)
-                        {
-                            var msg = serverClient.Queue[0];
-                            if (msg.Flag == MessageFlag.KeepAlive)
-                                OnServerStatusChanged(ServerStatus.SendingKeepALiveFlag, serverClient);
-                            else
-                                OnServerStatusChanged(ServerStatus.SendingServerMessage, serverClient);
 
-                            string resStr = JsonConvert.SerializeObject(msg);
-                            serverClient.Queue.RemoveAt(0);
-                            writer.Write(resStr);
-                            writer.Flush();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
-                        break;
-                    }
-                }
-            OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
-        }
-        public void StopServer()
+        public void BroadcastToClients(MessageBase msg, ServerClient source = null)
         {
-            OnServerStatusChanged(ServerStatus.ServerStopped, null);
-        }
-        public void SendMessageToClient(ServerClient client, MessageBase msg)
-        {
-            client.Queue.Add(msg);
-        }
-        private void ReadingMessageFlag(ServerClient client, string msgStr, MessageBase msgObj)
-        {
-            if (msgObj.Flag == MessageFlag.KeepAlive)
-                OnServerStatusChanged(ServerStatus.ReceivingKeepALiveFlag, client);
+            if (source != null)
+            {
+                (from x in this._Clients
+                    where x.ClientID != source.ClientID
+                    select x).ToList<ServerClient>().ForEach(x => x.Queue.Add(msg));
+            }
             else
             {
-                object obj = JsonConvert.DeserializeObject(msgStr, msgObj.MsgType);
-                OnMessageRecieved(client, msgObj);
+                foreach (ServerClient client in this._Clients)
+                {
+                    client.Queue.Add(msg);
+                }
             }
         }
+
         private void MonitorKeepALiveTime(ServerClient client)
         {
-            var period = DateTime.Now - client.LastKeepALive;
-            if (period.TotalSeconds > 2)
+            TimeSpan span = (TimeSpan) (DateTime.Now - client.LastKeepALive);
+            if (span.TotalSeconds > 2.0)
             {
                 client.LastKeepALive = DateTime.Now;
-                MessageBase keepAliveMsg = new MessageBase() { Flag = MessageFlag.KeepAlive };
-                SendMessageToClient(client, keepAliveMsg);
+                MessageBase msg = new MessageBase {
+                    Flag = MessageFlag.KeepAlive
+                };
+                this.SendMessageToClient(client, msg);
             }
         }
-        public event EventHandler<ServerActionEventArgs> ServerStatusChanged;
-        public event EventHandler<MessageRevievedEventArgs> MessageRecieved;
+
+        protected virtual void OnGameUpdateMessage(ServerClient client, GameUpdateMessage msg)
+        {
+        }
+
+        private void OnMessageRecieved(ServerClient client, string msgStr, MessageBase msgObj)
+        {
+            if (this.MessageRecieved != null)
+            {
+                EventHandler<MessageRevievedEventArgs> messageRecieved = this.MessageRecieved;
+                messageRecieved(this, new MessageRevievedEventArgs(msgObj, client.Client.Client.Handle.ToInt32()));
+            }
+            else
+            {
+                EventHandler<MessageRevievedEventArgs> expressionStack_A_0 = this.MessageRecieved;
+            }
+            this.OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, client);
+            this.ProcessClientMessage(client, msgStr, msgObj);
+        }
+
+        protected virtual void OnRegisterMessage(ServerClient client, ProfileUpdateMessage msg)
+        {
+        }
+
+        protected virtual void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)
+        {
+        }
+
         private void OnServerStatusChanged(ServerStatus action, ServerClient client)
         {
             switch (action)
             {
-                case ServerStatus.ClientConnected:
-                    _Clients.Add(client);
-                    break;
                 case ServerStatus.ServerStopped:
-                    foreach (ServerClient sClient in _Clients)
+                    foreach (ServerClient client2 in this._Clients)
+                    {
                         client.Client.Close();
-                    _Server.Stop();
+                    }
+                    this._Server.Stop();
                     break;
-                case ServerStatus.ClientDisconnected:
+
                 case ServerStatus.ConnectionException:
-                    try { client.Client.Close(); }
-                    catch { }
-                    _Clients.Remove(client);
+                case ServerStatus.ClientDisconnected:
+                    try
+                    {
+                        client.Client.Close();
+                    }
+                    catch
+                    {
+                    }
+                    this._Clients.Remove(client);
+                    break;
+
+                case ServerStatus.ClientConnected:
+                    this._Clients.Add(client);
                     break;
             }
-            ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, client));
-        }
-        private void OnMessageRecieved(ServerClient client, MessageBase msgBase)
-        {
-            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgBase, client.Client.Client.Handle.ToInt32()));
-            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, client);
-            ProcessClientMessage(client, msgBase);
-        }
-        protected ServerClient this[int handle]
-        {
-            get { return _Clients.SingleOrDefault(x => x.ClientID == handle); }
-        }
-        protected void ProcessClientMessage(ServerClient client, MessageBase msgBase)
-        {
-            switch (msgBase.MsgType.Name)
+            if (this.ServerStatusChanged != null)
             {
-                case "RegisterMessage":
-                    OnRegisterMessage(client, (RegisterMessage)msgBase);
+                EventHandler<ServerActionEventArgs> serverStatusChanged = this.ServerStatusChanged;
+                serverStatusChanged(this, new ServerActionEventArgs(action, client));
+            }
+            else
+            {
+                EventHandler<ServerActionEventArgs> expressionStack_AB_0 = this.ServerStatusChanged;
+            }
+        }
+
+        protected void ProcessClientMessage(ServerClient client, string msgStr, MessageBase msgObj)
+        {
+            switch (msgObj.MsgType)
+            {
+                case MessageType.ProfileUpdateMessage:
+                    this.OnRegisterMessage(client, JsonConvert.DeserializeObject<ProfileUpdateMessage>(msgStr));
+                    break;
+
+                case MessageType.RoomUpdateMessage:
+                    this.OnRoomUpdateMessage(client, JsonConvert.DeserializeObject<RoomUpdateMessage>(msgStr));
+                    break;
+
+                case MessageType.GameUpdateMessage:
+                    this.OnGameUpdateMessage(client, JsonConvert.DeserializeObject<GameUpdateMessage>(msgStr));
                     break;
             }
         }
-        protected virtual void OnRegisterMessage(ServerClient client, RegisterMessage msg) { }
-    }
-    public class ServerActionEventArgs
-    {
-        public ServerStatus Status { get; private set; }
-        public ServerClient Client { get; private set; }
-        public DateTime TimeStamp { get; private set; }
-        public ServerActionEventArgs(ServerStatus status, ServerClient client)
+
+        private void ReadingMessageFlag(ServerClient client, string msgStr, MessageBase msgObj)
         {
-            Status = status;
-            Client = client;
-            TimeStamp = DateTime.Now;
+            if (msgObj.Flag == MessageFlag.KeepAlive)
+            {
+                this.OnServerStatusChanged(ServerStatus.ReceivingKeepALiveFlag, client);
+            }
+            else
+            {
+                this.OnMessageRecieved(client, msgStr, msgObj);
+            }
         }
-        public override string ToString()
+
+        public void SendMessageToClient(ServerClient client, MessageBase msg)
         {
-            return $"{TimeStamp.ToLongTimeString()}: - {Status.ToString()}";
+            client.Queue.Add(msg);
         }
-    }
-    public class ServerClient
-    {
-        public TcpClient Client { get; private set; }
-        public int ClientID { get; private set; }
-        public DateTime LastKeepALive { get; set; }
-        public List<MessageBase> Queue { get; private set; }
-        public ServerClient(TcpClient client)
+
+        private void ServerClientThread(ServerClient serverClient)
         {
-            Client = client;
-            Queue = new List<MessageBase>();
-            ClientID = client.Client.Handle.ToInt32();
-            LastKeepALive = DateTime.Now;
+            this.OnServerStatusChanged(ServerStatus.ListeningForClient, serverClient);
+            using (NetworkStream stream = serverClient.Client.GetStream())
+            {
+                using (BinaryReader reader = new BinaryReader(stream))
+                {
+                    using (BinaryWriter writer = new BinaryWriter(stream))
+                    {
+                        bool flag4;
+                        goto Label_00D6;
+                    Label_0029:;
+                        try
+                        {
+                            if (stream.DataAvailable)
+                            {
+                                string str = reader.ReadString();
+                                MessageBase msgObj = JsonConvert.DeserializeObject<MessageBase>(str);
+                                this.ReadingMessageFlag(serverClient, str, msgObj);
+                            }
+                            if (serverClient.Queue.Count > 0)
+                            {
+                                MessageBase base3 = serverClient.Queue[0];
+                                if (base3.Flag == MessageFlag.KeepAlive)
+                                {
+                                    this.OnServerStatusChanged(ServerStatus.SendingKeepALiveFlag, serverClient);
+                                }
+                                else
+                                {
+                                    this.OnServerStatusChanged(ServerStatus.SendingServerMessage, serverClient);
+                                }
+                                string str2 = JsonConvert.SerializeObject(base3);
+                                serverClient.Queue.RemoveAt(0);
+                                writer.Write(str2);
+                                writer.Flush();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            this.OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
+                            goto Label_0105;
+                        }
+                    Label_00D6:
+                        flag4 = true;
+                        goto Label_0029;
+                    }
+                }
+            }
+        Label_0105:
+            this.OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
         }
-        public override string ToString()
+
+        private void ServerMainThread()
         {
-            return string.Format("{0}: {1} => {2}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
+            this.OnServerStatusChanged(ServerStatus.StartWaitingForClients, null);
+            while (true)
+            {
+                foreach (ServerClient client in this._Clients)
+                {
+                    MessageBase msg = new MessageBase {
+                        Flag = MessageFlag.KeepAlive
+                    };
+                    this.SendMessageToClient(client, msg);
+                }
+                if (this._Server.Pending())
+                {
+                    this.OnServerStatusChanged(ServerStatus.IncommingClient, null);
+                    TcpClient client2 = this._Server.AcceptTcpClient();
+                    ServerClient serverClient = new ServerClient(client2);
+                    this.OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
+                    Task.Run((Action) (() => this.ServerClientThread(serverClient)));
+                }
+                Thread.Sleep(0x7d0);
+            }
         }
-    }
-    public enum ServerStatus
-    {
-        ServerStarted,
-        ClientConnected,
-        ListeningForClient,
-        ReadingClientStream,
-        SendingServerMessage,
-        ClientDisconnected,
-        ServerStopCancelled,
-        ServerStopped,
-        PendingForClients,
-        StopWaitingForClients,
-        ConnectionException,
-        ProcessingIncommingMessage,
-        IncommingClient,
-        StartWaitingForClients,
-        ReceivingKeepALiveFlag,
-        SendingKeepALiveFlag
+
+        public void StartServer()
+        {
+            this._Server.Start();
+            this.OnServerStatusChanged(ServerStatus.ServerStarted, null);
+            Task.Run(new Action(this.ServerMainThread));
+        }
+
+        public void StopServer()
+        {
+            this.OnServerStatusChanged(ServerStatus.ServerStopped, null);
+        }
+
+        protected ServerClient this[int handle] =>
+            this._Clients.SingleOrDefault<ServerClient>(x => (x.ClientID == handle));
     }
 }
+

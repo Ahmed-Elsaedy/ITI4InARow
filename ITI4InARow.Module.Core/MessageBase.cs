@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ITI4InARow.Module.Core
+﻿namespace ITI4InARow.Module.Core
 {
+    using System;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
+
     public class MessageBase
     {
-        public MessageFlag Flag { get; set; }
-        public Type MsgType { get; set; }
         public int ClientID { get; set; }
-        public MessageBase()
-        {
-            MsgType = GetType();
-        }
-    }
 
-    public enum MessageFlag
-    {
-        ClientData = 0,
-        KeepAlive = 1
+        public MessageFlag Flag { get; set; }
+
+        public MessageType MsgType { get; set; }
     }
 }
+
