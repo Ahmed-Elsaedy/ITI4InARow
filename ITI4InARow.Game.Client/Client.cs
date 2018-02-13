@@ -22,10 +22,10 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-            m_GameMove = new GameUpdateMessage();
+            //m_GameMove = new GameUpdateMessage();
             m_GameMove.TokenPosition = (int)myShape.Tag;
             m_GameMove.MsgType = MessageType.GameUpdateMessage;
-            m_GameMove.ClientID = m_Client.ClientID;
+            //m_GameMove.PlayerID = 
             m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
             m_Client.SendMessageToServer(m_GameMove);
 
@@ -38,6 +38,7 @@ namespace ITI4InARow.Game.Client
             {
                 m_Client = new GameClient();
                 m_RoomsForm = new RoomsForm(m_Client);
+                ChosenColor = form.clientcolor;
                 m_Client.ClientStatusChanged += new EventHandler<ClientActionEventArgs>(Client_ClientStatusChanged);
                 m_Client.GameUpdateMessage += new EventHandler<GameUpdateMessage>(Client_GameUpdateMessage);
                 m_Client.ConnectClient(form.IPAddress, form.Port);
@@ -68,12 +69,7 @@ namespace ITI4InARow.Game.Client
         {
             m_Client.SendMessageToServer(m_GameMove);
             btn_GameMove.Enabled = false;
-
-            // f2.TopLevel = false;
-            // f2.Location = new Point(5, 5);
-            // f2.FormBorderStyle = FormBorderStyle.None;
-            //f2.Visible = true;
-            // this.Controls.Add(f2);
+            
         }
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
