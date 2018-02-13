@@ -358,7 +358,7 @@ namespace ITI4InARow.Game.UI
             DialogResult res = MessageBox.Show("you will lose the game !", "watch out!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (res == DialogResult.OK)
             {
-                this.Visible = false;
+                Visible = false;
             }
             
             

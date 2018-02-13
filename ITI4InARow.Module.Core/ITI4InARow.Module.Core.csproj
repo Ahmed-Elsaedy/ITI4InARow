@@ -40,18 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameUpdateMessage.cs" />
-    <Compile Include="GameUpdateStatus.cs" />
+    <Compile Include="Messages\GameUpdateMessage.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MessageBase.cs" />
-    <Compile Include="MessageFlag.cs" />
     <Compile Include="MessageRevievedEventArgs.cs" />
-    <Compile Include="MessageType.cs" />
-    <Compile Include="ProfileUpdateMessage.cs" />
+    <Compile Include="Messages\ProfileUpdateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoomStatus.cs" />
-    <Compile Include="RoomUpdateMessage.cs" />
-    <Compile Include="RoomUpdateState.cs" />
+    <Compile Include="Messages\RoomUpdateMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

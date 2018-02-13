@@ -47,7 +47,6 @@
     <Compile Include="GameServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerActionEventArgs.cs" />
-    <Compile Include="ServerClient.cs" />
     <Compile Include="ServerCore.cs" />
     <Compile Include="ServerStatus.cs" />
   </ItemGroup>

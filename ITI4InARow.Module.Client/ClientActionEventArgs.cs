@@ -6,12 +6,11 @@
 
     public class ClientActionEventArgs
     {
+        public ClientStatus Status { get; private set; }
         public ClientActionEventArgs(ClientStatus status)
         {
-            this.Status = status;
+            Status = status;
         }
-
-        public ClientStatus Status { get; private set; }
     }
 }
 

@@ -12,5 +12,17 @@
 
         public MessageType MsgType { get; set; }
     }
+    public enum MessageFlag
+    {
+        ClientData,
+        KeepAlive
+    }
+    public enum MessageType
+    {
+        MessageBase,
+        ProfileUpdateMessage,
+        RoomUpdateMessage,
+        GameUpdateMessage
+    }
 }
 

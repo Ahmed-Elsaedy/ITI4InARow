@@ -10,7 +10,7 @@
     {
         public ProfileUpdateMessage()
         {
-            base.MsgType = MessageType.ProfileUpdateMessage;
+            MsgType = MessageType.ProfileUpdateMessage;
         }
 
         public string Name { get; set; }
