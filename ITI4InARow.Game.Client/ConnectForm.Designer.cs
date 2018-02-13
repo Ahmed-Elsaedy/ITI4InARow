@@ -38,8 +38,10 @@
             this._numPort = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnColore = new System.Windows.Forms.Button();
             this.txt_NickName = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.ClinetColoreDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this._numIP4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numIP2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._numIP3)).BeginInit();
@@ -161,6 +163,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnColore);
             this.groupBox2.Controls.Add(this.txt_NickName);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(7, 104);
@@ -170,29 +173,41 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Player Data";
             // 
+            // btnColore
+            // 
+            this.btnColore.BackColor = System.Drawing.Color.Black;
+            this.btnColore.FlatAppearance.BorderSize = 0;
+            this.btnColore.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnColore.Location = new System.Drawing.Point(218, 23);
+            this.btnColore.Name = "btnColore";
+            this.btnColore.Size = new System.Drawing.Size(25, 25);
+            this.btnColore.TabIndex = 7;
+            this.btnColore.UseVisualStyleBackColor = false;
+            this.btnColore.Click += new System.EventHandler(this.btnColore_Click);
+            // 
             // txt_NickName
             // 
             this.txt_NickName.Location = new System.Drawing.Point(64, 25);
             this.txt_NickName.Name = "txt_NickName";
-            this.txt_NickName.Size = new System.Drawing.Size(175, 20);
+            this.txt_NickName.Size = new System.Drawing.Size(149, 20);
             this.txt_NickName.TabIndex = 6;
             // 
-            // button1
+            // btnConnect
             // 
-            this.button1.Location = new System.Drawing.Point(171, 173);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Connect";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnConnect.Location = new System.Drawing.Point(171, 173);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(75, 23);
+            this.btnConnect.TabIndex = 7;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnexct_Click);
             // 
             // ConnectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(266, 203);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnConnect);
             this.Controls.Add(this._numPort);
             this.Controls.Add(this._numIP1);
             this.Controls.Add(this._numIP3);
@@ -234,6 +249,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txt_NickName;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Button btnColore;
+        private System.Windows.Forms.ColorDialog ClinetColoreDialog;
     }
 }

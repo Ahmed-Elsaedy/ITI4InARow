@@ -18,15 +18,26 @@ namespace ITI4InARow.Game.Client
         public byte[] IPAddress { get; private set; }
         public int Port { get; private set; }
         public string NickName { get; private set; }
+        public Color clientcolor { get; set; }
+        public bool colorSelected { get; set; }
 
         public ConnectForm()
         {
             InitializeComponent();
+            colorSelected = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnConnexct_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(txt_NickName.Text))
+            if (string.IsNullOrEmpty(txt_NickName.Text))
+            {
+                MessageBox.Show("please enter nick name");
+            }
+            else if (!colorSelected)
+            {
+                MessageBox.Show("pleasse select your favoret color");
+            }
+            else if (!string.IsNullOrEmpty(txt_NickName.Text))
             {
                 int p1 = (int)_numIP1.Value;
                 int p2 = (int)_numIP2.Value;
@@ -42,6 +53,7 @@ namespace ITI4InARow.Game.Client
                 Port = (int)_numPort.Value;
                 NickName = txt_NickName.Text;
 
+
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -54,6 +66,17 @@ namespace ITI4InARow.Game.Client
             _numIP2.Value = IPAddress[1];
             _numIP3.Value = IPAddress[2];
             _numIP4.Value = IPAddress[3];
+        }
+
+        private void btnColore_Click(object sender, EventArgs e)
+        {
+            ClinetColoreDialog.FullOpen = true;
+            if (ClinetColoreDialog.ShowDialog() == DialogResult.OK)
+            {
+                btnColore.BackColor = ClinetColoreDialog.Color;
+                clientcolor = ClinetColoreDialog.Color;
+                colorSelected = true;
+            }
         }
     }
 }
