@@ -352,7 +352,7 @@ namespace ITI4InARow.Game.UI
 
         private void btnclose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            
         }
     }
 }

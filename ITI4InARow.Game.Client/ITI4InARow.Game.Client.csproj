@@ -92,6 +92,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ITI4InARow.Game.UI\ITI4InARow.Game.UI.csproj">
+      <Project>{504ad12d-e73b-44e3-9e4e-83758ae61bd7}</Project>
+      <Name>ITI4InARow.Game.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITI4InARow.Module.Client\ITI4InARow.Module.Client.csproj">
       <Project>{2f75dde1-4491-4d13-af82-fa88c60ad9ab}</Project>
       <Name>ITI4InARow.Module.Client</Name>

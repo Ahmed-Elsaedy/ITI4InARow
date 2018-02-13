@@ -52,7 +52,7 @@
         private void _ListViewRooms_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             this.UpdateButtonsStatus();
-        }
+            }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -67,6 +67,8 @@
             {
                 tag.UpdateState = RoomUpdateState.Player2Connected;
                 this._GameClient.SendMessageToServer(tag);
+                UI.GameUI gameBord = new UI.GameUI();
+                gameBord.ShowDialog();
             }
             else
             {
