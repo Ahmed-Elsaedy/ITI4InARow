@@ -17,7 +17,14 @@ namespace ITI4InARow.Game.Client
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
+            panel_GameSurface.PlayerAction += Panel_GameSurface_PlayerAction;
         }
+
+        private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
+        {
+            GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+        }
+
         private void _MenuItemConnect_Click(object sender, EventArgs e)
         {
             ConnectForm form = new ConnectForm();
@@ -111,6 +118,7 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.PlayerMove:
                     btn_GameMove.Enabled = true;
                     m_GameMove = e;
+                    //apaly the action that come from server 
                     break;
 
                 case GameUpdateStatus.GameLeave:
@@ -158,7 +166,7 @@ namespace ITI4InARow.Game.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            m_GameMove.TokenPosition = 
         }
 
         

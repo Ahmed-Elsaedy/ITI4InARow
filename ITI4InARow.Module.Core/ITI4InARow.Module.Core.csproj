@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckPosition.cs" />
     <Compile Include="Messages\GameUpdateMessage.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MessageBase.cs" />

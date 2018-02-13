@@ -10,6 +10,9 @@
         public int RoomID { get; set; }
         public int GameMove { get; set; }
         public GameUpdateStatus UpdateStatus { get; set; }
+        public int TokenPosition { get; set; }
+        public bool IsGameRunning { get; set; }
+
         public GameUpdateMessage()
         {
             MsgType = MessageType.GameUpdateMessage;
@@ -27,7 +30,10 @@
         GameStarted,
         PlayerMove,
         GameEnded,
-        GameLeave
+        GameLeave,
+        GameDraw,
+        win,
+        lose
     }
 }
 
