@@ -117,7 +117,8 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-                    btn_GameMove.Enabled = true;
+                    panel_GameSurface.Enabled = true;
+                    MessageBox.Show("other player played ction");
                     m_GameMove = e;
                     //apaly the action that come from server 
                     break;
