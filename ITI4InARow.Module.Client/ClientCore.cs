@@ -43,15 +43,15 @@
             {
                 while (true)
                 {
-                    MonitorKeepALiveTime();
+                    //MonitorKeepALiveTime();
                     try
                     {
-                        if (stream.DataAvailable)
-                        {
-                            string str = reader.ReadString();
-                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
-                            ReadingMessageFlag(str, msgBase);
-                        }
+                        //if (stream.DataAvailable)
+                        //{
+                        //    string str = reader.ReadString();
+                        //    MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
+                        //    ReadingMessageFlag(str, msgBase);
+                        //}
                         if (_Queue.Count > 0)
                         {
                             MessageBase base3 = _Queue[0];
