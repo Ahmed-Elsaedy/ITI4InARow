@@ -117,6 +117,9 @@ namespace ITI4InARow.Game.UI
             GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
             // MessageBox.Show(((OvalShape)sender).Tag.ToString());
         }
+
+
+
         private void GameLogic(int TokenPosition)
         {
 
@@ -352,7 +355,13 @@ namespace ITI4InARow.Game.UI
 
         private void btnclose_Click(object sender, EventArgs e)
         {
-            //this.Close();
+            DialogResult res = MessageBox.Show("you will lose the game !", "watch out!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (res == DialogResult.OK)
+            {
+                Visible = false;
+            }
+            
+            
         }
     }
 }

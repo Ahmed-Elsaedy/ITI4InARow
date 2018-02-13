@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-
+using Microsoft.VisualBasic.PowerPacks;
 namespace ITI4InARow.Game.Client
 {
     partial class Client
@@ -32,20 +32,23 @@ namespace ITI4InARow.Game.Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
             this._MainMenu = new System.Windows.Forms.MenuStrip();
             this.menuItem_Server = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItem_Game = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemSRooms = new System.Windows.Forms.ToolStripMenuItem();
+            this.userCustomizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStrip = new System.Windows.Forms.StatusStrip();
             this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel_GameSurface = new System.Windows.Forms.Panel();
+            this.panel_GameSurface = new ITI4InARow.Game.UI.GameUI();
             this.btn_LeaveGame = new System.Windows.Forms.Button();
             this.btn_GameMove = new System.Windows.Forms.Button();
             this.lbl_Title = new System.Windows.Forms.Label();
-            this.userCustomizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.printForm1 = new Microsoft.VisualBasic.PowerPacks.Printing.PrintForm(this.components);
             this._MainMenu.SuspendLayout();
             this._StatusStrip.SuspendLayout();
             this.panel_GameSurface.SuspendLayout();
@@ -58,7 +61,7 @@ namespace ITI4InARow.Game.Client
             this.menuItem_Game});
             this._MainMenu.Location = new System.Drawing.Point(0, 0);
             this._MainMenu.Name = "_MainMenu";
-            this._MainMenu.Size = new System.Drawing.Size(528, 24);
+            this._MainMenu.Size = new System.Drawing.Size(1003, 24);
             this._MainMenu.TabIndex = 0;
             this._MainMenu.Text = "menuStrip1";
             // 
@@ -102,13 +105,20 @@ namespace ITI4InARow.Game.Client
             this._MenuItemSRooms.Text = "Server Rooms...";
             this._MenuItemSRooms.Click += new System.EventHandler(this._MenuItemSRooms_Click);
             // 
+            // userCustomizationToolStripMenuItem
+            // 
+            this.userCustomizationToolStripMenuItem.Name = "userCustomizationToolStripMenuItem";
+            this.userCustomizationToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.userCustomizationToolStripMenuItem.Text = "User Customization";
+            this.userCustomizationToolStripMenuItem.Click += new System.EventHandler(this.userCustomizationToolStripMenuItem_Click);
+            // 
             // _StatusStrip
             // 
             this._StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._stl_Connection});
-            this._StatusStrip.Location = new System.Drawing.Point(0, 374);
+            this._StatusStrip.Location = new System.Drawing.Point(0, 590);
             this._StatusStrip.Name = "_StatusStrip";
-            this._StatusStrip.Size = new System.Drawing.Size(528, 22);
+            this._StatusStrip.Size = new System.Drawing.Size(1003, 22);
             this._StatusStrip.TabIndex = 1;
             this._StatusStrip.Text = "statusStrip1";
             // 
@@ -119,18 +129,19 @@ namespace ITI4InARow.Game.Client
             // 
             // panel_GameSurface
             // 
+            this.panel_GameSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.panel_GameSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel_GameSurface.Controls.Add(this.btn_LeaveGame);
             this.panel_GameSurface.Controls.Add(this.btn_GameMove);
             this.panel_GameSurface.Controls.Add(this.lbl_Title);
-            this.panel_GameSurface.Location = new System.Drawing.Point(159, 134);
+            this.panel_GameSurface.Location = new System.Drawing.Point(0, 27);
             this.panel_GameSurface.Name = "panel_GameSurface";
-            this.panel_GameSurface.Size = new System.Drawing.Size(216, 144);
+            this.panel_GameSurface.Size = new System.Drawing.Size(949, 628);
             this.panel_GameSurface.TabIndex = 2;
             // 
             // btn_LeaveGame
             // 
-            this.btn_LeaveGame.Location = new System.Drawing.Point(58, 86);
+            this.btn_LeaveGame.Location = new System.Drawing.Point(839, 86);
             this.btn_LeaveGame.Name = "btn_LeaveGame";
             this.btn_LeaveGame.Size = new System.Drawing.Size(109, 23);
             this.btn_LeaveGame.TabIndex = 2;
@@ -140,7 +151,7 @@ namespace ITI4InARow.Game.Client
             // 
             // btn_GameMove
             // 
-            this.btn_GameMove.Location = new System.Drawing.Point(43, 58);
+            this.btn_GameMove.Location = new System.Drawing.Point(824, 58);
             this.btn_GameMove.Name = "btn_GameMove";
             this.btn_GameMove.Size = new System.Drawing.Size(138, 23);
             this.btn_GameMove.TabIndex = 1;
@@ -152,24 +163,25 @@ namespace ITI4InARow.Game.Client
             // 
             this.lbl_Title.AutoSize = true;
             this.lbl_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Title.Location = new System.Drawing.Point(47, 29);
+            this.lbl_Title.Location = new System.Drawing.Point(828, 29);
             this.lbl_Title.Name = "lbl_Title";
             this.lbl_Title.Size = new System.Drawing.Size(130, 24);
             this.lbl_Title.TabIndex = 0;
             this.lbl_Title.Text = "Gaming Mode";
             // 
-            // userCustomizationToolStripMenuItem
+            // printForm1
             // 
-            this.userCustomizationToolStripMenuItem.Name = "userCustomizationToolStripMenuItem";
-            this.userCustomizationToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.userCustomizationToolStripMenuItem.Text = "User Customization";
-            this.userCustomizationToolStripMenuItem.Click += new System.EventHandler(this.userCustomizationToolStripMenuItem_Click);
+            this.printForm1.DocumentName = "document";
+            this.printForm1.Form = this;
+            this.printForm1.PrintAction = System.Drawing.Printing.PrintAction.PrintToPrinter;
+            this.printForm1.PrinterSettings = ((System.Drawing.Printing.PrinterSettings)(resources.GetObject("printForm1.PrinterSettings")));
+            this.printForm1.PrintFileName = null;
             // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 396);
+            this.ClientSize = new System.Drawing.Size(1003, 612);
             this.Controls.Add(this.panel_GameSurface);
             this.Controls.Add(this._StatusStrip);
             this.Controls.Add(this._MainMenu);
@@ -202,8 +214,10 @@ namespace ITI4InARow.Game.Client
         private Label lbl_Title;
         private ToolStripMenuItem menuItem_Game;
         private ToolStripMenuItem menuItem_Server;
-        private Panel panel_GameSurface;
+        private UI.GameUI panel_GameSurface;
         private ToolStripMenuItem userCustomizationToolStripMenuItem;
         private ColorDialog colorDialog1;
+        private Microsoft.VisualBasic.PowerPacks.Printing.PrintForm printForm1;
+        
     }
 }

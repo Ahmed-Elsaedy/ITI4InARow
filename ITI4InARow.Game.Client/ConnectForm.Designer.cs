@@ -145,7 +145,7 @@
             this._numPort.Size = new System.Drawing.Size(175, 20);
             this._numPort.TabIndex = 5;
             this._numPort.Value = new decimal(new int[] {
-            63210,
+            5252,
             0,
             0,
             0});

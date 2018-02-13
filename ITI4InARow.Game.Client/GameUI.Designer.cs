@@ -803,7 +803,7 @@
 
         }
 
-        #endregion 
+        #endregion
 
         private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape1;
