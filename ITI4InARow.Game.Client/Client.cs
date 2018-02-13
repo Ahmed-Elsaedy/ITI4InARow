@@ -120,7 +120,7 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     panel_GameSurface.Enabled = true;
-
+                    m_GameMove = e.Copy();
                     if (e.TokenPosition>=0)
                     {
                         MessageBox.Show("other player played Action"); 
