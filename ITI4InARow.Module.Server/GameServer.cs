@@ -52,7 +52,6 @@
                     SendMessageToClient(base[msg.Player1ID], msg);
                     break;
                 case RoomUpdateState.RoomComplete:
-                    //_RoomsData.Add(msg.RoomID, new int[7, 7]);
                     message = msg.Copy();
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
@@ -64,7 +63,8 @@
                     {
                         RoomID = msg.RoomID,
                         PlayerID = msg.Player1ID,
-                        UpdateStatus = GameUpdateStatus.PlayerMove
+                        UpdateStatus = GameUpdateStatus.PlayerMove,
+                        TokenPosition = -1
                     };
                     SendMessageToClient(base[msg.Player1ID], message3);
                     break;

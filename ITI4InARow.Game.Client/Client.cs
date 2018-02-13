@@ -22,7 +22,13 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-            //GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+            m_GameMove = new GameUpdateMessage();
+            m_GameMove.TokenPosition = (int)myShape.Tag;
+            m_GameMove.MsgType = MessageType.GameUpdateMessage;
+            m_GameMove.ClientID = m_Client.ClientID;
+            m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
+            m_Client.SendMessageToServer(m_GameMove);
+
         }
 
         private void _MenuItemConnect_Click(object sender, EventArgs e)
@@ -118,7 +124,11 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     panel_GameSurface.Enabled = true;
-                    MessageBox.Show("other player played ction");
+
+                    if (e.TokenPosition>=0)
+                    {
+                        MessageBox.Show("other player played Action"); 
+                    }
                     m_GameMove = e;
                     //apaly the action that come from server 
                     break;

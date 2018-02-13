@@ -67,13 +67,6 @@
             {
                 tag.UpdateState = RoomUpdateState.Player2Connected;
                 _GameClient.SendMessageToServer(tag);
-
-                //var f2 = new UI.GameUI();
-                //f2.TopLevel = false;
-                //f2.Location = new Point(5, 5);
-                //f2.FormBorderStyle = FormBorderStyle.None;
-                //f2.Visible = true;
-                //this.Controls.Add(f2);
             }
             else
             {
