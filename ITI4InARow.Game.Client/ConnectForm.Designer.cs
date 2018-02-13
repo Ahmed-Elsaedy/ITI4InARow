@@ -55,7 +55,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(5, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "NickName";
             // 
@@ -64,7 +64,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.Size = new System.Drawing.Size(51, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Server IP";
             // 
@@ -73,13 +73,18 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 66);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(62, 13);
+            this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 3;
             this.label3.Text = "Server Port";
             // 
             // _numIP4
             // 
             this._numIP4.Location = new System.Drawing.Point(206, 37);
+            this._numIP4.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
             this._numIP4.Name = "_numIP4";
             this._numIP4.Size = new System.Drawing.Size(40, 20);
             this._numIP4.TabIndex = 4;
@@ -92,6 +97,11 @@
             // _numIP2
             // 
             this._numIP2.Location = new System.Drawing.Point(116, 37);
+            this._numIP2.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
             this._numIP2.Name = "_numIP2";
             this._numIP2.Size = new System.Drawing.Size(40, 20);
             this._numIP2.TabIndex = 2;
@@ -104,6 +114,11 @@
             // _numIP3
             // 
             this._numIP3.Location = new System.Drawing.Point(161, 37);
+            this._numIP3.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
             this._numIP3.Name = "_numIP3";
             this._numIP3.Size = new System.Drawing.Size(40, 20);
             this._numIP3.TabIndex = 3;

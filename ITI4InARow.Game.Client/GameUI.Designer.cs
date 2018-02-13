@@ -141,7 +141,6 @@
             this.ovalShape42.Name = "ovalShape42";
             this.ovalShape42.Size = new System.Drawing.Size(90, 90);
             this.ovalShape42.Tag = "A1";
-            this.ovalShape42.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape41
             // 
@@ -156,8 +155,6 @@
             this.ovalShape41.Name = "ovalShape41";
             this.ovalShape41.Size = new System.Drawing.Size(90, 90);
             this.ovalShape41.Tag = "A1";
-            this.ovalShape41.Click += new System.EventHandler(this.ovalShape2_Click);
-            this.ovalShape41.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ovalShape41_MouseClick);
             // 
             // ovalShape40
             // 
@@ -172,7 +169,6 @@
             this.ovalShape40.Name = "ovalShape40";
             this.ovalShape40.Size = new System.Drawing.Size(90, 90);
             this.ovalShape40.Tag = "A1";
-            this.ovalShape40.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape39
             // 
@@ -187,7 +183,6 @@
             this.ovalShape39.Name = "ovalShape39";
             this.ovalShape39.Size = new System.Drawing.Size(90, 90);
             this.ovalShape39.Tag = "A1";
-            this.ovalShape39.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape38
             // 
@@ -202,7 +197,6 @@
             this.ovalShape38.Name = "ovalShape38";
             this.ovalShape38.Size = new System.Drawing.Size(90, 90);
             this.ovalShape38.Tag = "A1";
-            this.ovalShape38.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape37
             // 
@@ -217,7 +211,6 @@
             this.ovalShape37.Name = "ovalShape37";
             this.ovalShape37.Size = new System.Drawing.Size(90, 90);
             this.ovalShape37.Tag = "A1";
-            this.ovalShape37.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape36
             // 
@@ -232,7 +225,6 @@
             this.ovalShape36.Name = "ovalShape36";
             this.ovalShape36.Size = new System.Drawing.Size(90, 90);
             this.ovalShape36.Tag = "A1";
-            this.ovalShape36.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape35
             // 
@@ -247,7 +239,6 @@
             this.ovalShape35.Name = "ovalShape35";
             this.ovalShape35.Size = new System.Drawing.Size(90, 90);
             this.ovalShape35.Tag = "A1";
-            this.ovalShape35.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape34
             // 
@@ -262,7 +253,6 @@
             this.ovalShape34.Name = "ovalShape34";
             this.ovalShape34.Size = new System.Drawing.Size(90, 90);
             this.ovalShape34.Tag = "A1";
-            this.ovalShape34.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape33
             // 
@@ -277,7 +267,6 @@
             this.ovalShape33.Name = "ovalShape33";
             this.ovalShape33.Size = new System.Drawing.Size(90, 90);
             this.ovalShape33.Tag = "A1";
-            this.ovalShape33.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape32
             // 
@@ -292,7 +281,6 @@
             this.ovalShape32.Name = "ovalShape32";
             this.ovalShape32.Size = new System.Drawing.Size(90, 90);
             this.ovalShape32.Tag = "A1";
-            this.ovalShape32.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape31
             // 
@@ -307,7 +295,6 @@
             this.ovalShape31.Name = "ovalShape31";
             this.ovalShape31.Size = new System.Drawing.Size(90, 90);
             this.ovalShape31.Tag = "A1";
-            this.ovalShape31.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape30
             // 
@@ -322,7 +309,6 @@
             this.ovalShape30.Name = "ovalShape30";
             this.ovalShape30.Size = new System.Drawing.Size(90, 90);
             this.ovalShape30.Tag = "A5";
-            this.ovalShape30.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape29
             // 
@@ -337,7 +323,6 @@
             this.ovalShape29.Name = "ovalShape29";
             this.ovalShape29.Size = new System.Drawing.Size(90, 90);
             this.ovalShape29.Tag = "A1";
-            this.ovalShape29.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape28
             // 
@@ -352,7 +337,6 @@
             this.ovalShape28.Name = "ovalShape28";
             this.ovalShape28.Size = new System.Drawing.Size(90, 90);
             this.ovalShape28.Tag = "A1";
-            this.ovalShape28.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape27
             // 
@@ -367,7 +351,6 @@
             this.ovalShape27.Name = "ovalShape27";
             this.ovalShape27.Size = new System.Drawing.Size(90, 90);
             this.ovalShape27.Tag = "A1";
-            this.ovalShape27.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape26
             // 
@@ -382,7 +365,6 @@
             this.ovalShape26.Name = "ovalShape26";
             this.ovalShape26.Size = new System.Drawing.Size(90, 90);
             this.ovalShape26.Tag = "A1";
-            this.ovalShape26.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape25
             // 
@@ -397,7 +379,6 @@
             this.ovalShape25.Name = "ovalShape25";
             this.ovalShape25.Size = new System.Drawing.Size(90, 90);
             this.ovalShape25.Tag = "A1";
-            this.ovalShape25.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape24
             // 
@@ -412,7 +393,6 @@
             this.ovalShape24.Name = "ovalShape24";
             this.ovalShape24.Size = new System.Drawing.Size(90, 90);
             this.ovalShape24.Tag = "A4";
-            this.ovalShape24.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape23
             // 
@@ -427,7 +407,6 @@
             this.ovalShape23.Name = "ovalShape23";
             this.ovalShape23.Size = new System.Drawing.Size(90, 90);
             this.ovalShape23.Tag = "A1";
-            this.ovalShape23.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape22
             // 
@@ -442,7 +421,6 @@
             this.ovalShape22.Name = "ovalShape22";
             this.ovalShape22.Size = new System.Drawing.Size(90, 90);
             this.ovalShape22.Tag = "A1";
-            this.ovalShape22.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape21
             // 
@@ -457,7 +435,6 @@
             this.ovalShape21.Name = "ovalShape21";
             this.ovalShape21.Size = new System.Drawing.Size(90, 90);
             this.ovalShape21.Tag = "A1";
-            this.ovalShape21.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape20
             // 
@@ -472,7 +449,6 @@
             this.ovalShape20.Name = "ovalShape20";
             this.ovalShape20.Size = new System.Drawing.Size(90, 90);
             this.ovalShape20.Tag = "A1";
-            this.ovalShape20.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape19
             // 
@@ -487,7 +463,6 @@
             this.ovalShape19.Name = "ovalShape19";
             this.ovalShape19.Size = new System.Drawing.Size(90, 90);
             this.ovalShape19.Tag = "A1";
-            this.ovalShape19.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape18
             // 
@@ -502,7 +477,6 @@
             this.ovalShape18.Name = "ovalShape18";
             this.ovalShape18.Size = new System.Drawing.Size(90, 90);
             this.ovalShape18.Tag = "A3";
-            this.ovalShape18.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape17
             // 
@@ -517,7 +491,6 @@
             this.ovalShape17.Name = "ovalShape17";
             this.ovalShape17.Size = new System.Drawing.Size(90, 90);
             this.ovalShape17.Tag = "A1";
-            this.ovalShape17.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape16
             // 
@@ -532,7 +505,6 @@
             this.ovalShape16.Name = "ovalShape16";
             this.ovalShape16.Size = new System.Drawing.Size(90, 90);
             this.ovalShape16.Tag = "A1";
-            this.ovalShape16.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape15
             // 
@@ -547,7 +519,6 @@
             this.ovalShape15.Name = "ovalShape15";
             this.ovalShape15.Size = new System.Drawing.Size(90, 90);
             this.ovalShape15.Tag = "A1";
-            this.ovalShape15.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape14
             // 
@@ -562,7 +533,6 @@
             this.ovalShape14.Name = "ovalShape14";
             this.ovalShape14.Size = new System.Drawing.Size(90, 90);
             this.ovalShape14.Tag = "A1";
-            this.ovalShape14.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape13
             // 
@@ -577,7 +547,6 @@
             this.ovalShape13.Name = "ovalShape13";
             this.ovalShape13.Size = new System.Drawing.Size(90, 90);
             this.ovalShape13.Tag = "A1";
-            this.ovalShape13.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape12
             // 
@@ -592,7 +561,6 @@
             this.ovalShape12.Name = "ovalShape12";
             this.ovalShape12.Size = new System.Drawing.Size(90, 90);
             this.ovalShape12.Tag = "A2";
-            this.ovalShape12.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape11
             // 
@@ -607,7 +575,6 @@
             this.ovalShape11.Name = "ovalShape11";
             this.ovalShape11.Size = new System.Drawing.Size(90, 90);
             this.ovalShape11.Tag = "A1";
-            this.ovalShape11.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape10
             // 
@@ -622,7 +589,6 @@
             this.ovalShape10.Name = "ovalShape10";
             this.ovalShape10.Size = new System.Drawing.Size(90, 90);
             this.ovalShape10.Tag = "A1";
-            this.ovalShape10.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape9
             // 
@@ -637,7 +603,6 @@
             this.ovalShape9.Name = "ovalShape9";
             this.ovalShape9.Size = new System.Drawing.Size(90, 90);
             this.ovalShape9.Tag = "A1";
-            this.ovalShape9.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape8
             // 
@@ -652,7 +617,6 @@
             this.ovalShape8.Name = "ovalShape8";
             this.ovalShape8.Size = new System.Drawing.Size(90, 90);
             this.ovalShape8.Tag = "A1";
-            this.ovalShape8.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape7
             // 
@@ -667,7 +631,6 @@
             this.ovalShape7.Name = "ovalShape7";
             this.ovalShape7.Size = new System.Drawing.Size(90, 90);
             this.ovalShape7.Tag = "A1";
-            this.ovalShape7.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape6
             // 
@@ -682,7 +645,6 @@
             this.ovalShape6.Name = "ovalShape6";
             this.ovalShape6.Size = new System.Drawing.Size(90, 90);
             this.ovalShape6.Tag = "A1";
-            this.ovalShape6.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape5
             // 
@@ -697,7 +659,6 @@
             this.ovalShape5.Name = "ovalShape5";
             this.ovalShape5.Size = new System.Drawing.Size(90, 90);
             this.ovalShape5.Tag = "A1";
-            this.ovalShape5.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape4
             // 
@@ -712,7 +673,6 @@
             this.ovalShape4.Name = "ovalShape4";
             this.ovalShape4.Size = new System.Drawing.Size(90, 90);
             this.ovalShape4.Tag = "A1";
-            this.ovalShape4.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape3
             // 
@@ -727,7 +687,6 @@
             this.ovalShape3.Name = "ovalShape3";
             this.ovalShape3.Size = new System.Drawing.Size(90, 90);
             this.ovalShape3.Tag = "A1";
-            this.ovalShape3.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape2
             // 
@@ -742,7 +701,6 @@
             this.ovalShape2.Name = "ovalShape2";
             this.ovalShape2.Size = new System.Drawing.Size(90, 90);
             this.ovalShape2.Tag = "A1";
-            this.ovalShape2.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // ovalShape1
             // 
@@ -757,7 +715,6 @@
             this.ovalShape1.Name = "ovalShape1";
             this.ovalShape1.Size = new System.Drawing.Size(90, 90);
             this.ovalShape1.Tag = "A1";
-            this.ovalShape1.Click += new System.EventHandler(this.ovalShape2_Click);
             // 
             // BtnReset
             // 
