@@ -20,8 +20,8 @@ namespace ITI4InARow.Game.UI
         bool isGameRunning;
         int playersMovesCount;
         Color defaultOvalColor;
-        List<int> NorthBanned;
-        List<int> SouthBanned;
+        //List<int> NorthBanned;
+        //List<int> SouthBanned;
 
         public GameUI()
         {

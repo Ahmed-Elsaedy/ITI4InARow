@@ -22,18 +22,14 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-<<<<<<< HEAD
-            //GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
-
-=======
+          //  MessageBox.Show("Test");
             m_GameMove = new GameUpdateMessage();
             m_GameMove.TokenPosition = (int)myShape.Tag;
             m_GameMove.MsgType = MessageType.GameUpdateMessage;
             m_GameMove.ClientID = m_Client.ClientID;
             m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
             m_Client.SendMessageToServer(m_GameMove);
->>>>>>> 156441efcbfa869273be5b55198044da65cdc35c
-
+ 
         }
 
         private void _MenuItemConnect_Click(object sender, EventArgs e)
@@ -124,16 +120,14 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     panel_GameSurface.Enabled = true;
-<<<<<<< HEAD
-                    MessageBox.Show("Other Player Played Action");
-=======
+                    //GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+
 
                     if (e.TokenPosition>=0)
                     {
                         MessageBox.Show("other player played Action"); 
                     }
->>>>>>> 156441efcbfa869273be5b55198044da65cdc35c
-                    m_GameMove = e;
+                     m_GameMove = e;
                     //apply the action that come from server 
                     break;
 
