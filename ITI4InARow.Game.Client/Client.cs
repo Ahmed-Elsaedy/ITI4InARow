@@ -22,7 +22,7 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-            GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+            //GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
         }
 
         private void _MenuItemConnect_Click(object sender, EventArgs e)
@@ -111,6 +111,7 @@ namespace ITI4InARow.Game.Client
         {
             switch (e.UpdateStatus)
             {
+                //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
                     break;
@@ -166,7 +167,7 @@ namespace ITI4InARow.Game.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            m_GameMove.TokenPosition = 
+            //m_GameMove.TokenPosition = 
         }
 
         

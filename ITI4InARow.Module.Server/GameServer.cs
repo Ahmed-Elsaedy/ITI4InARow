@@ -75,6 +75,7 @@
             RoomUpdateMessage message;
             switch (msg.UpdateStatus)
             {
+                //handling masgs from clint during game 
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
@@ -231,17 +232,11 @@
     {
         public int RoomID { get; set; }
         public Dictionary<int, int> _RoomMoveCounter;
-        List<int> NorthBanned;
-        List<int> SouthBanned;
         public int[] gameBourdlogic = new int[42];
 
         public ServerRoom()
         {
             _RoomMoveCounter = new Dictionary<int, int>();
-            for (int i = 0; i < gameBourdlogic.Length; i++)
-            {
-                gameBourdlogic[i] = 0;
-            }
         }
     }
 }

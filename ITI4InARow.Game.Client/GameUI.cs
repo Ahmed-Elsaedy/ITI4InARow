@@ -117,7 +117,7 @@ namespace ITI4InARow.Game.UI
         }
 
 
-        private void GameLogic(int TokenPosition)
+        public void GameLogic(int TokenPosition)
         {
             Color TokenColor;
             OvalShape ovalClicked = new OvalShape();
