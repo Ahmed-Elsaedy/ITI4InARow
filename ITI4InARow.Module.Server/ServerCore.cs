@@ -79,7 +79,7 @@
                                 MessageBase base3 = serverClient.Queue[0];
                                 if (base3.Flag == MessageFlag.KeepAlive)
                                 {
-                                    OnServerStatusChanged(ServerStatus.SendingKeepALiveFlag, serverClient);
+                                    //OnServerStatusChanged(ServerStatus.SendingKeepALiveFlag, serverClient);
                                 }
                                 else
                                 {

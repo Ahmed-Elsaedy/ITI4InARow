@@ -55,9 +55,9 @@
                         if (_Queue.Count > 0)
                         {
                             MessageBase base3 = _Queue[0];
-                            if (base3.Flag == MessageFlag.KeepAlive)
-                                OnClientStatusChanged(ClientStatus.SendingKeepALiveFlag);
-                            else
+                            //if (base3.Flag == MessageFlag.KeepAlive)
+                            //    OnClientStatusChanged(ClientStatus.SendingKeepALiveFlag);
+                            //else
                                 OnClientStatusChanged(ClientStatus.SendingClientMessage);
                             string str2 = JsonConvert.SerializeObject(_Queue[0]);
                             _Queue.RemoveAt(0);
@@ -126,9 +126,9 @@
         }
         private void ReadingMessageFlag(string serverStr, MessageBase msgBase)
         {
-            if (msgBase.Flag == MessageFlag.KeepAlive)
-                OnClientStatusChanged(ClientStatus.ReceivingKeepALiveFlag);
-            else
+            //if (msgBase.Flag == MessageFlag.KeepAlive)
+            //    OnClientStatusChanged(ClientStatus.ReceivingKeepALiveFlag);
+            //else
             {
                 OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
                 ProcessServerMessage(serverStr, msgBase);
