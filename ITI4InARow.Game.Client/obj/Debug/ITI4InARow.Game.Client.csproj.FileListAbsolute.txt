@@ -64,3 +64,9 @@ C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Micros
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.RoomsForm.resources
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.Design.dll
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.UI.GameUI.resources
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.UI.exe
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.UI.pdb
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.UI.GameUI.resources
+C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.RoomsForm.resources
