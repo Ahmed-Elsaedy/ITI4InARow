@@ -37,7 +37,6 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-            m_GameMove = new GameUpdateMessage();
             //m_GameMove.TokenPosition = (int)myShape.Tag;
             //m_GameMove.MsgType = MessageType.GameUpdateMessage;
             ////m_GameMove.PlayerID = 
@@ -146,24 +145,15 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-                    panel_GameSurface.Enabled = true;
-
-                    if (e.TokenPosition >= 0)
-                    
-                    
-                     
+                    panel_GameSurface.Enabled = true;                     
                     if (e.TokenPosition>=0)
                     {
                         MessageBox.Show("other player played Action");
                     }
-
-
                     //apply the action that come from server 
                     m_GameMove = e;
-
                     MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     //apaly the action that come from server 
-
                     break;
 
                 case GameUpdateStatus.GameLeave:

@@ -73,7 +73,7 @@
             {
                 string str = JsonConvert.SerializeObject(msg);
                 client.Writer.Write(str);
-                client.Writer.Flush();
+                //client.Writer.Flush();
             }
             catch (Exception ex)
             {

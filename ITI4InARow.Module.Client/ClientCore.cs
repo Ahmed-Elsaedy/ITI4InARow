@@ -53,7 +53,8 @@
                 {
                     OnClientStatusChanged(ClientStatus.ConnectionException);
                     OnClientStatusChanged(ClientStatus.ClientDisconnected);
-                    break;
+                    throw;
+                    //break;
                 }
             }
         }
@@ -68,7 +69,7 @@
                 OnClientStatusChanged(ClientStatus.SendingClientMessage);
                 string str = JsonConvert.SerializeObject(message);
                 _Writer.Write(str);
-                _Writer.Flush();
+                //_Writer.Flush();
             }
             catch (Exception)
             {
