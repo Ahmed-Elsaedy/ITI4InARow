@@ -17,7 +17,7 @@
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
         {
             client.NickName = msg.Name;
-            SendMessageToClient(client, msg);
+            SendMessageToClient(client, msg);//msg.client id =client.cliect id
         }
         protected override void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)
         {
@@ -79,7 +79,7 @@
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
                     _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(client, msg);
+                    bool win = GameAction(client, msg);//error -_- ////////exception A7eeeh el dictinary bydrb hna ya s3eeedy 
                     _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
                     {
