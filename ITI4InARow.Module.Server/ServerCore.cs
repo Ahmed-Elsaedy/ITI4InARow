@@ -55,7 +55,7 @@
             {
                 try
                 {
-                    var str = serverClient.Reader.ReadString();
+                    string str = serverClient.Reader.ReadString();
                     MessageBase msgObj = JsonConvert.DeserializeObject<MessageBase>(str);
                     OnMessageRecieved(serverClient, str, msgObj);
                 }
@@ -75,10 +75,11 @@
                 client.Writer.Write(str);
                 //client.Writer.Flush();
             }
-            catch (Exception ex)
+            catch (IOException ex)
             {
                 OnServerStatusChanged(ServerStatus.ConnectionException, client);
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
+                Console.WriteLine("IO Server " + ex.Message);
             }
         }
         public void BroadcastToClients(MessageBase msg, ServerClient source = null)

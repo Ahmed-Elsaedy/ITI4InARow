@@ -48,13 +48,22 @@
                     MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
                     OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
                     ProcessServerMessage(str, msgBase);
+                    //_Reader.Close();
+                }
+                catch (EndOfStreamException ex)
+                {
+                    Console.WriteLine("End : "+ex.Message);
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine("IO: "+ex.Message);
+
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine("GENERAL : "+ex.Message);
                     OnClientStatusChanged(ClientStatus.ConnectionException);
                     OnClientStatusChanged(ClientStatus.ClientDisconnected);
-                    throw;
-                    //break;
                 }
             }
         }
@@ -69,11 +78,13 @@
                 OnClientStatusChanged(ClientStatus.SendingClientMessage);
                 string str = JsonConvert.SerializeObject(message);
                 _Writer.Write(str);
-                //_Writer.Flush();
+                _Writer.Flush();
             }
-            catch (Exception)
+            catch (IOException ex)
             {
-                OnClientStatusChanged(ClientStatus.ConnectionException);
+                Console.WriteLine("IO Client: ", ex.Message);
+                throw;
+                 OnClientStatusChanged(ClientStatus.ConnectionException);
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
             }
         }
