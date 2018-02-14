@@ -40,7 +40,6 @@ namespace ITI4InARow.Game.Client
             this._MenuItemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItem_Game = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemSRooms = new System.Windows.Forms.ToolStripMenuItem();
-            this.userCustomizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStrip = new System.Windows.Forms.StatusStrip();
             this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel_GameSurface = new ITI4InARow.Game.UI.GameUI();
@@ -92,8 +91,7 @@ namespace ITI4InARow.Game.Client
             // menuItem_Game
             // 
             this.menuItem_Game.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._MenuItemSRooms,
-            this.userCustomizationToolStripMenuItem});
+            this._MenuItemSRooms});
             this.menuItem_Game.Name = "menuItem_Game";
             this.menuItem_Game.Size = new System.Drawing.Size(50, 20);
             this.menuItem_Game.Text = "Game";
@@ -101,16 +99,9 @@ namespace ITI4InARow.Game.Client
             // _MenuItemSRooms
             // 
             this._MenuItemSRooms.Name = "_MenuItemSRooms";
-            this._MenuItemSRooms.Size = new System.Drawing.Size(177, 22);
+            this._MenuItemSRooms.Size = new System.Drawing.Size(155, 22);
             this._MenuItemSRooms.Text = "Server Rooms...";
             this._MenuItemSRooms.Click += new System.EventHandler(this._MenuItemSRooms_Click);
-            // 
-            // userCustomizationToolStripMenuItem
-            // 
-            this.userCustomizationToolStripMenuItem.Name = "userCustomizationToolStripMenuItem";
-            this.userCustomizationToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.userCustomizationToolStripMenuItem.Text = "User Customization";
-            this.userCustomizationToolStripMenuItem.Click += new System.EventHandler(this.userCustomizationToolStripMenuItem_Click);
             // 
             // _StatusStrip
             // 
@@ -215,7 +206,6 @@ namespace ITI4InARow.Game.Client
         private ToolStripMenuItem menuItem_Game;
         private ToolStripMenuItem menuItem_Server;
         private UI.GameUI panel_GameSurface;
-        private ToolStripMenuItem userCustomizationToolStripMenuItem;
         private ColorDialog colorDialog1;
         private Microsoft.VisualBasic.PowerPacks.Printing.PrintForm printForm1;
         

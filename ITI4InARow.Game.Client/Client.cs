@@ -22,7 +22,6 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-
             try
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
@@ -38,7 +37,12 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-
+            m_GameMove = new GameUpdateMessage();
+            //m_GameMove.TokenPosition = (int)myShape.Tag;
+            //m_GameMove.MsgType = MessageType.GameUpdateMessage;
+            ////m_GameMove.PlayerID = 
+            //m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
+            //m_Client.SendMessageToServer(m_GameMove);
         }
 
         private void _MenuItemConnect_Click(object sender, EventArgs e)
@@ -145,11 +149,21 @@ namespace ITI4InARow.Game.Client
                     panel_GameSurface.Enabled = true;
 
                     if (e.TokenPosition >= 0)
+                    
+                    
+                     
+                    if (e.TokenPosition>=0)
                     {
                         MessageBox.Show("other player played Action");
                     }
 
+
                     //apply the action that come from server 
+                    m_GameMove = e;
+
+                    MessageBox.Show(m_GameMove.TokenPosition.ToString());
+                    //apaly the action that come from server 
+
                     break;
 
                 case GameUpdateStatus.GameLeave:
