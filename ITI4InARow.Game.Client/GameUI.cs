@@ -20,24 +20,15 @@ namespace ITI4InARow.Game.UI
         bool isGameRunning;
         int playersMovesCount;
         Color defaultOvalColor;
-        List<int> NorthBanned;
-        List<int> SouthBanned;
+        //List<int> NorthBanned;
+        //List<int> SouthBanned;
 
         public GameUI()
         {
             InitializeComponent();
             InitGame();
-            //OvalShape ovalShape3 = new OvalShape(shapeContainer1);
-            //ovalShape3.Size = new Size(90, 90);
-            //ovalShape3.Location = new Point(150, 90);
-
-            //ovalShape3.FillStyle = FillStyle.Solid;
-            //ovalShape3.FillColor = Color.Azure;
-            //shapeContainer1.ForeColor = Color.Green;
-            NorthBanned = new List<int> { 1, 2, 3, 7, 8, 9, 13, 14, 15, 19, 20, 21, 25, 26, 27, 31, 32, 33, 37, 38, 39 };
-            SouthBanned = new List<int> { 4, 5, 6, 10, 11, 12, 16, 17, 18, 22, 23, 24, 28, 29, 30, 34, 35, 36, 40, 41, 42 };
-
-
+            //NorthBanned = new List<int> { 1, 2, 3, 7, 8, 9, 13, 14, 15, 19, 20, 21, 25, 26, 27, 31, 32, 33, 37, 38, 39 };
+            //SouthBanned = new List<int> { 4, 5, 6, 10, 11, 12, 16, 17, 18, 22, 23, 24, 28, 29, 30, 34, 35, 36, 40, 41, 42 };
         }
 
         private void InitGame()
@@ -50,35 +41,8 @@ namespace ITI4InARow.Game.UI
             playersMovesCount = 0;
             defaultOvalColor = Color.White;
         }
-        private void ovalShape2_Click(object sender, EventArgs e)
-        {
-            //ovalShape1.FillColor = Color.Aqua;
-
-            //MessageBox.Show(ovalShape1.Tag.ToString());
-            //if (shapeContainer1.Shapes.Contains((Shape)sender))
-            //{
-            //    MessageBox.Show(((Shape)sender).ToString());
-            //}
-
-
-        }
-
-        private void ovalShape41_MouseClick(object sender, MouseEventArgs e)
-        {
-            //ovalShape41.FillColor = Color.Blue;
-        }
-
         private void GameUI_Load(object sender, EventArgs e)
         {
-            /*
-            for (int i = 0; i < 42; i++)
-            {
-                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).Tag = i + 1;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseClick += GameUI_MouseClick;
-                //((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseEnter += GameUI_MouseEnter;
-              // ((OvalShape)shapeContainer1.Shapes.get_Item(i)).MouseLeave += GameUI_Leave;
-
-             }*/
             int index = 1;
             foreach (OvalShape oval in shapeContainer1.Shapes)
             {
@@ -90,7 +54,6 @@ namespace ITI4InARow.Game.UI
             }
 
         }
-
         private void GameUI_Leave(object sender, EventArgs e)
         {
             ((OvalShape)sender).BorderColor = Color.Black;
@@ -115,8 +78,6 @@ namespace ITI4InARow.Game.UI
         {
             GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
         }
-
-
         public void GameLogic(int TokenPosition)
         {
             Color TokenColor;
@@ -234,7 +195,6 @@ namespace ITI4InARow.Game.UI
             return true;
 
         }
-
         private void GameUI_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult res = MessageBox.Show("you will lose the game !", "watch out!", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -248,7 +208,6 @@ namespace ITI4InARow.Game.UI
             }
 
         }
-
         private void BtnReset_Click(object sender, EventArgs e)
         {
             InitGame();
@@ -269,7 +228,6 @@ namespace ITI4InARow.Game.UI
 
 
         }
-
         public event EventHandler<OvalShape> PlayerAction;
     }
 }
