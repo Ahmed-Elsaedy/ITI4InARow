@@ -22,12 +22,12 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-            //m_GameMove = new GameUpdateMessage();
-            m_GameMove.TokenPosition = (int)myShape.Tag;
-            m_GameMove.MsgType = MessageType.GameUpdateMessage;
-            //m_GameMove.PlayerID = 
-            m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
-            m_Client.SendMessageToServer(m_GameMove);
+            m_GameMove = new GameUpdateMessage();
+            //m_GameMove.TokenPosition = (int)myShape.Tag;
+            //m_GameMove.MsgType = MessageType.GameUpdateMessage;
+            ////m_GameMove.PlayerID = 
+            //m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
+            //m_Client.SendMessageToServer(m_GameMove);
 
         }
 
@@ -116,16 +116,21 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
+                    m_GameMove = e;
                     break;
 
                 case GameUpdateStatus.PlayerMove:
                     panel_GameSurface.Enabled = true;
-                    m_GameMove = e.Copy();
+                    
+                    
+                     
                     if (e.TokenPosition>=0)
                     {
                         MessageBox.Show("other player played Action"); 
                     }
                     m_GameMove = e;
+
+                    MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     //apaly the action that come from server 
                     break;
 
