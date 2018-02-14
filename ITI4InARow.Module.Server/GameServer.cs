@@ -12,7 +12,6 @@
         public GameServer(byte[] ipAddress, int port) : base(ipAddress, port)
         {
             _RoomsMessages = new Dictionary<int, RoomUpdateMessage>();
-            _RoomsMessages = new Dictionary<int, RoomUpdateMessage>();
             _RoomsData = new Dictionary<int, ServerRoom>();
         }
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
@@ -90,7 +89,7 @@
                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
-                        // Game Draw
+                        //Game Draw
                     }
                     else if (win)
                     {

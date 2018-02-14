@@ -44,8 +44,6 @@ namespace ITI4InARow.Game.Client
             this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel_GameSurface = new ITI4InARow.Game.UI.GameUI();
             this.btn_LeaveGame = new System.Windows.Forms.Button();
-            this.btn_GameMove = new System.Windows.Forms.Button();
-            this.lbl_Title = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.printForm1 = new Microsoft.VisualBasic.PowerPacks.Printing.PrintForm(this.components);
             this._MainMenu.SuspendLayout();
@@ -123,8 +121,6 @@ namespace ITI4InARow.Game.Client
             this.panel_GameSurface.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
             this.panel_GameSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel_GameSurface.Controls.Add(this.btn_LeaveGame);
-            this.panel_GameSurface.Controls.Add(this.btn_GameMove);
-            this.panel_GameSurface.Controls.Add(this.lbl_Title);
             this.panel_GameSurface.Location = new System.Drawing.Point(0, 27);
             this.panel_GameSurface.Name = "panel_GameSurface";
             this.panel_GameSurface.Size = new System.Drawing.Size(949, 628);
@@ -139,26 +135,6 @@ namespace ITI4InARow.Game.Client
             this.btn_LeaveGame.Text = "Leave Game";
             this.btn_LeaveGame.UseVisualStyleBackColor = true;
             this.btn_LeaveGame.Click += new System.EventHandler(this.btn_LeaveGame_Click);
-            // 
-            // btn_GameMove
-            // 
-            this.btn_GameMove.Location = new System.Drawing.Point(824, 58);
-            this.btn_GameMove.Name = "btn_GameMove";
-            this.btn_GameMove.Size = new System.Drawing.Size(138, 23);
-            this.btn_GameMove.TabIndex = 1;
-            this.btn_GameMove.Text = "Simulate Game Move";
-            this.btn_GameMove.UseVisualStyleBackColor = true;
-            this.btn_GameMove.Click += new System.EventHandler(this.btn_GameMove_Click);
-            // 
-            // lbl_Title
-            // 
-            this.lbl_Title.AutoSize = true;
-            this.lbl_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Title.Location = new System.Drawing.Point(828, 29);
-            this.lbl_Title.Name = "lbl_Title";
-            this.lbl_Title.Size = new System.Drawing.Size(130, 24);
-            this.lbl_Title.TabIndex = 0;
-            this.lbl_Title.Text = "Gaming Mode";
             // 
             // printForm1
             // 
@@ -186,7 +162,6 @@ namespace ITI4InARow.Game.Client
             this._StatusStrip.ResumeLayout(false);
             this._StatusStrip.PerformLayout();
             this.panel_GameSurface.ResumeLayout(false);
-            this.panel_GameSurface.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,9 +175,7 @@ namespace ITI4InARow.Game.Client
         private System.Windows.Forms.ToolStripMenuItem _MenuItemSRooms;
         private System.Windows.Forms.StatusStrip _StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel _stl_Connection;
-        private System.Windows.Forms.Button btn_GameMove;
         private System.Windows.Forms.Button btn_LeaveGame;
-        private Label lbl_Title;
         private ToolStripMenuItem menuItem_Game;
         private ToolStripMenuItem menuItem_Server;
         private UI.GameUI panel_GameSurface;

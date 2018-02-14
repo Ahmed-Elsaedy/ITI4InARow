@@ -64,22 +64,5 @@ namespace ITI4InARow.Game.Server
         {
             _lbxOutput.Items.Clear();
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            TcpClient client = new TcpClient();
-            client.Connect(new IPAddress(new byte[] { 127, 0, 0, 1 }), 5031);
-            //NetworkStream nStream = client.GetStream();
-            //byte[] outStream = Encoding.ASCII.GetBytes("mY mESSAGE");
-            //nStream.Write(outStream, 0, outStream.Length);
-            //nStream.Flush();
-
-            //byte[] inStream = new byte[10025];
-            //nStream.Read(inStream, 0, outStream.Length);
-            //string data = Encoding.ASCII.GetString(inStream);
-            //nStream.Dispose();
-            //client.Close();
-
-        }
     }
 }

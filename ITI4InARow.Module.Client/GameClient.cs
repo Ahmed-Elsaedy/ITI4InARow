@@ -6,7 +6,7 @@
     public class GameClient : ClientCore
     {
         public int ClientID { get; private set; }
-        public string NickName { get; private set; }
+        public string NickName { get; set; }
         public string UserColor { get; set; }
 
         protected override void OnProfileUpdateMessage(ProfileUpdateMessage msg)

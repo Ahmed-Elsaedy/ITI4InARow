@@ -75,7 +75,11 @@
                 client.Writer.Write(str);
                 //client.Writer.Flush();
             }
-            catch (Exception ex)
+            catch (EndOfStreamException)
+            {
+                
+            }
+            catch
             {
                 OnServerStatusChanged(ServerStatus.ConnectionException, client);
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
@@ -83,28 +87,29 @@
         }
         public void BroadcastToClients(MessageBase msg, ServerClient source = null)
         {
+            //need to call this by refrish button in clint rooms 
             if (source != null)
-                (from x in _Clients
-                 where x.ClientID != source.ClientID
-                 select x).ToList().ForEach(x => SendMessageToClient(x, msg));
+                (from c in _Clients
+                 where c.ClientID != source.ClientID
+                 select c).ToList().ForEach(f => SendMessageToClient(f, msg));
             else
                 foreach (ServerClient client in _Clients)
                     SendMessageToClient(client, msg);
         }
-        private void OnMessageRecieved(ServerClient client, string msgStr, MessageBase msgObj)
+        private void OnMessageRecieved(ServerClient Server_client, string msgStr, MessageBase msgObj)
         {
-            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgObj, client.Client.Client.Handle.ToInt32()));
-            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, client);
+            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgObj, Server_client.tcp_Server_Client.Client.Handle.ToInt32()));
+            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, Server_client);
             switch (msgObj.MsgType)
             {
                 case MessageType.ProfileUpdateMessage:
-                    OnProfileUpdateMessage(client, JsonConvert.DeserializeObject<ProfileUpdateMessage>(msgStr));
+                    OnProfileUpdateMessage(Server_client, JsonConvert.DeserializeObject<ProfileUpdateMessage>(msgStr));
                     break;
                 case MessageType.RoomUpdateMessage:
-                    OnRoomUpdateMessage(client, JsonConvert.DeserializeObject<RoomUpdateMessage>(msgStr));
+                    OnRoomUpdateMessage(Server_client, JsonConvert.DeserializeObject<RoomUpdateMessage>(msgStr));
                     break;
                 case MessageType.GameUpdateMessage:
-                    OnGameUpdateMessage(client, JsonConvert.DeserializeObject<GameUpdateMessage>(msgStr));
+                    OnGameUpdateMessage(Server_client, JsonConvert.DeserializeObject<GameUpdateMessage>(msgStr));
                     break;
             }
         }
@@ -123,6 +128,12 @@
                     break;
                 case ServerStatus.ClientConnected:
                     _Clients.Add(serverClient);
+                    break;
+                case ServerStatus.ProcessingIncommingMessage:
+                    //s3edy you didnt implement this 
+                    break;
+                case ServerStatus.ListeningForClient:
+                    //w de kman ya s3edy msh ma3molaha implementation
                     break;
             }
             ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, serverClient));
@@ -143,31 +154,32 @@
         protected ServerClient this[int handle] =>
             _Clients.SingleOrDefault<ServerClient>(x => (x.ClientID == handle));
     }
-
+    /// <summary>
+    /// this is client class in server 
+    /// </summary>
     public class ServerClient
     {
-        public TcpClient Client { get; private set; }
+        public TcpClient tcp_Server_Client { get; private set; }
         public NetworkStream Stream { get; private set; }
         public BinaryReader Reader { get; private set; }
         public BinaryWriter Writer { get; private set; }
-        public int ClientID => Client.Client.Handle.ToInt32();
+        public int ClientID => tcp_Server_Client.Client.Handle.ToInt32();
         public string NickName { get; set; }
         public ServerClient(TcpClient client)
         {
-            Client = client;
+            tcp_Server_Client = client;
             Stream = client.GetStream();
             Reader = new BinaryReader(Stream);
             Writer = new BinaryWriter(Stream);
         }
         public override string ToString() =>
-            string.Format("{0}: {1} => {1}", ClientID, Client.Client.LocalEndPoint, Client.Client.RemoteEndPoint);
+            string.Format("{0}: {1} => {2}  -> {3}", ClientID, tcp_Server_Client.Client.LocalEndPoint, tcp_Server_Client.Client.RemoteEndPoint,NickName);
         public void Dispose()
         {
             Reader.Dispose();
             Writer.Dispose();
             Stream.Dispose();
-            Client.Dispose();
+            tcp_Server_Client.Dispose();
         }
     }
 }
-

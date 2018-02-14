@@ -18,6 +18,7 @@ namespace ITI4InARow.Game.Client
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             panel_GameSurface.PlayerAction += Panel_GameSurface_PlayerAction;
+            panel_GameSurface.BorderStyle = BorderStyle.None;
         }
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
@@ -37,11 +38,6 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-            //m_GameMove.TokenPosition = (int)myShape.Tag;
-            //m_GameMove.MsgType = MessageType.GameUpdateMessage;
-            ////m_GameMove.PlayerID = 
-            //m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
-            //m_Client.SendMessageToServer(m_GameMove);
         }
 
         private void _MenuItemConnect_Click(object sender, EventArgs e)
@@ -55,6 +51,7 @@ namespace ITI4InARow.Game.Client
                 m_Client.ClientStatusChanged += new EventHandler<ClientActionEventArgs>(Client_ClientStatusChanged);
                 m_Client.GameUpdateMessage += new EventHandler<GameUpdateMessage>(Client_GameUpdateMessage);
                 m_Client.ConnectClient(form.IPAddress, form.Port);
+                m_Client.NickName = form.NickName;
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
                     Name = form.NickName
@@ -93,8 +90,7 @@ namespace ITI4InARow.Game.Client
         private void btn_GameMove_Click(object sender, EventArgs e)
         {
             m_Client.SendMessageToServer(m_GameMove);
-            btn_GameMove.Enabled = false;
-
+            //btn_GameMove.Enabled = false;
         }
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
@@ -172,48 +168,13 @@ namespace ITI4InARow.Game.Client
         {
             m_RoomsForm.Hide();
             panel_GameSurface.Show();
-            btn_GameMove.Enabled = false;
-            m_GameMove = null;
+            //btn_GameMove.Enabled = false;
+            //m_GameMove = null;
         }
 
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
         }
-
-        private void userCustomizationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            colorDialog1.ShowDialog();
-
-            if (colorDialog1.Color != null)
-            {
-                try
-                {
-                    m_Client.SendMessageToServer(new ProfileUpdateMessage()
-                    {
-                        UserColor = colorDialog1.Color.Name
-
-
-                    });
-                }
-                catch (NullReferenceException)
-                {
-                    MessageBox.Show("You are not connected Yet", "New Room Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-
-            }
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //m_GameMove.TokenPosition = 
-        }
-
-
     }
 }

@@ -44,17 +44,21 @@
             {
                 try
                 {
+                    //_Reader = new BinaryReader(_Stream);
                     string str = _Reader.ReadString();
                     MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
                     OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
                     ProcessServerMessage(str, msgBase);
+                    
+                    
                 }
-                catch (Exception ex)
+                catch (EndOfStreamException) { }
+                catch (IOException) { }
+                catch (Exception)
                 {
                     OnClientStatusChanged(ClientStatus.ConnectionException);
                     OnClientStatusChanged(ClientStatus.ClientDisconnected);
                     throw;
-                    //break;
                 }
             }
         }
@@ -66,10 +70,12 @@
         {
             try
             {
+                //BinaryWriter _Writer = new BinaryWriter(_Stream);
                 OnClientStatusChanged(ClientStatus.SendingClientMessage);
                 string str = JsonConvert.SerializeObject(message);
                 _Writer.Write(str);
-                //_Writer.Flush();
+                _Writer.Flush();
+                
             }
             catch (Exception)
             {
@@ -98,6 +104,9 @@
                     {
                        // MessageBox.Show(ex.Message);
                     }
+                    break;
+                case ClientStatus.ListeningForServer:
+                    //s3edy you didnt implement this 
                     break;
             }
             ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));
