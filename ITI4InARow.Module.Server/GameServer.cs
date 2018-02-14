@@ -9,7 +9,6 @@
         private Dictionary<int, RoomUpdateMessage> _RoomsMessages;
         private Dictionary<int, ServerRoom> _RoomsData;
 
-
         public GameServer(byte[] ipAddress, int port) : base(ipAddress, port)
         {
             _RoomsMessages = new Dictionary<int, RoomUpdateMessage>();

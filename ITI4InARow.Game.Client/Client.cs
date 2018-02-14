@@ -45,9 +45,9 @@ namespace ITI4InARow.Game.Client
 
         private void _MenuItemDisconnect_Click(object sender, EventArgs e)
         {
+            m_Client.DisconnectClient();
             m_Client.ClientStatusChanged -= new EventHandler<ClientActionEventArgs>(Client_ClientStatusChanged);
             m_Client.GameUpdateMessage -= new EventHandler<GameUpdateMessage>(Client_GameUpdateMessage);
-            m_Client.DisconnectClient();
             m_RoomsForm.UnloadForm();
             m_RoomsForm = null;
             m_Client = null;

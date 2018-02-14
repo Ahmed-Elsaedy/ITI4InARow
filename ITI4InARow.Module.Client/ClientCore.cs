@@ -9,23 +9,27 @@
     using System.Net;
     using System.Net.Sockets;
     using System.Runtime.CompilerServices;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     public class ClientCore
     {
         private TcpClient _Client;
-        private DateTime _LastKeepALive;
-        private List<MessageBase> _Queue = null;
+        private NetworkStream _Stream;
+        private BinaryReader _Reader;
+        private BinaryWriter _Writer;
 
         public void ConnectClient(byte[] ipAddress, int port)
         {
             _Client = new TcpClient();
-            _Queue = new List<MessageBase>();
             try
             {
                 _Client.Connect(new IPAddress(ipAddress), port);
                 OnClientStatusChanged(ClientStatus.ClientConnected);
+                _Stream = _Client.GetStream();
+                _Writer = new BinaryWriter(_Stream);
+                _Reader = new BinaryReader(_Stream);
                 Task.Run(() => ClientMainThread(_Client));
             }
             catch (SocketException)
@@ -35,44 +39,23 @@
         }
         private void ClientMainThread(TcpClient request)
         {
-            _LastKeepALive = DateTime.Now;
             OnClientStatusChanged(ClientStatus.ListeningForServer);
-            using (NetworkStream stream = request.GetStream())
-            using (BinaryReader reader = new BinaryReader(stream))
-            using (BinaryWriter writer = new BinaryWriter(stream))
+            while (true)
             {
-                while (true)
+                try
                 {
-                    MonitorKeepALiveTime();
-                    try
-                    {
-                        if (stream.DataAvailable)
-                        {
-                            string str = reader.ReadString();
-                            MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
-                            ReadingMessageFlag(str, msgBase);
-                        }
-                        if (_Queue.Count > 0)
-                        {
-                            MessageBase base3 = _Queue[0];
-                            if (base3.Flag == MessageFlag.KeepAlive)
-                                OnClientStatusChanged(ClientStatus.SendingKeepALiveFlag);
-                            else
-                                OnClientStatusChanged(ClientStatus.SendingClientMessage);
-                            string str2 = JsonConvert.SerializeObject(_Queue[0]);
-                            _Queue.RemoveAt(0);
-                            writer.Write(str2);
-                            writer.Flush();
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        OnClientStatusChanged(ClientStatus.ConnectionException);
-                        break;
-                    }
+                    string str = _Reader.ReadString();
+                    MessageBase msgBase = JsonConvert.DeserializeObject<MessageBase>(str);
+                    OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
+                    ProcessServerMessage(str, msgBase);
+                }
+                catch (Exception ex)
+                {
+                    OnClientStatusChanged(ClientStatus.ConnectionException);
+                    OnClientStatusChanged(ClientStatus.ClientDisconnected);
+                    break;
                 }
             }
-            OnClientStatusChanged(ClientStatus.ClientDisconnected);
         }
         public void DisconnectClient()
         {
@@ -80,19 +63,17 @@
         }
         public void SendMessageToServer(MessageBase message)
         {
-            _Queue.Add(message);
-        }
-        private void MonitorKeepALiveTime()
-        {
-            TimeSpan span = (TimeSpan)(DateTime.Now - _LastKeepALive);
-            if (span.TotalSeconds > 2.0)
+            try
             {
-                _LastKeepALive = DateTime.Now;
-                MessageBase message = new MessageBase
-                {
-                    Flag = MessageFlag.KeepAlive
-                };
-                SendMessageToServer(message);
+                OnClientStatusChanged(ClientStatus.SendingClientMessage);
+                string str = JsonConvert.SerializeObject(message);
+                _Writer.Write(str);
+                _Writer.Flush();
+            }
+            catch (Exception ex)
+            {
+                OnClientStatusChanged(ClientStatus.ConnectionException);
+                OnClientStatusChanged(ClientStatus.ClientDisconnected);
             }
         }
         private void OnClientStatusChanged(ClientStatus status)
@@ -100,9 +81,10 @@
             switch (status)
             {
                 case ClientStatus.ClientDisconnected:
-                case ClientStatus.ConnectionException:
-                    try { _Client.Close(); }
-                    catch { }
+                    _Reader.Dispose();
+                    _Writer.Dispose();
+                    _Stream.Dispose();
+                    _Client.Dispose();
                     break;
             }
             ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));
@@ -122,16 +104,6 @@
                 case MessageType.GameUpdateMessage:
                     OnGameUpdateMessage(JsonConvert.DeserializeObject<GameUpdateMessage>(serverStr));
                     break;
-            }
-        }
-        private void ReadingMessageFlag(string serverStr, MessageBase msgBase)
-        {
-            if (msgBase.Flag == MessageFlag.KeepAlive)
-                OnClientStatusChanged(ClientStatus.ReceivingKeepALiveFlag);
-            else
-            {
-                OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
-                ProcessServerMessage(serverStr, msgBase);
             }
         }
         protected virtual void OnProfileUpdateMessage(ProfileUpdateMessage msg)
