@@ -9,8 +9,8 @@ namespace ITI4InARow.Game.Client
 {
     public partial class Client : Form
     {
-        private  GameClient m_Client;
-        private GameUpdateMessage m_GameMove;
+        private GameClient m_Client;
+        private static GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
         public Client()
@@ -22,12 +22,22 @@ namespace ITI4InARow.Game.Client
 
         private void Panel_GameSurface_PlayerAction(object sender, OvalShape myShape)
         {
-            //m_GameMove = new GameUpdateMessage();
-            m_GameMove.TokenPosition = (int)myShape.Tag;
-            m_GameMove.MsgType = MessageType.GameUpdateMessage;
-            //m_GameMove.PlayerID = 
-            m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
-            m_Client.SendMessageToServer(m_GameMove);
+
+            try
+            {
+                m_GameMove.TokenPosition = (int)myShape.Tag;
+                m_GameMove.MsgType = MessageType.GameUpdateMessage;
+                m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
+                m_Client.SendMessageToServer(m_GameMove);
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
 
@@ -62,14 +72,26 @@ namespace ITI4InARow.Game.Client
 
         private void _MenuItemSRooms_Click(object sender, EventArgs e)
         {
-            m_RoomsForm.ShowDialog();
+            try
+            {
+                m_RoomsForm.ShowDialog();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("You are not connected Yet", "New Room Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void btn_GameMove_Click(object sender, EventArgs e)
         {
             m_Client.SendMessageToServer(m_GameMove);
             btn_GameMove.Enabled = false;
-            
+
         }
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
@@ -116,17 +138,18 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
+                    m_GameMove = e;
                     break;
 
                 case GameUpdateStatus.PlayerMove:
                     panel_GameSurface.Enabled = true;
-                    m_GameMove = e.Copy();
-                    if (e.TokenPosition>=0)
+
+                    if (e.TokenPosition >= 0)
                     {
-                        MessageBox.Show("other player played Action"); 
+                        MessageBox.Show("other player played Action");
                     }
-                    m_GameMove = e;
-                    //apaly the action that come from server 
+
+                    //apply the action that come from server 
                     break;
 
                 case GameUpdateStatus.GameLeave:
@@ -160,13 +183,23 @@ namespace ITI4InARow.Game.Client
 
             if (colorDialog1.Color != null)
             {
-
-                m_Client.SendMessageToServer(new ProfileUpdateMessage()
+                try
                 {
-                    UserColor = colorDialog1.Color.Name
+                    m_Client.SendMessageToServer(new ProfileUpdateMessage()
+                    {
+                        UserColor = colorDialog1.Color.Name
 
 
-                });
+                    });
+                }
+                catch (NullReferenceException)
+                {
+                    MessageBox.Show("You are not connected Yet", "New Room Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
             }
 
@@ -177,6 +210,6 @@ namespace ITI4InARow.Game.Client
             //m_GameMove.TokenPosition = 
         }
 
-        
+
     }
 }

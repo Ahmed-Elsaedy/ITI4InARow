@@ -70,7 +70,7 @@
                 _Writer.Write(str);
                 _Writer.Flush();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 OnClientStatusChanged(ClientStatus.ConnectionException);
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
@@ -81,10 +81,22 @@
             switch (status)
             {
                 case ClientStatus.ClientDisconnected:
-                    _Reader.Dispose();
-                    _Writer.Dispose();
-                    _Stream.Dispose();
-                    _Client.Dispose();
+                    try
+                    {
+                        _Reader.Dispose();
+                        _Writer.Dispose();
+                        _Stream.Dispose();
+                        _Client.Dispose();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        //-_- show message in client form 
+                      //  MessageBox.Show("You are not connected Yet", "New Room Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch (Exception)
+                    {
+                       // MessageBox.Show(ex.Message);
+                    }
                     break;
             }
             ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));
