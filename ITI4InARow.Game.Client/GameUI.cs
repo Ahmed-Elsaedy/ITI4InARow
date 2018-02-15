@@ -188,7 +188,6 @@ namespace ITI4InARow.Game.UI
                 {
                     columns[4]--;
                 }
-
             }
             else if (TokenPosition >= 31 && TokenPosition <= 36)
             {
