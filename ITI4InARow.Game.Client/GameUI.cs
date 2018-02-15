@@ -31,8 +31,8 @@ namespace ITI4InARow.Game.UI
         {
             columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
             playerTurn = true;
-            player1Color = Color.Purple;
-            player2Color = Color.SpringGreen;
+           // player1Color = Color.Purple;
+            //player2Color = Color.SpringGreen;
             playersMovesCount = 0;
             defaultOvalColor = Color.White;
         }
@@ -78,8 +78,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[0] > 0)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[0]--;
                     }
                 }
@@ -88,8 +88,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[1] > 6)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[1]--;
                     }
                 }
@@ -98,8 +98,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[2] > 12)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[2]--;
                     }
                 }
@@ -108,8 +108,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[3] > 18)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[3]--;
                     }
                 }
@@ -118,8 +118,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[4] > 24)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[4]--;
                     }
                 }
@@ -128,8 +128,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[5] > 30)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[5]--;
                     }
                 }
@@ -138,8 +138,8 @@ namespace ITI4InARow.Game.UI
                     if (columns[6] > 36)
                     {
                         ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = TokenColor;
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).Enabled = false;
+                        ovalClicked.FillColor = TokenColor;
+                        ovalClicked.Enabled = false;
                         columns[6]--;
                     }
                 }
