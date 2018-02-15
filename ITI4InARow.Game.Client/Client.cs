@@ -13,6 +13,8 @@ namespace ITI4InARow.Game.Client
         private static GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
+        private Color other_player_color;
+
         public Client()
         {
             InitializeComponent();
@@ -25,7 +27,7 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
-                
+
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
@@ -144,14 +146,14 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-                    panel_GameSurface.Enabled = true;                     
-                    if (e.TokenPosition>=0)
+                    panel_GameSurface.Enabled = true;
+                    if (e.TokenPosition >= 0)
                     {
                         MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
                     //apply the action that come from server 
                     m_GameMove = e;
-                    
+
                     //apaly the action that come from server 
                     break;
 
@@ -171,6 +173,7 @@ namespace ITI4InARow.Game.Client
         {
             m_RoomsForm.Hide();
             panel_GameSurface.Show();
+            panel_GameSurface.player1Color = ChosenColor;
             //btn_GameMove.Enabled = false;
             //m_GameMove = null;
         }
