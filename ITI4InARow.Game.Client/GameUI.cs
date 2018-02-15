@@ -168,14 +168,30 @@ namespace ITI4InARow.Game.UI
             }
         }
 
-        internal void applay_Other_Clint_Action(int tokenPosition)
+        internal void Apply_Other_Client_Action(int TokenPosition)
         {
             //E3mel el implemntion hena 
-            MessageBox.Show(tokenPosition.ToString());
+            //MessageBox.Show(tokenPosition.ToString());
+            Color TokenColor;
+            if (isGameRunning)
+            {
+                playersMovesCount++;
+                if (playerTurn)
+                {
+                    TokenColor = player1Color;
+                }
+                else
+                {
+                    TokenColor = player2Color;
+                }
+                playerTurn = !playerTurn;
+                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
+
+            }
         }
 
-        bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
-        {
+            bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
+               {
             // Tag
             // Color
             // 
