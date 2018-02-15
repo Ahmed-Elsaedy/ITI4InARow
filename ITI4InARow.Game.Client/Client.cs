@@ -30,7 +30,7 @@ namespace ITI4InARow.Game.Client
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
-                panel_GameSurface.Enabled = false;
+                panel_GameSurface.isGameRunning = false;
             }
             catch (NullReferenceException)
             {
@@ -131,11 +131,11 @@ namespace ITI4InARow.Game.Client
                     panel_GameSurface.player2Color = Color.Red;
                     if (e.IsGameRunning)
                     {
-                        panel_GameSurface.Enabled = true;
+                        panel_GameSurface.isGameRunning = true;
                     }
                     else
                     {
-                        panel_GameSurface.Enabled = false;
+                        panel_GameSurface.isGameRunning = false;
                     }
                     m_GameMove = e;
                     break;
@@ -147,16 +147,16 @@ namespace ITI4InARow.Game.Client
                     //apply the action that come from server 
                     if (e.IsGameRunning)
                     {
-                        panel_GameSurface.Enabled = true; 
+                        panel_GameSurface.isGameRunning = true; 
                     }
                     else
                     {
-                        panel_GameSurface.Enabled = true;
+                        panel_GameSurface.isGameRunning = true;
                     }
 
                     if (e.TokenPosition>-1)
                     {
-                        MessageBox.Show(m_GameMove.TokenPosition.ToString());
+                        //MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
                     //apaly the action that come from server 
                      break;
