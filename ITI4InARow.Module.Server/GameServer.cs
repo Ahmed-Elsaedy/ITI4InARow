@@ -61,9 +61,9 @@
                         Player2Color = client.PreferedColor,
                         PlayerID = msg.Player1ID
                     };
-                    //message2.IsGameRunning = true;
+                    message2.IsGameRunning = true;
                     SendMessageToClient(base[msg.Player1ID], message2);
-                   // message2.IsGameRunning = false;
+                    message2.IsGameRunning = false;
                     SendMessageToClient(base[msg.Player2ID], message2.Copy());
                     break;
             }

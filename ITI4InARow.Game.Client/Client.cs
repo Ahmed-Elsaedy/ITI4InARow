@@ -25,7 +25,7 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
-                
+
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
@@ -134,7 +134,7 @@ namespace ITI4InARow.Game.Client
                     {
                         panel_GameSurface.isGameRunning = true;
                     }
-                    else
+                    else if (!e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = false;
                     }
@@ -148,14 +148,14 @@ namespace ITI4InARow.Game.Client
                     //apply the action that come from server 
                     if (e.IsGameRunning)
                     {
-                        panel_GameSurface.isGameRunning = true; 
+                        panel_GameSurface.isGameRunning = true;
                     }
                     else if (!e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;
                     }
                     //apaly the action that come from server 
-                     break;
+                    break;
 
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
