@@ -15,8 +15,8 @@ namespace ITI4InARow.Game.UI
     {
         int[] columns;
         bool playerTurn;
-        Color player1Color;
-        Color player2Color;
+        public Color player1Color;
+        public Color player2Color;
         bool isGameRunning;
         int playersMovesCount;
         Color defaultOvalColor;

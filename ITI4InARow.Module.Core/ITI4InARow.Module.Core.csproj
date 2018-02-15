@@ -44,7 +44,6 @@
     <Compile Include="Messages\GameUpdateMessage.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="MessageBase.cs" />
-    <Compile Include="MessageRevievedEventArgs.cs" />
     <Compile Include="Messages\ProfileUpdateMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Messages\RoomUpdateMessage.cs" />
