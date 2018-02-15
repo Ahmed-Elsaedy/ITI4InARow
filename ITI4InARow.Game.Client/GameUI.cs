@@ -20,15 +20,11 @@ namespace ITI4InARow.Game.UI
         bool isGameRunning;
         int playersMovesCount;
         Color defaultOvalColor;
-        //List<int> NorthBanned;
-        //List<int> SouthBanned;
 
         public GameUI()
         {
             InitializeComponent();
             InitGame();
-            //NorthBanned = new List<int> { 1, 2, 3, 7, 8, 9, 13, 14, 15, 19, 20, 21, 25, 26, 27, 31, 32, 33, 37, 38, 39 };
-            //SouthBanned = new List<int> { 4, 5, 6, 10, 11, 12, 16, 17, 18, 22, 23, 24, 28, 29, 30, 34, 35, 36, 40, 41, 42 };
         }
 
         private void InitGame()
@@ -176,6 +172,7 @@ namespace ITI4InARow.Game.UI
             if (isGameRunning)
             {
                 playersMovesCount++;
+                playerTurn = !playerTurn;
                 if (playerTurn)
                 {
                     TokenColor = player1Color;
@@ -184,9 +181,7 @@ namespace ITI4InARow.Game.UI
                 {
                     TokenColor = player2Color;
                 }
-                playerTurn = !playerTurn;
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
-
             }
         }
 
