@@ -55,7 +55,7 @@ namespace ITI4InARow.Game.Client
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
                     PlayerName = form.NickName,
-                    PlayerColor = ChosenColor.ToString()
+                    PlayerColor = ChosenColor.Name.ToString()
                 };
                 m_Client.SendMessageToServer(message);
             }
@@ -128,7 +128,7 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
-                    panel_GameSurface.player2Color = Color.Red;
+                    panel_GameSurface.player2Color = Color.FromName(e.Player2Color);
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;
