@@ -16,7 +16,7 @@
         }
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
         {
-            client.NickName = msg.Name;
+            client.NickName = msg.PlayerName;
             SendMessageToClient(client, msg);
         }
         protected override void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)

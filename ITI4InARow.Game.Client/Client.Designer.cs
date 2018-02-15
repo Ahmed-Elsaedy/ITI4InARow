@@ -32,8 +32,6 @@ namespace ITI4InARow.Game.Client
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
             this._MainMenu = new System.Windows.Forms.MenuStrip();
             this.menuItem_Server = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +43,6 @@ namespace ITI4InARow.Game.Client
             this.panel_GameSurface = new ITI4InARow.Game.UI.GameUI();
             this.btn_LeaveGame = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.printForm1 = new Microsoft.VisualBasic.PowerPacks.Printing.PrintForm(this.components);
             this._MainMenu.SuspendLayout();
             this._StatusStrip.SuspendLayout();
             this.panel_GameSurface.SuspendLayout();
@@ -136,14 +133,6 @@ namespace ITI4InARow.Game.Client
             this.btn_LeaveGame.UseVisualStyleBackColor = true;
             this.btn_LeaveGame.Click += new System.EventHandler(this.btn_LeaveGame_Click);
             // 
-            // printForm1
-            // 
-            this.printForm1.DocumentName = "document";
-            this.printForm1.Form = this;
-            this.printForm1.PrintAction = System.Drawing.Printing.PrintAction.PrintToPrinter;
-            this.printForm1.PrinterSettings = ((System.Drawing.Printing.PrinterSettings)(resources.GetObject("printForm1.PrinterSettings")));
-            this.printForm1.PrintFileName = null;
-            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,7 +169,6 @@ namespace ITI4InARow.Game.Client
         private ToolStripMenuItem menuItem_Server;
         private UI.GameUI panel_GameSurface;
         private ColorDialog colorDialog1;
-        private Microsoft.VisualBasic.PowerPacks.Printing.PrintForm printForm1;
-        
+
     }
 }
