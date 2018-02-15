@@ -53,21 +53,13 @@ namespace ITI4InARow.Game.UI
         private void GameUI_Leave(object sender, EventArgs e)
         {
             ((OvalShape)sender).BorderColor = Color.Black;
-            ((OvalShape)sender).BorderWidth = 5;
+            ((OvalShape)sender).BorderWidth -= 5;
         }
 
         private void GameUI_MouseEnter(object sender, EventArgs e)
         {
-            ((OvalShape)sender).BorderWidth = 10;
-            //if (playerTurn)
-            //{
-                ((OvalShape)sender).BorderColor = player1Color;
-
-            //}
-            //else
-            //{
-            //    ((OvalShape)sender).BorderColor = player2Color;
-            //}
+            ((OvalShape)sender).BorderWidth += 5;
+            ((OvalShape)sender).BorderColor = player1Color;
         }
 
         private void GameUI_MouseClick(object sender, MouseEventArgs e)
@@ -81,14 +73,7 @@ namespace ITI4InARow.Game.UI
             if (isGameRunning)
             {
                 playersMovesCount++;
-                //if (playerTurn)
-                //{
-                    TokenColor = player1Color;
-                //}
-                //else
-                //{
-                //    TokenColor = player2Color;
-                //}
+                TokenColor = player1Color;
                 playerTurn = !playerTurn;
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
@@ -179,14 +164,14 @@ namespace ITI4InARow.Game.UI
                 //}
                 //else
                 //{
-                    TokenColor = player2Color;
+                TokenColor = player2Color;
                 //}
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
             }
         }
 
-            bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
-               {
+        bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
+        {
             // Tag
             // Color
             // 
