@@ -184,8 +184,7 @@ namespace ITI4InARow.Game.UI
 
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
-                     
-                        columns[0]--;
+                         columns[0]--;
                      
                 }
                 else if (TokenPosition >= 7 && TokenPosition <= 12)
@@ -217,7 +216,7 @@ namespace ITI4InARow.Game.UI
                         columns[6]--;
                 }
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)).Enabled = false;
+                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1 )).Enabled = false;
 
             }
         }
