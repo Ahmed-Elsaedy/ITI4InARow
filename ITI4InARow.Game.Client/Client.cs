@@ -30,7 +30,7 @@ namespace ITI4InARow.Game.Client
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
-                panel_GameSurface.isGameRunning = false;
+               // panel_GameSurface.isGameRunning = false;
             }
             catch (NullReferenceException)
             {
@@ -152,7 +152,7 @@ namespace ITI4InARow.Game.Client
                     }
                     else if (!e.IsGameRunning)
                     {
-                        panel_GameSurface.isGameRunning = true;
+                        panel_GameSurface.isGameRunning = false;
                     }
                     //apaly the action that come from server 
                     break;
