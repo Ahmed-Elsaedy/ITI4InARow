@@ -25,8 +25,9 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
+                
                 m_GameMove.TokenPosition = (int)myShape.Tag;
-                m_GameMove.MsgType = MessageType.GameUpdateMessage;
+                //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
             }
@@ -87,11 +88,11 @@ namespace ITI4InARow.Game.Client
 
         }
 
-        private void btn_GameMove_Click(object sender, EventArgs e)
-        {
-            m_Client.SendMessageToServer(m_GameMove);
-            //btn_GameMove.Enabled = false;
-        }
+        //private void btn_GameMove_Click(object sender, EventArgs e)
+        //{
+        //    m_Client.SendMessageToServer(m_GameMove);
+        //    //btn_GameMove.Enabled = false;
+        //}
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
         {
@@ -119,6 +120,8 @@ namespace ITI4InARow.Game.Client
                     SwitchToIdleMode();
                     Text = "Client - Disconnected";
                     break;
+                    //case sending clint masseg
+                    //prossesincomemassege
             }
         }
 
@@ -144,11 +147,11 @@ namespace ITI4InARow.Game.Client
                     panel_GameSurface.Enabled = true;                     
                     if (e.TokenPosition>=0)
                     {
-                        MessageBox.Show("other player played Action");
+                        MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
                     //apply the action that come from server 
                     m_GameMove = e;
-                    MessageBox.Show(m_GameMove.TokenPosition.ToString());
+                    
                     //apaly the action that come from server 
                     break;
 

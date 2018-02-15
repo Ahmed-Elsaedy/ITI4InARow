@@ -79,7 +79,7 @@
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
                     _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(client, msg);
+                    bool win = GameAction(msg);/////////////////////
                     _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
                     {
@@ -129,15 +129,19 @@
         }
 
 
-        bool GameAction(ServerClient client, GameUpdateMessage msg)
+        bool GameAction(GameUpdateMessage msg)
         {
             int x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH))
                 {
-                    //isGameRunning = false;
+                    msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
+                    if (x == 4)
+                    {
+                        return true;
+                    }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -146,21 +150,31 @@
                 {
                     msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
-                    return true;
+                    if (x == 4)
+                    {
+                        return true;
+                    }
                 }
             }
             /////////////////////////////////////////////
             x = 1;
             if (GamePlan(msg, ref x, CheckPosition.WEST))
             {
-                //isGameRunning = false;
+                msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
+                if (x == 4)
+                {
+                    return true;
+                }
             }
             if (GamePlan(msg, ref x, CheckPosition.EAST))
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win east");
-                return true;
+                if (x == 4)
+                {
+                    return true;
+                }
             }
             //////////////////////////////////////////////
             x = 1;
@@ -168,8 +182,12 @@
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
                 {
-                    //isGameRunning = false;
+                    msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                    if (x == 4)
+                    {
+                        return true;
+                    }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -178,7 +196,10 @@
                 {
                     msg.IsGameRunning = false;
                     // MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south west");
-                    return true;
+                    if (x == 4)
+                    {
+                        return true;
+                    }
                 }
             }
             ////////////////////////////////////////////////
@@ -188,13 +209,20 @@
             {
                 //isGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                if (x == 4)
+                {
+                    return true;
+                }
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
-                return true;
+                if (x == 4)
+                {
+                    return true;
+                }
             }
             /////////////////
             return false;
@@ -235,6 +263,10 @@
         public ServerRoom()
         {
             _RoomMoveCounter = new Dictionary<int, int>();
+            for (int i = 0; i < gameBourdlogic.Length; i++)
+            {
+                gameBourdlogic[i] = 0;
+            }
         }
     }
 }

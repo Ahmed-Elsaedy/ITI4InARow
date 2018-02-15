@@ -73,7 +73,7 @@
             {
                 string str = JsonConvert.SerializeObject(msg);
                 client.Writer.Write(str);
-                //client.Writer.Flush();
+                client.Writer.Flush();
             }
             catch (EndOfStreamException)
             {
@@ -128,12 +128,6 @@
                     break;
                 case ServerStatus.ClientConnected:
                     _Clients.Add(serverClient);
-                    break;
-                case ServerStatus.ProcessingIncommingMessage:
-                    //s3edy you didnt implement this 
-                    break;
-                case ServerStatus.ListeningForClient:
-                    //w de kman ya s3edy msh ma3molaha implementation
                     break;
             }
             ServerStatusChanged?.Invoke(this, new ServerActionEventArgs(action, serverClient));
