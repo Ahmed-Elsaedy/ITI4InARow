@@ -52,7 +52,6 @@ namespace ITI4InARow.Game.Client
                 m_Client.ClientStatusChanged += new EventHandler<ClientActionEventArgs>(Client_ClientStatusChanged);
                 m_Client.GameUpdateMessage += new EventHandler<GameUpdateMessage>(Client_GameUpdateMessage);
                 m_Client.ConnectClient(form.IPAddress, form.Port);
-                m_Client.NickName = form.NickName;
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
                     Name = form.NickName

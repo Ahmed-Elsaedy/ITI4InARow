@@ -45,6 +45,7 @@
                 catch (Exception ex)
                 {
                     OnServerStatusChanged(ServerStatus.ServerStopped, null);
+                    throw ex;
                 }
             }
         }
@@ -63,7 +64,8 @@
                 {
                     OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
                     OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
-                    break;
+                    throw ex;
+                    //break;
                 }
             }
         }
@@ -71,18 +73,16 @@
         {
             try
             {
+                msg.ClientID = client.ClientID;
                 string str = JsonConvert.SerializeObject(msg);
                 client.Writer.Write(str);
                 client.Writer.Flush();
             }
-            catch (EndOfStreamException)
-            {
-                
-            }
-            catch
+            catch (Exception ex)
             {
                 OnServerStatusChanged(ServerStatus.ConnectionException, client);
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
+                throw ex;
             }
         }
         public void BroadcastToClients(MessageBase msg, ServerClient source = null)
@@ -96,20 +96,20 @@
                 foreach (ServerClient client in _Clients)
                     SendMessageToClient(client, msg);
         }
-        private void OnMessageRecieved(ServerClient Server_client, string msgStr, MessageBase msgObj)
+        private void OnMessageRecieved(ServerClient serverClient, string msgStr, MessageBase msgObj)
         {
-            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgObj, Server_client.tcp_Server_Client.Client.Handle.ToInt32()));
-            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, Server_client);
+            MessageRecieved?.Invoke(this, new MessageRevievedEventArgs(msgObj, serverClient));
+            OnServerStatusChanged(ServerStatus.ProcessingIncommingMessage, serverClient);
             switch (msgObj.MsgType)
             {
                 case MessageType.ProfileUpdateMessage:
-                    OnProfileUpdateMessage(Server_client, JsonConvert.DeserializeObject<ProfileUpdateMessage>(msgStr));
+                    OnProfileUpdateMessage(serverClient, JsonConvert.DeserializeObject<ProfileUpdateMessage>(msgStr));
                     break;
                 case MessageType.RoomUpdateMessage:
-                    OnRoomUpdateMessage(Server_client, JsonConvert.DeserializeObject<RoomUpdateMessage>(msgStr));
+                    OnRoomUpdateMessage(serverClient, JsonConvert.DeserializeObject<RoomUpdateMessage>(msgStr));
                     break;
                 case MessageType.GameUpdateMessage:
-                    OnGameUpdateMessage(Server_client, JsonConvert.DeserializeObject<GameUpdateMessage>(msgStr));
+                    OnGameUpdateMessage(serverClient, JsonConvert.DeserializeObject<GameUpdateMessage>(msgStr));
                     break;
             }
         }
@@ -146,34 +146,35 @@
         {
         }
         protected ServerClient this[int handle] =>
-            _Clients.SingleOrDefault<ServerClient>(x => (x.ClientID == handle));
+            _Clients.SingleOrDefault(x => (x.ClientID == handle));
     }
     /// <summary>
     /// this is client class in server 
     /// </summary>
     public class ServerClient
     {
-        public TcpClient tcp_Server_Client { get; private set; }
+        public TcpClient TcpClient { get; private set; }
         public NetworkStream Stream { get; private set; }
         public BinaryReader Reader { get; private set; }
         public BinaryWriter Writer { get; private set; }
-        public int ClientID => tcp_Server_Client.Client.Handle.ToInt32();
+        public int ClientID => TcpClient.Client.Handle.ToInt32();
         public string NickName { get; set; }
+        public string PreferedColor { get; set; }
         public ServerClient(TcpClient client)
         {
-            tcp_Server_Client = client;
+            TcpClient = client;
             Stream = client.GetStream();
             Reader = new BinaryReader(Stream);
             Writer = new BinaryWriter(Stream);
         }
         public override string ToString() =>
-            string.Format("{0}: {1} => {2}  -> {3}", ClientID, tcp_Server_Client.Client.LocalEndPoint, tcp_Server_Client.Client.RemoteEndPoint,NickName);
+            string.Format("{0}: {1} => {2}  : {3}", ClientID, TcpClient.Client.LocalEndPoint, TcpClient.Client.RemoteEndPoint, NickName);
         public void Dispose()
         {
             Reader.Dispose();
             Writer.Dispose();
             Stream.Dispose();
-            tcp_Server_Client.Dispose();
+            TcpClient.Dispose();
         }
     }
 }
