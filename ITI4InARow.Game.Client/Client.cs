@@ -13,6 +13,7 @@ namespace ITI4InARow.Game.Client
         private static GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
+        private Color other_player_color;
         public Client()
         {
             InitializeComponent();
@@ -147,18 +148,22 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     m_GameMove = e;
-                    MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
                     panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition);
                     //apply the action that come from server 
-                    panel_GameSurface.Enabled = true;                     
-                    if (e.TokenPosition>=0)
+                    if (e.IsGameRunning)
+                    {
+                        panel_GameSurface.Enabled = true; 
+                    }
+                    else
+                    {
+                        panel_GameSurface.Enabled = true;
+                    }
+
+                    if (e.TokenPosition>-1)
                     {
                         MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
-                    //apply the action that come from server 
-                    m_GameMove = e;
-                    
                     //apaly the action that come from server 
                      break;
 
@@ -176,8 +181,7 @@ namespace ITI4InARow.Game.Client
         {
             m_RoomsForm.Hide();
             panel_GameSurface.Show();
-            //btn_GameMove.Enabled = false;
-            //m_GameMove = null;
+            panel_GameSurface.player1Color = ChosenColor;
         }
         private void SwitchToIdleMode()
         {

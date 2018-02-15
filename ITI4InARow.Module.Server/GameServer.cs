@@ -201,7 +201,7 @@
         {
             if (x < 4)
             {
-                int TokenIndex = msg.TokenPosition - 1;
+                int TokenIndex = msg.TokenPosition - 2;
                 int leftTokenIndex = TokenIndex + (int)cp;
                 if (leftTokenIndex >= 0 && leftTokenIndex < 42)
                 {
