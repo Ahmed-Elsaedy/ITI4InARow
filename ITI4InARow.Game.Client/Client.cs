@@ -149,7 +149,7 @@ namespace ITI4InARow.Game.Client
                     m_GameMove = e;
                     MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
-                    panel_GameSurface.applay_Other_Clint_Action(m_GameMove.TokenPosition);
+                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition);
                     //apply the action that come from server 
                     panel_GameSurface.Enabled = true;                     
                     if (e.TokenPosition>=0)
