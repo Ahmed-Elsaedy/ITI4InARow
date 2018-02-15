@@ -181,7 +181,44 @@ namespace ITI4InARow.Game.UI
                 //{
                     TokenColor = player2Color;
                 //}
+
+                if (TokenPosition >= 1 && TokenPosition <= 6)
+                {
+                     
+                        columns[0]--;
+                     
+                }
+                else if (TokenPosition >= 7 && TokenPosition <= 12)
+                {
+                     columns[1]--;
+                }
+                else if (TokenPosition >= 13 && TokenPosition <= 18)
+                {
+                     columns[2]--;
+                }
+                else if (TokenPosition >= 19 && TokenPosition <= 24)
+                {
+                     columns[3]--;
+                }
+                else if (TokenPosition >= 25 && TokenPosition <= 30)
+                {
+                    
+                        columns[4]--;
+                     
+                }
+                else if (TokenPosition >= 31 && TokenPosition <= 36)
+                {
+                  
+                        columns[5]--;
+ 
+                }
+                else if (TokenPosition >= 37 && TokenPosition <= 42)
+                {
+                        columns[6]--;
+                }
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
+                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)).Enabled = false;
+
             }
         }
 
