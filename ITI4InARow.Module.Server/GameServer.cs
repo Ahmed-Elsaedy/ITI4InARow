@@ -30,6 +30,7 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom() { RoomID = msg.RoomID ,_RoomMoveCounter = 0 }));
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     break;
@@ -55,16 +56,18 @@
                     BroadcastToClients(message, client);
                     GameUpdateMessage message2 = new GameUpdateMessage { RoomID = msg.RoomID };
                     message2.UpdateStatus = GameUpdateStatus.GameStarted;
+                    message2.PlayerID = msg.Player1ID;
+                    message2.IsGameRunning = true;
                     SendMessageToClient(base[msg.Player1ID], message2);
+                    message2.IsGameRunning = false;
                     SendMessageToClient(base[msg.Player2ID], message2.Copy());
-                    GameUpdateMessage message3 = new GameUpdateMessage
-                    {
-                        RoomID = msg.RoomID,
-                        PlayerID = msg.Player1ID,
-                        UpdateStatus = GameUpdateStatus.PlayerMove,
-                        TokenPosition = -1
-                    };
-                    SendMessageToClient(base[msg.Player1ID], message3);
+                    //GameUpdateMessage message3 = new GameUpdateMessage
+                    //{
+                    //    RoomID = msg.RoomID,
+                    //    PlayerID = msg.Player1ID,
+                    //    UpdateStatus = GameUpdateStatus.PlayerMove,
+                    //};
+                    //SendMessageToClient(base[msg.Player1ID], message3);
                     break;
             }
         }
@@ -78,12 +81,13 @@
                     message = _RoomsMessages[msg.RoomID];
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
-                    _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(client, msg);//error -_- ////////exception A7eeeh el dictinary bydrb hna ya s3eeedy 
-                    _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
-                    if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
+                    _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    bool win = GameAction(client, msg); 
+                    _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
+                    if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
+                        drawRespMsg.IsGameRunning = false;
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
                         msg.IsGameRunning = false;
                         //now send draw msg  to both players 
@@ -94,6 +98,7 @@
                     else if (win)
                     {
                         GameUpdateMessage msgWin = msg.Copy();
+                        msg.IsGameRunning = false;
                         msgWin.UpdateStatus = GameUpdateStatus.win;
                         SendMessageToClient(this[msgWin.PlayerID], msg);
                         //sent win msg
@@ -106,6 +111,7 @@
                     {
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
                         msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
+                        msg.IsGameRunning = true;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
                     }
 
@@ -136,7 +142,7 @@
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH))
                 {
-                    //isGameRunning = false;
+                    msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
                 }
             }
@@ -153,7 +159,7 @@
             x = 1;
             if (GamePlan(msg, ref x, CheckPosition.WEST))
             {
-                //isGameRunning = false;
+                msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
             }
             if (GamePlan(msg, ref x, CheckPosition.EAST))
@@ -168,7 +174,7 @@
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
                 {
-                    //isGameRunning = false;
+                    msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
                 }
             }
@@ -186,8 +192,9 @@
 
             if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
             {
-                //isGameRunning = false;
+                msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                return true;
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
@@ -208,7 +215,7 @@
                 if (leftTokenIndex >= 0 && leftTokenIndex < 42)
                 {
                     //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
-                    if (_RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBourdlogic[leftTokenIndex])
+                    if (_RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBoardlogic[leftTokenIndex])
                     {
                         x++;
                         GameUpdateMessage nextToken = msg.Copy();
@@ -229,12 +236,18 @@
     public class ServerRoom
     {
         public int RoomID { get; set; }
-        public Dictionary<int, int> _RoomMoveCounter;
-        public int[] gameBourdlogic = new int[42];
+        public int _RoomMoveCounter;
+        public int[] gameBoardlogic;
 
         public ServerRoom()
         {
-            _RoomMoveCounter = new Dictionary<int, int>();
+            _RoomMoveCounter = 0;
+            gameBoardlogic = new int[42];
+            for(int i = 0; i < 42; i++)
+            {
+                gameBoardlogic[i] = -1;
+            }
+
         }
     }
 }

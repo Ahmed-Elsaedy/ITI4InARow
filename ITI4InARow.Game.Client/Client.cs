@@ -29,6 +29,7 @@ namespace ITI4InARow.Game.Client
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
+                panel_GameSurface.Enabled = false;
             }
             catch (NullReferenceException)
             {
@@ -84,13 +85,6 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-
-        }
-
-        private void btn_GameMove_Click(object sender, EventArgs e)
-        {
-            m_Client.SendMessageToServer(m_GameMove);
-            //btn_GameMove.Enabled = false;
         }
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
@@ -137,19 +131,23 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
+                    if (e.IsGameRunning)
+                    {
+                        panel_GameSurface.Enabled = true;
+                    }
+                    else
+                    {
+                        panel_GameSurface.Enabled = false;
+                    }
                     m_GameMove = e;
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-                    panel_GameSurface.Enabled = true;                     
-                    if (e.TokenPosition>=0)
-                    {
-                        MessageBox.Show("other player played Action");
-                    }
-                    //apply the action that come from server 
                     m_GameMove = e;
                     MessageBox.Show(m_GameMove.TokenPosition.ToString());
-                    //apaly the action that come from server 
+                    //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
+                    panel_GameSurface.applay_Other_Clint_Action(m_GameMove.TokenPosition);
+                    //apply the action that come from server 
                     break;
 
                 case GameUpdateStatus.GameLeave:
