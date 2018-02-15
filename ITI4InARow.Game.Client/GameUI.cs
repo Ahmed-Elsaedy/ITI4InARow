@@ -33,7 +33,6 @@ namespace ITI4InARow.Game.UI
             playerTurn = true;
             player1Color = Color.Purple;
             player2Color = Color.SpringGreen;
-            isGameRunning = true;
             playersMovesCount = 0;
             defaultOvalColor = Color.White;
         }
@@ -48,7 +47,6 @@ namespace ITI4InARow.Game.UI
                 oval.MouseEnter += GameUI_MouseEnter;
                 oval.MouseLeave += GameUI_Leave;
             }
-
         }
         private void GameUI_Leave(object sender, EventArgs e)
         {
@@ -151,26 +149,12 @@ namespace ITI4InARow.Game.UI
 
         internal void Apply_Other_Client_Action(int TokenPosition)
         {
-            //E3mel el implemntion hena 
-            //MessageBox.Show(tokenPosition.ToString());
             Color TokenColor;
-            if (isGameRunning)
-            {
                 playersMovesCount++;
-                //playerTurn = !playerTurn;
-                //if (playerTurn)
-                //{
-                //    TokenColor = player1Color;
-                //}
-                //else
-                //{
                 TokenColor = player2Color;
-                //}
-
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
-                         columns[0]--;
-                     
+                         columns[0]--;        
                 }
                 else if (TokenPosition >= 7 && TokenPosition <= 12)
                 {
@@ -202,16 +186,10 @@ namespace ITI4InARow.Game.UI
                 }
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1 )).Enabled = false;
-
-            }
         }
 
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
         {
-            // Tag
-            // Color
-            // 
-
             if (x < 4)
             {
                 int TokenIndex = int.Parse(ovalClicked.Tag.ToString()) - 1;
@@ -229,10 +207,8 @@ namespace ITI4InARow.Game.UI
                     }
                 }
                 else return false;
-
             }
             return true;
-
         }
         private void GameUI_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -245,7 +221,6 @@ namespace ITI4InARow.Game.UI
             {
                 e.Cancel = false;
             }
-
         }
         private void BtnReset_Click(object sender, EventArgs e)
         {
@@ -264,8 +239,6 @@ namespace ITI4InARow.Game.UI
             {
                 Visible = false;
             }
-
-
         }
         public event EventHandler<OvalShape> PlayerAction;
     }
