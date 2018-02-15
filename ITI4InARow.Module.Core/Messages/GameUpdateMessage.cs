@@ -23,7 +23,8 @@
             {
                 RoomID = RoomID,
                 PlayerID = PlayerID,
-                UpdateStatus = UpdateStatus
+                UpdateStatus = UpdateStatus,
+                TokenPosition =TokenPosition
             };
     }
     public enum GameUpdateStatus
