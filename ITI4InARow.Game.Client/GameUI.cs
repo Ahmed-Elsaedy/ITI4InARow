@@ -144,48 +144,69 @@ namespace ITI4InARow.Game.UI
                     }
                 }
                 PlayerAction?.Invoke(this, ovalClicked);
+                isGameRunning = false;
             }
+            
         }
 
         internal void Apply_Other_Client_Action(int TokenPosition)
         {
             Color TokenColor;
-                playersMovesCount++;
-                TokenColor = player2Color;
-                if (TokenPosition >= 1 && TokenPosition <= 6)
+            playersMovesCount++;
+            TokenColor = player2Color;
+            if (TokenPosition >= 1 && TokenPosition <= 6)
+            {
+                if (columns[0] > 0)
                 {
-                         columns[0]--;        
+                    columns[0]--;
                 }
-                else if (TokenPosition >= 7 && TokenPosition <= 12)
+            }
+            else if (TokenPosition >= 7 && TokenPosition <= 12)
+            {
+                if (columns[1] > 6)
                 {
-                     columns[1]--;
+                    columns[1]--;
                 }
-                else if (TokenPosition >= 13 && TokenPosition <= 18)
+            }
+            else if (TokenPosition >= 13 && TokenPosition <= 18)
+            {
+                if (columns[2] >12)
                 {
-                     columns[2]--;
+                    columns[2]--;
                 }
-                else if (TokenPosition >= 19 && TokenPosition <= 24)
+            }
+            else if (TokenPosition >= 19 && TokenPosition <= 24)
+            {
+                if (columns[3] > 18)
                 {
-                     columns[3]--;
+                    columns[3]--;
                 }
-                else if (TokenPosition >= 25 && TokenPosition <= 30)
+            }
+            else if (TokenPosition >= 25 && TokenPosition <= 30)
+            {
+                if (columns[4] > 24)
                 {
-                    
-                        columns[4]--;
-                     
+                    columns[4]--;
                 }
-                else if (TokenPosition >= 31 && TokenPosition <= 36)
+
+            }
+            else if (TokenPosition >= 31 && TokenPosition <= 36)
+            {
+                if (columns[5] > 30)
                 {
-                  
-                        columns[5]--;
- 
+                    columns[5]--;
                 }
-                else if (TokenPosition >= 37 && TokenPosition <= 42)
+
+            }
+            else if (TokenPosition >= 37 && TokenPosition <= 42)
+            {
+                if (columns[6] > 36)
                 {
-                        columns[6]--;
+                    columns[6]--;
                 }
-                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1 )).Enabled = false;
+            }
+            ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
+            ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).Enabled = false;
         }
 
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
