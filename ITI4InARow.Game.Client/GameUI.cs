@@ -154,8 +154,7 @@ namespace ITI4InARow.Game.UI
             //E3mel el implemntion hena 
             //MessageBox.Show(tokenPosition.ToString());
             Color TokenColor;
-            if (isGameRunning)
-            {
+           
                 playersMovesCount++;
                 //playerTurn = !playerTurn;
                 //if (playerTurn)
@@ -201,10 +200,10 @@ namespace ITI4InARow.Game.UI
                         columns[6]--;
                 }
                 ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).FillColor = TokenColor;
-                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1 )).Enabled = false;
-
-            }
-        }
+                ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1)).Enabled = false;
+                
+           }
+        
 
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
         {
