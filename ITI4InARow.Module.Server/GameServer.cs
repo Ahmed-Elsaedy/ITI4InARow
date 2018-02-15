@@ -17,6 +17,7 @@
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
         {
             client.NickName = msg.PlayerName;
+            client.PreferedColor = msg.PlayerColor;
             SendMessageToClient(client, msg);
         }
         protected override void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)

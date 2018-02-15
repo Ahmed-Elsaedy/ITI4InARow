@@ -13,7 +13,6 @@ namespace ITI4InARow.Game.Client
         private static GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
-        private Color other_player_color;
         public Client()
         {
             InitializeComponent();
@@ -55,7 +54,8 @@ namespace ITI4InARow.Game.Client
                 m_Client.ConnectClient(form.IPAddress, form.Port);
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
-                    PlayerName = form.NickName
+                    PlayerName = form.NickName,
+                    PlayerColor = ChosenColor.ToString()
                 };
                 m_Client.SendMessageToServer(message);
             }
@@ -85,13 +85,6 @@ namespace ITI4InARow.Game.Client
             }
         }
 
-
-        
-        //private void btn_GameMove_Click(object sender, EventArgs e)
-        //{
-        //    m_Client.SendMessageToServer(m_GameMove);
-        //    //btn_GameMove.Enabled = false;
-        //}
         private void btn_LeaveGame_Click(object sender, EventArgs e)
         {
             m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
@@ -135,6 +128,7 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
+                    panel_GameSurface.player2Color = Color.FromName(e.Player2Color);
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.Enabled = true;

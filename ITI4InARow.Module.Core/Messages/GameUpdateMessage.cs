@@ -7,6 +7,7 @@
     public class GameUpdateMessage : MessageBase
     {
         public int PlayerID { get; set; }
+        public string Player2Color { get; set; }
         public int RoomID { get; set; }
         public int GameMove { get; set; }
         public GameUpdateStatus UpdateStatus { get; set; }
