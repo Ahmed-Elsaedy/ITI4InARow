@@ -128,7 +128,7 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
-                    panel_GameSurface.player2Color = Color.FromName(e.Player2Color);
+                    panel_GameSurface.player2Color = Color.Red;
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.Enabled = true;
