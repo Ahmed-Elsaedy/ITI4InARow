@@ -13,8 +13,6 @@ namespace ITI4InARow.Game.Client
         private static GameUpdateMessage m_GameMove;
         private RoomsForm m_RoomsForm;
         private Color ChosenColor;
-        private Color other_player_color;
-
         public Client()
         {
             InitializeComponent();
@@ -27,11 +25,12 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
-
+                
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
+                panel_GameSurface.Enabled = false;
             }
             catch (NullReferenceException)
             {
@@ -42,7 +41,6 @@ namespace ITI4InARow.Game.Client
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void _MenuItemConnect_Click(object sender, EventArgs e)
         {
             ConnectForm form = new ConnectForm();
@@ -54,15 +52,13 @@ namespace ITI4InARow.Game.Client
                 m_Client.ClientStatusChanged += new EventHandler<ClientActionEventArgs>(Client_ClientStatusChanged);
                 m_Client.GameUpdateMessage += new EventHandler<GameUpdateMessage>(Client_GameUpdateMessage);
                 m_Client.ConnectClient(form.IPAddress, form.Port);
-                m_Client.NickName = form.NickName;
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
-                    Name = form.NickName
+                    PlayerName = form.NickName
                 };
                 m_Client.SendMessageToServer(message);
             }
         }
-
         private void _MenuItemDisconnect_Click(object sender, EventArgs e)
         {
             m_Client.DisconnectClient();
@@ -72,7 +68,6 @@ namespace ITI4InARow.Game.Client
             m_RoomsForm = null;
             m_Client = null;
         }
-
         private void _MenuItemSRooms_Click(object sender, EventArgs e)
         {
             try
@@ -87,21 +82,20 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
+
+        
         //private void btn_GameMove_Click(object sender, EventArgs e)
         //{
         //    m_Client.SendMessageToServer(m_GameMove);
         //    //btn_GameMove.Enabled = false;
         //}
-
         private void btn_LeaveGame_Click(object sender, EventArgs e)
         {
             m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
             m_Client.SendMessageToServer(m_GameMove);
         }
-
         private void Client_ClientStatusChanged(object sender, ClientActionEventArgs e)
         {
             switch (e.Status)
@@ -126,7 +120,6 @@ namespace ITI4InARow.Game.Client
                     //prossesincomemassege
             }
         }
-
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (m_Client != null)
@@ -134,7 +127,6 @@ namespace ITI4InARow.Game.Client
                 _MenuItemDisconnect_Click(null, null);
             }
         }
-
         private void Client_GameUpdateMessage(object sender, GameUpdateMessage e)
         {
             switch (e.UpdateStatus)
@@ -142,20 +134,33 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
+                    if (e.IsGameRunning)
+                    {
+                        panel_GameSurface.Enabled = true;
+                    }
+                    else
+                    {
+                        panel_GameSurface.Enabled = false;
+                    }
                     m_GameMove = e;
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-                    panel_GameSurface.Enabled = true;
-                    if (e.TokenPosition >= 0)
+                    m_GameMove = e;
+                    MessageBox.Show(m_GameMove.TokenPosition.ToString());
+                    //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
+                    panel_GameSurface.applay_Other_Clint_Action(m_GameMove.TokenPosition);
+                    //apply the action that come from server 
+                    panel_GameSurface.Enabled = true;                     
+                    if (e.TokenPosition>=0)
                     {
                         MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
                     //apply the action that come from server 
                     m_GameMove = e;
-
+                    
                     //apaly the action that come from server 
-                    break;
+                     break;
 
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
@@ -163,21 +168,17 @@ namespace ITI4InARow.Game.Client
                     break;
             }
         }
-
         private void Client_Load(object sender, EventArgs e)
         {
             panel_GameSurface.Hide();
         }
-
         private void SwitchToGamingMode()
         {
             m_RoomsForm.Hide();
             panel_GameSurface.Show();
-            panel_GameSurface.player1Color = ChosenColor;
             //btn_GameMove.Enabled = false;
             //m_GameMove = null;
         }
-
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();

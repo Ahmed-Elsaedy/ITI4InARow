@@ -167,6 +167,13 @@ namespace ITI4InARow.Game.UI
                 PlayerAction?.Invoke(this, ovalClicked);
             }
         }
+
+        internal void applay_Other_Clint_Action(int tokenPosition)
+        {
+            //E3mel el implemntion hena 
+            MessageBox.Show(tokenPosition.ToString());
+        }
+
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
         {
             // Tag

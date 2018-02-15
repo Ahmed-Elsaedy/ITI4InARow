@@ -5,23 +5,28 @@
 
     public class GameClient : ClientCore
     {
-        public int ClientID { get; private set; }
-        public string NickName { get; set; }
-        public string UserColor { get; set; }
+        public int PlayerID { get; private set; }
+        public string PlayerName { get; private set; }
+        public string PlayerColor { get; private set; }
+
+        public RoomUpdateMessage LastRoomUpdateMsg { get; private set; }
+        public GameUpdateMessage LastGameUpdateMsg { get; private set; }
 
         protected override void OnProfileUpdateMessage(ProfileUpdateMessage msg)
         {
-            ClientID = msg.ClientID;
-            NickName = msg.Name;
-            UserColor = msg.UserColor;
+            PlayerID = msg.ClientID;
+            PlayerName = msg.PlayerName;
+            PlayerColor = msg.PlayerColor;
         }
         protected override void OnRoomUpdateMessage(RoomUpdateMessage msg)
         {
             RoomUpdateMessage?.Invoke(this, msg);
+            LastRoomUpdateMsg = msg;
         }
         protected override void OnGameUpdateMessage(GameUpdateMessage msg)
         {
             GameUpdateMessage?.Invoke(this, msg);
+            LastGameUpdateMsg = msg;
         }
 
         public event EventHandler<GameUpdateMessage> GameUpdateMessage;

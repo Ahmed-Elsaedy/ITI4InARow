@@ -8,14 +8,11 @@
     {
         public int ClientID { get; set; }
 
-        public MessageFlag Flag { get; set; }
-
         public MessageType MsgType { get; set; }
-    }
-    public enum MessageFlag
-    {
-        ClientData,
-        KeepAlive
+        public MessageBase()
+        {
+            MsgType = MessageType.MessageBase;
+        }
     }
     public enum MessageType
     {

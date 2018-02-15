@@ -12,9 +12,8 @@
         {
             MsgType = MessageType.ProfileUpdateMessage;
         }
-
-        public string Name { get; set; }
-        public string UserColor { get; set; }
+        public string PlayerName { get; set; }
+        public string PlayerColor { get; set; }
     }
 }
 

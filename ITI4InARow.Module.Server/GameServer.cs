@@ -16,7 +16,7 @@
         }
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
         {
-            client.NickName = msg.Name;
+            client.NickName = msg.PlayerName;
             SendMessageToClient(client, msg);
         }
         protected override void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)
@@ -30,6 +30,7 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom() { RoomID = msg.RoomID, _RoomMoveCounter = 0 }));
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     break;
@@ -51,20 +52,16 @@
                     break;
                 case RoomUpdateState.RoomComplete:
                     message = msg.Copy();
+                    //_RoomsData.Add(msg.RoomID, new ServerRoom() { RoomID=msg.RoomID });
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     GameUpdateMessage message2 = new GameUpdateMessage { RoomID = msg.RoomID };
                     message2.UpdateStatus = GameUpdateStatus.GameStarted;
+                    message2.PlayerID = msg.Player1ID;
+                    message2.IsGameRunning = true;
                     SendMessageToClient(base[msg.Player1ID], message2);
+                    message2.IsGameRunning = false;
                     SendMessageToClient(base[msg.Player2ID], message2.Copy());
-                    GameUpdateMessage message3 = new GameUpdateMessage
-                    {
-                        RoomID = msg.RoomID,
-                        PlayerID = msg.Player1ID,
-                        UpdateStatus = GameUpdateStatus.PlayerMove,
-                        TokenPosition = -1
-                    };
-                    SendMessageToClient(base[msg.Player1ID], message3);
                     break;
             }
         }
@@ -78,12 +75,13 @@
                     message = _RoomsMessages[msg.RoomID];
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
-                    _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(msg);/////////////////////
-                    _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
-                    if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
+                    _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    bool win = GameAction(msg);
+                    _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
+                    if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
+                        drawRespMsg.IsGameRunning = false;
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
                         msg.IsGameRunning = false;
                         //now send draw msg  to both players 
@@ -94,6 +92,7 @@
                     else if (win)
                     {
                         GameUpdateMessage msgWin = msg.Copy();
+                        msg.IsGameRunning = false;
                         msgWin.UpdateStatus = GameUpdateStatus.win;
                         SendMessageToClient(this[msgWin.PlayerID], msg);
                         //sent win msg
@@ -106,11 +105,11 @@
                     {
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
                         msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
+                        msg.IsGameRunning = true;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
                     }
-
-
                     break;
+
                 case GameUpdateStatus.GameLeave:
                     {
                         message = _RoomsMessages[msg.RoomID];
@@ -128,8 +127,7 @@
             }
         }
 
-
-        bool GameAction(GameUpdateMessage msg)
+        public bool GameAction(GameUpdateMessage msg)
         {
             int x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -138,10 +136,7 @@
                 {
                     msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
+                    if (x == 4) { return true; }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -150,10 +145,7 @@
                 {
                     msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
+                    if (x == 4) { return true; }
                 }
             }
             /////////////////////////////////////////////
@@ -161,20 +153,12 @@
             if (GamePlan(msg, ref x, CheckPosition.WEST))
             {
                 msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
-                if (x == 4)
-                {
-                    return true;
-                }
+                if (x == 4) { return true; }
             }
             if (GamePlan(msg, ref x, CheckPosition.EAST))
             {
                 msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win east");
-                if (x == 4)
-                {
-                    return true;
-                }
+                if (x == 4) { return true; }
             }
             //////////////////////////////////////////////
             x = 1;
@@ -183,11 +167,7 @@
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
                 {
                     msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
+                    if (x == 4) { return true; }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -195,11 +175,7 @@
                 if (GamePlan(msg, ref x, CheckPosition.SOUTH_WEST))
                 {
                     msg.IsGameRunning = false;
-                    // MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south west");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
+                    if (x == 4) { return true; }
                 }
             }
             ////////////////////////////////////////////////
@@ -207,22 +183,16 @@
 
             if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
             {
-                //isGameRunning = false;
+                msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                if (x == 4)
-                {
-                    return true;
-                }
+                if (x == 4) { return true; }
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
-                if (x == 4)
-                {
-                    return true;
-                }
+                if (x == 4) { return true; }
             }
             /////////////////
             return false;
@@ -236,17 +206,14 @@
                 if (leftTokenIndex >= 0 && leftTokenIndex < 42)
                 {
                     //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
-                    if (_RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBourdlogic[leftTokenIndex])
+                    if (_RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBoardlogic[leftTokenIndex])
                     {
                         x++;
                         GameUpdateMessage nextToken = msg.Copy();
                         nextToken.TokenPosition = leftTokenIndex;
                         return GamePlan(nextToken, ref x, cp);
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    else { return false; }
                 }
                 else return false;
             }
@@ -257,15 +224,16 @@
     public class ServerRoom
     {
         public int RoomID { get; set; }
-        public Dictionary<int, int> _RoomMoveCounter;
-        public int[] gameBourdlogic = new int[42];
+        public int _RoomMoveCounter;
+        public int[] gameBoardlogic;
 
         public ServerRoom()
         {
-            _RoomMoveCounter = new Dictionary<int, int>();
-            for (int i = 0; i < gameBourdlogic.Length; i++)
+            _RoomMoveCounter = 0;
+            gameBoardlogic = new int[42];
+            for (int i = 0; i < 42; i++)
             {
-                gameBourdlogic[i] = 0;
+                gameBoardlogic[i] = -1;
             }
         }
     }
