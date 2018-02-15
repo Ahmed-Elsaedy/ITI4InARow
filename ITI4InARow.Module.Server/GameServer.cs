@@ -52,7 +52,7 @@
                     break;
                 case RoomUpdateState.RoomComplete:
                     message = msg.Copy();
-                    _RoomsData.Add(msg.RoomID, new ServerRoom() { RoomID=msg.RoomID });
+                    //_RoomsData.Add(msg.RoomID, new ServerRoom() { RoomID=msg.RoomID });
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     GameUpdateMessage message2 = new GameUpdateMessage { RoomID = msg.RoomID };
