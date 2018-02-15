@@ -82,18 +82,15 @@ namespace ITI4InARow.Game.Client
             {
                 MessageBox.Show(ex.Message);
             }
-<<<<<<< HEAD
         }
 
-=======
 
-        }
+        
         //private void btn_GameMove_Click(object sender, EventArgs e)
         //{
         //    m_Client.SendMessageToServer(m_GameMove);
         //    //btn_GameMove.Enabled = false;
         //}
->>>>>>> 63503665c0817b696a0a609f7197cb2c3d9c1078
         private void btn_LeaveGame_Click(object sender, EventArgs e)
         {
             m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
@@ -149,13 +146,11 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.PlayerMove:
-<<<<<<< HEAD
                     m_GameMove = e;
                     MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
                     panel_GameSurface.applay_Other_Clint_Action(m_GameMove.TokenPosition);
                     //apply the action that come from server 
-=======
                     panel_GameSurface.Enabled = true;                     
                     if (e.TokenPosition>=0)
                     {
@@ -165,8 +160,7 @@ namespace ITI4InARow.Game.Client
                     m_GameMove = e;
                     
                     //apaly the action that come from server 
->>>>>>> 63503665c0817b696a0a609f7197cb2c3d9c1078
-                    break;
+                     break;
 
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;

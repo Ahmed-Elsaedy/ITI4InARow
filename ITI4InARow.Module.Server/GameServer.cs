@@ -30,7 +30,7 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
-                    _RoomsData.Add(msg.RoomID, (new ServerRoom() { RoomID = msg.RoomID ,_RoomMoveCounter = 0 }));
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom() { RoomID = msg.RoomID, _RoomMoveCounter = 0 }));
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     break;
@@ -61,13 +61,6 @@
                     SendMessageToClient(base[msg.Player1ID], message2);
                     message2.IsGameRunning = false;
                     SendMessageToClient(base[msg.Player2ID], message2.Copy());
-                    //GameUpdateMessage message3 = new GameUpdateMessage
-                    //{
-                    //    RoomID = msg.RoomID,
-                    //    PlayerID = msg.Player1ID,
-                    //    UpdateStatus = GameUpdateStatus.PlayerMove,
-                    //};
-                    //SendMessageToClient(base[msg.Player1ID], message3);
                     break;
             }
         }
@@ -81,17 +74,10 @@
                     message = _RoomsMessages[msg.RoomID];
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
-<<<<<<< HEAD
                     _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
-                    bool win = GameAction(client, msg); 
+                    bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
-=======
-                    _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(msg);/////////////////////
-                    _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
-                    if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
->>>>>>> 63503665c0817b696a0a609f7197cb2c3d9c1078
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
                         drawRespMsg.IsGameRunning = false;
@@ -142,7 +128,7 @@
         }
 
 
-        bool GameAction(GameUpdateMessage msg)
+        public bool GameAction(GameUpdateMessage msg)
         {
             int x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -222,14 +208,14 @@
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-<<<<<<< HEAD
+
                 return true;
-=======
+
                 if (x == 4)
                 {
                     return true;
                 }
->>>>>>> 63503665c0817b696a0a609f7197cb2c3d9c1078
+
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
@@ -279,21 +265,16 @@
 
         public ServerRoom()
         {
-<<<<<<< HEAD
+
             _RoomMoveCounter = 0;
             gameBoardlogic = new int[42];
-            for(int i = 0; i < 42; i++)
+            for (int i = 0; i < 42; i++)
             {
                 gameBoardlogic[i] = -1;
             }
 
-=======
-            _RoomMoveCounter = new Dictionary<int, int>();
-            for (int i = 0; i < gameBourdlogic.Length; i++)
-            {
-                gameBourdlogic[i] = 0;
-            }
->>>>>>> 63503665c0817b696a0a609f7197cb2c3d9c1078
+
+
         }
     }
 }
