@@ -53,11 +53,11 @@
                     break;
                 case RoomUpdateState.RoomComplete:
                     message = msg.Copy();
-                    //_RoomsData.Add(msg.RoomID, new ServerRoom() { RoomID=msg.RoomID });
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     GameUpdateMessage message2 = new GameUpdateMessage { RoomID = msg.RoomID };
                     message2.UpdateStatus = GameUpdateStatus.GameStarted;
+                    client.PreferedColor = message2.Player2Color;
                     message2.PlayerID = msg.Player1ID;
                     message2.IsGameRunning = true;
                     SendMessageToClient(base[msg.Player1ID], message2);
