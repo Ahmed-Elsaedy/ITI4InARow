@@ -143,8 +143,8 @@ namespace ITI4InARow.Game.UI
                         columns[6]--;
                     }
                 }
-                PlayerAction?.Invoke(this, ovalClicked);
                 isGameRunning = false;
+                PlayerAction?.Invoke(this, ovalClicked);
             }
             
         }
@@ -152,6 +152,7 @@ namespace ITI4InARow.Game.UI
         internal void Apply_Other_Client_Action(int TokenPosition)
         {
             Color TokenColor;
+            isGameRunning = true;
             playersMovesCount++;
             TokenColor = player2Color;
             if (TokenPosition >= 1 && TokenPosition <= 6)

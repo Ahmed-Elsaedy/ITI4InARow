@@ -149,14 +149,9 @@ namespace ITI4InARow.Game.Client
                     {
                         panel_GameSurface.isGameRunning = true; 
                     }
-                    else
+                    else if (!e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;
-                    }
-
-                    if (e.TokenPosition>-1)
-                    {
-                        //MessageBox.Show(m_GameMove.TokenPosition.ToString());
                     }
                     //apaly the action that come from server 
                      break;
