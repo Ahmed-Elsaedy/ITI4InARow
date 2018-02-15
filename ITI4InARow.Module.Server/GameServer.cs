@@ -202,16 +202,16 @@
         {
             if (x < 4)
             {
-                int TokenIndex = msg.TokenPosition - 2;
-                int leftTokenIndex = TokenIndex + (int)cp;
-                if (leftTokenIndex >= 0 && leftTokenIndex < 42)
+                int TokenIndex = msg.TokenPosition - 1;
+                int nextTokenIndex = TokenIndex + (int)cp;
+                if (nextTokenIndex >= 0 && nextTokenIndex < 42)
                 {
                     //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
-                    if (_RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBoardlogic[leftTokenIndex])
+                    if (_RoomsData[msg.RoomID].gameBoardlogic[TokenIndex] == _RoomsData[msg.RoomID].gameBoardlogic[nextTokenIndex])
                     {
                         x++;
                         GameUpdateMessage nextToken = msg.Copy();
-                        nextToken.TokenPosition = leftTokenIndex;
+                        nextToken.TokenPosition = nextTokenIndex;
                         return GamePlan(nextToken, ref x, cp);
                     }
                     else { return false; }
