@@ -24,7 +24,8 @@
                 RoomID = RoomID,
                 PlayerID = PlayerID,
                 UpdateStatus = UpdateStatus,
-                TokenPosition =TokenPosition
+                TokenPosition =TokenPosition,
+                Player2Color = Player2Color
             };
     }
     public enum GameUpdateStatus

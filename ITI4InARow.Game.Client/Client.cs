@@ -34,6 +34,7 @@ namespace ITI4InARow.Game.Client
             }
             catch (NullReferenceException)
             {
+                throw;
                 MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
