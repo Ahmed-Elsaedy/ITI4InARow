@@ -31,7 +31,9 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
-                    _RoomsData.Add(msg.RoomID, (new ServerRoom() { RoomID = msg.RoomID, _RoomMoveCounter = 0 }));
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom() {
+                    RoomID = msg.RoomID, _RoomMoveCounter = 0 ,Player1Color=client.PreferedColor
+                    }));///////elcolor hna
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
                     break;
@@ -49,23 +51,33 @@
                     _RoomsMessages[msg.RoomID].Player2ID = client.ClientID;
                     msg.Player2ID = client.ClientID;
                     msg.UpdateState = RoomUpdateState.Player2Connected;
+                    _RoomsData[msg.RoomID].Player2Color = client.PreferedColor;//////////////
                     SendMessageToClient(base[msg.Player1ID], msg);
                     break;
                 case RoomUpdateState.RoomComplete:
                     message = msg.Copy();
                     message.UpdateState = RoomUpdateState.Broadcast;
                     BroadcastToClients(message, client);
-                    GameUpdateMessage message2 = new GameUpdateMessage {
+                    GameUpdateMessage messageForPlayer1 = new GameUpdateMessage {
                         RoomID = msg.RoomID,
                         UpdateStatus = GameUpdateStatus.GameStarted,
-                        Player2Color = client.PreferedColor,
-                        PlayerID = msg.Player1ID
-                        
+                        Player2Color = _RoomsData[msg.RoomID].Player2Color,///loon el player el tany b2a agebh mneeen ?! 
+                        PlayerID = msg.Player1ID,
+                        IsGameRunning = true
+                      };
+                   
+                    SendMessageToClient(base[msg.Player1ID], messageForPlayer1);
+                    //messageForPlayer1.IsGameRunning = false;
+                    ///mafrood hna n3ks el alwan 3shan kl la3b y3rf loon el tany =D msh bnl3b bnfs loon ely create el room 
+                    GameUpdateMessage messageForPlayer2 = new GameUpdateMessage
+                    {
+                        RoomID = msg.RoomID,
+                        UpdateStatus = GameUpdateStatus.GameStarted,
+                        Player2Color = _RoomsData[msg.RoomID].Player1Color, //////
+                        PlayerID = msg.Player1ID,
+                        IsGameRunning = false // disable player 2
                     };
-                    message2.IsGameRunning = true;
-                    SendMessageToClient(base[msg.Player1ID], message2);
-                    message2.IsGameRunning = false;
-                    SendMessageToClient(base[msg.Player2ID], message2.Copy());
+                    SendMessageToClient(base[msg.Player2ID], messageForPlayer2);
                     break;
             }
         }
@@ -74,7 +86,7 @@
             RoomUpdateMessage message;
             switch (msg.UpdateStatus)
             {
-                //handling masgs from clint during game 
+                //handling masgs from client during game 
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
@@ -110,7 +122,6 @@
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
                         msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
                         msg.IsGameRunning = true;
-                        msgOtherPlayerPlay.TokenPosition = msg.TokenPosition;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
                     }
                     break;
@@ -141,7 +152,7 @@
                 {
                     msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
-                    if (x == 4) { return true; }
+                   // if (x == 4) { return true; }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -150,7 +161,8 @@
                 {
                     msg.IsGameRunning = false;
                     //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
-                    if (x == 4) { return true; }
+                    //  if (x == 4) { return true; } /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                    return true;
                 }
             }
             /////////////////////////////////////////////
@@ -158,12 +170,13 @@
             if (GamePlan(msg, ref x, CheckPosition.WEST))
             {
                 msg.IsGameRunning = false;
-                if (x == 4) { return true; }
+               // if (x == 4) { return true; }
             }
             if (GamePlan(msg, ref x, CheckPosition.EAST))
             {
                 msg.IsGameRunning = false;
-                if (x == 4) { return true; }
+                //if (x == 4) { return true; }               /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                return true;
             }
             //////////////////////////////////////////////
             x = 1;
@@ -172,7 +185,7 @@
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
                 {
                     msg.IsGameRunning = false;
-                    if (x == 4) { return true; }
+                   // if (x == 4) { return true; }
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -180,7 +193,8 @@
                 if (GamePlan(msg, ref x, CheckPosition.SOUTH_WEST))
                 {
                     msg.IsGameRunning = false;
-                    if (x == 4) { return true; }
+                    //if (x == 4) { return true; }      /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                    return true;
                 }
             }
             ////////////////////////////////////////////////
@@ -190,14 +204,15 @@
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                if (x == 4) { return true; }
+                //if (x == 4) { return true; }
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
             {
                 msg.IsGameRunning = false;
                 //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
-                if (x == 4) { return true; }
+                // if (x == 4) { return true; }     /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                return true;
             }
             /////////////////
             return false;
@@ -231,7 +246,14 @@
         public int RoomID { get; set; }
         public int _RoomMoveCounter;
         public int[] gameBoardlogic;
-
+        public string Player1Color { get; set; }
+        /// <summary>
+        ///m7tagen nst3mlhm 
+        /// </summary>
+        public string Player2Color { get; set; }
+        /// <summary>
+        ///m7tagen nst3mlhm 
+        /// </summary>
         public ServerRoom()
         {
             _RoomMoveCounter = 0;
