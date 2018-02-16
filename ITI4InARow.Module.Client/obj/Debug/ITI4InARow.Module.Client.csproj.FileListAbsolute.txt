@@ -31,3 +31,11 @@ C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Client\bin\Debug
 C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csprojResolveAssemblyReference.cache
 C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.dll
 C:\Users\mrwan hossam\Source\Repos\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.pdb
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.dll
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Client.pdb
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.dll
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\bin\Debug\ITI4InARow.Module.Core.pdb
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.csprojResolveAssemblyReference.cache
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.dll
+C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Module.Client\obj\Debug\ITI4InARow.Module.Client.pdb
