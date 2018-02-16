@@ -60,6 +60,7 @@
                         UpdateStatus = GameUpdateStatus.GameStarted,
                         Player2Color = client.PreferedColor,
                         PlayerID = msg.Player1ID
+                        
                     };
                     message2.IsGameRunning = true;
                     SendMessageToClient(base[msg.Player1ID], message2);
@@ -109,6 +110,7 @@
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
                         msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
                         msg.IsGameRunning = true;
+                        msgOtherPlayerPlay.TokenPosition = msg.TokenPosition;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
                     }
                     break;

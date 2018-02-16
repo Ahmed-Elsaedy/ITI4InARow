@@ -25,7 +25,6 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
-
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
@@ -35,7 +34,7 @@ namespace ITI4InARow.Game.Client
             catch (NullReferenceException)
             {
                 throw;
-                MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
@@ -145,6 +144,7 @@ namespace ITI4InARow.Game.Client
                     m_GameMove = e;
                     //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
                     panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition);
+                    
                     //apply the action that come from server 
                     if (e.IsGameRunning)
                     {
