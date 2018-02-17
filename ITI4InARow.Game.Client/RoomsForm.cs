@@ -29,7 +29,6 @@
         private Label lbl_Pass;
         private NumericUpDown numRoomId;
         private Panel panel_Rooms;
-        private Button BtnRefresh;
         private Panel panel_Waiting;
 
         List<RoomUpdateMessage> _RoomsUpdates = new List<RoomUpdateMessage>();
@@ -161,7 +160,6 @@
             this.col_Viewers = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnView = new System.Windows.Forms.Button();
             this._btnNew = new System.Windows.Forms.Button();
-            this.BtnRefresh = new System.Windows.Forms.Button();
             this.panel_Rooms.SuspendLayout();
             this.panel_Waiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoomId)).BeginInit();
@@ -170,7 +168,6 @@
             // 
             // panel_Rooms
             // 
-            this.panel_Rooms.Controls.Add(this.BtnRefresh);
             this.panel_Rooms.Controls.Add(this.panel_Waiting);
             this.panel_Rooms.Controls.Add(this.numRoomId);
             this.panel_Rooms.Controls.Add(this.btnJoin);
@@ -198,7 +195,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(163, 142);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(111, 13);
+            this.label3.Size = new System.Drawing.Size(116, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Waiting For Player 2...";
             // 
@@ -217,7 +214,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(79, 119);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(278, 13);
+            this.label2.Size = new System.Drawing.Size(283, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Please Inform Player 2 With Your New Room`s Password.";
             // 
@@ -319,16 +316,6 @@
             this._btnNew.UseVisualStyleBackColor = true;
             this._btnNew.Click += new System.EventHandler(this._btnNew_Click);
             // 
-            // BtnRefresh
-            // 
-            this.BtnRefresh.Location = new System.Drawing.Point(196, 226);
-            this.BtnRefresh.Name = "BtnRefresh";
-            this.BtnRefresh.Size = new System.Drawing.Size(75, 23);
-            this.BtnRefresh.TabIndex = 14;
-            this.BtnRefresh.Text = "Refresh";
-            this.BtnRefresh.UseVisualStyleBackColor = true;
-            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
-            // 
             // RoomsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -418,9 +405,6 @@
             this.Hide();
         }
 
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
-            UpdateListViewItem();
-        }
+       
     }
 }
