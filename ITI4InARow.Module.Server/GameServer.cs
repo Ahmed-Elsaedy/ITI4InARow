@@ -80,6 +80,32 @@
                     };
                     SendMessageToClient(base[msg.Player2ID], messageForPlayer2);
                     break;
+                case RoomUpdateState.newSpectatorReq:
+                    _RoomsData[msg.RoomID].spectators.Add(client);
+                    string [] viewspac = new string[42];
+                    for (int i = 0; i < viewspac.Length; i++)
+                    {
+                        if (_RoomsData[msg.RoomID].gameBoardlogic[i] == msg.Player1ID)
+                        {
+                            viewspac[i] = _RoomsData[msg.RoomID].Player1Color;
+                        }
+                        else if (_RoomsData[msg.RoomID].gameBoardlogic[i] == msg.Player2ID)
+                        {
+                            viewspac[i] = _RoomsData[msg.RoomID].Player2Color;
+                        }
+                        else
+                        {
+                            viewspac[i] = "White";
+                        }
+                    }
+                    GameUpdateMessage msgForSpectator = new GameUpdateMessage()
+                    {
+                        UpdateStatus = GameUpdateStatus.SpectatorJoin,
+                        viewSpectatorBoard = viewspac
+                    };
+                    
+                    SendMessageToClient(client,msgForSpectator);
+                    break;
             }
         }
         protected override void OnGameUpdateMessage(ServerClient client, GameUpdateMessage msg)
@@ -140,6 +166,7 @@
                         BroadcastToClients(message2, null);
                         break;
                     }
+
             }
         }
 
@@ -230,7 +257,7 @@
                     {
                         x++;
                         GameUpdateMessage nextToken = msg.Copy();
-                        //nextToken.TokenPosition = nextTokenIndex;
+                        nextToken.TokenPosition = nextTokenIndex;
                         return GamePlan(nextToken, ref x, cp);
                     }
                     else { return false; }
@@ -246,6 +273,7 @@
         public int RoomID { get; set; }
         public int _RoomMoveCounter;
         public int[] gameBoardlogic;
+        public List<ServerClient> spectators;
         public string Player1Color { get; set; }
         /// <summary>
         ///m7tagen nst3mlhm 
@@ -262,6 +290,7 @@
             {
                 gameBoardlogic[i] = -1;
             }
+            spectators = new List<ServerClient>();
         }
     }
 }

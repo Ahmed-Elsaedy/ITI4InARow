@@ -64,7 +64,7 @@
                 {
                     OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
                     OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
-                    throw ex;
+                   // throw ex;
                     //break;
                 }
             }

@@ -27,7 +27,7 @@ namespace ITI4InARow.Game.Client
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
-                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString();
+                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString(); 
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
                 panel_GameSurface.isGameRunning = false;
@@ -174,6 +174,12 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
                     SwitchToIdleMode();
+                    break;
+                case GameUpdateStatus.SpectatorJoin:
+                    for (int i = 0; i < e.viewSpectatorBoard.Length; i++)
+                    {
+                        //panel_GameSurface= Color.FromArgb(int.Parse(e.viewSpectatorBoard[i])));
+                    }
                     break;
             }
         }
