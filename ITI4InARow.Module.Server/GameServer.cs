@@ -90,19 +90,17 @@
                 //handling masgs from client during game 
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
-                    
                     _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
-                    msg.IsGameRunning = true;
                     SendMessageToClient(base[msg.PlayerID], msg);
                     bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
-                        drawRespMsg.IsGameRunning = false;
+                        //drawRespMsg.IsGameRunning = false;
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
-                        msg.IsGameRunning = false;
+                        //msg.IsGameRunning = false;
                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player2ID], drawRespMsg);
@@ -111,21 +109,20 @@
                     else if (win)
                     {
                         GameUpdateMessage msgWin = msg.Copy();
-                        msg.IsGameRunning = false;
+                        //msg.IsGameRunning = false;
                         msgWin.UpdateStatus = GameUpdateStatus.win;
-                        SendMessageToClient(this[msgWin.PlayerID], msg);
+                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgWin);
                         //sent win msg
                         GameUpdateMessage msgLose = msg.Copy();
                         msgLose.UpdateStatus = GameUpdateStatus.lose;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgLose);
+                        SendMessageToClient(this[msg.PlayerID], msgLose);
                         //send lose msg
                     }
                     else if (!win)
                     {
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
                         msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.MakeYourMove;
-                        //msg.IsGameRunning = true;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
+                        SendMessageToClient(this[msg.PlayerID], msgOtherPlayerPlay);
                     }
                     break;
 
@@ -148,6 +145,7 @@
 
         public bool GameAction(GameUpdateMessage msg)
         {
+            msg.TokenPosition--;
             int x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
@@ -224,7 +222,7 @@
         {
             if (x < 4)
             {
-                int TokenIndex = msg.TokenPosition - 1;
+                int TokenIndex = msg.TokenPosition ;
                 int nextTokenIndex = TokenIndex + (int)cp;
                 if (nextTokenIndex >= 0 && nextTokenIndex < 42)
                 {
@@ -232,7 +230,7 @@
                     {
                         x++;
                         GameUpdateMessage nextToken = msg.Copy();
-                        nextToken.TokenPosition = nextTokenIndex;
+                        //nextToken.TokenPosition = nextTokenIndex;
                         return GamePlan(nextToken, ref x, cp);
                     }
                     else { return false; }
