@@ -106,6 +106,16 @@
                     
                     SendMessageToClient(client,msgForSpectator);
                     break;
+
+                case RoomUpdateState.AvailableRoomsBroadcast:
+                    RoomUpdateMessage[] msgs = new RoomUpdateMessage[_RoomsMessages.Count];
+                    _RoomsMessages.Values.CopyTo(msgs, 0);
+                    foreach (var msgg in msgs)
+                    {
+                        msgg.UpdateState = RoomUpdateState.Broadcast;
+                        SendMessageToClient(client, msgg);
+                    }
+                    break;
             }
         }
         protected override void OnGameUpdateMessage(ServerClient client, GameUpdateMessage msg)
