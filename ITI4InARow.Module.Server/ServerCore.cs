@@ -145,7 +145,7 @@
         protected virtual void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)
         {
         }
-        protected ServerClient this[int handle] =>
+        public ServerClient this[int handle] =>
             _Clients.SingleOrDefault(x => (x.ClientID == handle));
     }
     /// <summary>
@@ -158,8 +158,8 @@
         public BinaryReader Reader { get; private set; }
         public BinaryWriter Writer { get; private set; }
         public int ClientID => TcpClient.Client.Handle.ToInt32();
-        public string NickName { get; set; }
-        public string PreferedColor { get; set; }
+        public int PlayerColor { get; set; }
+        public string PlayerName { get; set; }
         public ServerClient(TcpClient client)
         {
             TcpClient = client;
@@ -168,7 +168,7 @@
             Writer = new BinaryWriter(Stream);
         }
         public override string ToString() =>
-            string.Format("{0}: {1} => {2}  : {3}", ClientID, TcpClient.Client.LocalEndPoint, TcpClient.Client.RemoteEndPoint, NickName);
+            string.Format("{0}: {1} => {2}  : {3}", ClientID, TcpClient.Client.LocalEndPoint, TcpClient.Client.RemoteEndPoint, PlayerColor);
         public void Dispose()
         {
             Reader.Dispose();

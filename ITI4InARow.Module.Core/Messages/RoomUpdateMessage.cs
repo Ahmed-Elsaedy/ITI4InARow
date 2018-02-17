@@ -1,45 +1,47 @@
 ﻿namespace ITI4InARow.Module.Core
 {
-    using System;
-    using System.Diagnostics;
-    using System.Runtime.CompilerServices;
-
     public class RoomUpdateMessage : MessageBase
     {
+        public int RoomID { get; set; }
+        public string RoomName { get; set; }
+        public int RoomPass { get; set; }
         public int Player1ID { get; set; }
         public int Player2ID { get; set; }
-        public int RoomID { get; set; }
-        public RoomUpdateState UpdateState { get; set; }
+        public RoomUpdateStatus UpdateStatus { get; set; }
 
         public RoomUpdateMessage()
         {
             MsgType = MessageType.RoomUpdateMessage;
         }
-        public RoomUpdateMessage Copy() =>
-            new RoomUpdateMessage
-            {
-                RoomID = RoomID,
-                Player1ID = Player1ID,
-                Player2ID = Player2ID,
-                UpdateState = UpdateState
-            };
-        public RoomStatus GetRoomStatus() =>
-            (((Player1ID != 0) && (Player2ID == 0)) ? RoomStatus.Waiting :
-            (((Player1ID != 0) && (Player2ID != 0)) ? RoomStatus.Gamming : RoomStatus.New));
+        public RoomStatus GetRoomStatus()
+        {
+            if (RoomID == 0)
+                return RoomStatus.New;
+            else if (Player1ID == 0 && Player2ID == 0)
+                return RoomStatus.Obsolete;
+            else if (Player1ID != 0 && Player2ID == 0)
+                return RoomStatus.Waiting;
+            else
+                return RoomStatus.Gamming;
+        }
+        public override string ToString()
+        {
+            return $"{RoomID}:{RoomName} - {GetRoomStatus().ToString()}";
+        }
     }
     public enum RoomStatus
     {
         New,
+        Obsolete,
         Waiting,
         Gamming
     }
-    public enum RoomUpdateState
+    public enum RoomUpdateStatus
     {
         NewRoomRequest,
         NewRoomRollback,
-        Player2Connected,
         Broadcast,
-        RoomComplete
+        JoinRoomRequest
     }
 }
 

@@ -1,12 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ITI4InARow.Game.Client
+namespace ITI4InARow.Game.Client2
 {
     static class Program
     {
@@ -18,7 +15,7 @@ namespace ITI4InARow.Game.Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Client());
+            Application.Run(new _ClientForm());
         }
     }
 }

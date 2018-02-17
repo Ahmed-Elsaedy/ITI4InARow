@@ -1,273 +1,187 @@
-﻿namespace ITI4InARow.Module.Server
-{
-    using ITI4InARow.Module.Core;
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ITI4InARow.Module.Core;
 
+namespace ITI4InARow.Module.Server
+{
     public class GameServer : ServerCore
     {
-        private Dictionary<int, RoomUpdateMessage> _RoomsMessages;
-        private Dictionary<int, ServerRoom> _RoomsData;
-
+        List<ServerRoom> _ServerRooms;
         public GameServer(byte[] ipAddress, int port) : base(ipAddress, port)
         {
-            _RoomsMessages = new Dictionary<int, RoomUpdateMessage>();
-            _RoomsData = new Dictionary<int, ServerRoom>();
+            _ServerRooms = new List<ServerRoom>();
         }
         protected override void OnProfileUpdateMessage(ServerClient client, ProfileUpdateMessage msg)
         {
-            client.NickName = msg.PlayerName;
+            client.PlayerName = msg.PlayerName;
+            client.PlayerColor = msg.PlayerColor;
             SendMessageToClient(client, msg);
         }
         protected override void OnRoomUpdateMessage(ServerClient client, RoomUpdateMessage msg)
         {
-            RoomUpdateMessage message;
-            switch (msg.UpdateState)
+            switch (msg.UpdateStatus)
             {
-                case RoomUpdateState.NewRoomRequest:
-                    msg.Player1ID = client.ClientID;
-                    msg.RoomID = client.ClientID + new Random().Next(100);
-                    _RoomsMessages.Add(msg.RoomID, msg);
+                case RoomUpdateStatus.NewRoomRequest:
+                    _ServerRooms.Add(new ServerRoom(msg));
                     SendMessageToClient(client, msg);
-                    message = msg.Copy();
-                    message.UpdateState = RoomUpdateState.Broadcast;
-                    BroadcastToClients(message, client);
+                    msg.UpdateStatus = RoomUpdateStatus.Broadcast;
+                    BroadcastToClients(msg, client);
                     break;
-                case RoomUpdateState.NewRoomRollback:
-                    _RoomsMessages.Remove(msg.RoomID);
-                    msg.UpdateState = RoomUpdateState.NewRoomRollback;
+                case RoomUpdateStatus.NewRoomRollback:
+                    var local = _ServerRooms.Single(x => x.RoomID == msg.RoomID);
+                    _ServerRooms.Remove(local);
                     SendMessageToClient(client, msg);
-                    message = msg.Copy();
-                    message.Player1ID = 0;
-                    message.Player2ID = 0;
-                    message.UpdateState = RoomUpdateState.Broadcast;
-                    BroadcastToClients(message, client);
+                    msg.UpdateStatus = RoomUpdateStatus.Broadcast;
+                    BroadcastToClients(msg, client);
                     break;
-                case RoomUpdateState.Player2Connected:
-                    _RoomsMessages[msg.RoomID].Player2ID = client.ClientID;
-                    msg.Player2ID = client.ClientID;
-                    msg.UpdateState = RoomUpdateState.Player2Connected;
-                    SendMessageToClient(base[msg.Player1ID], msg);
-                    break;
-                case RoomUpdateState.RoomComplete:
-                    message = msg.Copy();
-                    message.UpdateState = RoomUpdateState.Broadcast;
-                    BroadcastToClients(message, client);
-                    GameUpdateMessage message2 = new GameUpdateMessage { RoomID = msg.RoomID };
-                    message2.UpdateStatus = GameUpdateStatus.GameStarted;
-                    SendMessageToClient(base[msg.Player1ID], message2);
-                    SendMessageToClient(base[msg.Player2ID], message2.Copy());
-                    GameUpdateMessage message3 = new GameUpdateMessage
-                    {
-                        RoomID = msg.RoomID,
-                        PlayerID = msg.Player1ID,
-                        UpdateStatus = GameUpdateStatus.PlayerMove,
-                        TokenPosition = -1
-                    };
-                    SendMessageToClient(base[msg.Player1ID], message3);
+                case RoomUpdateStatus.JoinRoomRequest:
+                    local = _ServerRooms.Single(x => x.RoomID == msg.RoomID);
+                    local.UpdateMessage.Player2ID = msg.Player2ID;
+                    GameUpdateMessage gameMsg = local.GetGameUpdateMessage(this);
+                    gameMsg.UpdateStatus = GameUpdateStatus.GameStarted;
+                    gameMsg.TurnMove = PlayerMove.X;
+                    SendMessageToClient(this[gameMsg.Player1ID], gameMsg);
+                    SendMessageToClient(this[gameMsg.Player2ID], gameMsg);
+                    msg.UpdateStatus = RoomUpdateStatus.Broadcast;
+                    BroadcastToClients(msg);
                     break;
             }
         }
         protected override void OnGameUpdateMessage(ServerClient client, GameUpdateMessage msg)
         {
-            RoomUpdateMessage message;
             switch (msg.UpdateStatus)
             {
-                //handling masgs from clint during game 
                 case GameUpdateStatus.PlayerMove:
-                    message = _RoomsMessages[msg.RoomID];
-                    msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
-                    SendMessageToClient(base[msg.PlayerID], msg);
-                    _RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its pleyaer
-                    bool win = GameAction(msg);/////////////////////
-                    _RoomsData[msg.RoomID]._RoomMoveCounter[client.ClientID] += 1;
-                    if (_RoomsData[msg.RoomID]._RoomMoveCounter[msg.RoomID] == 42 && win == false)
-                    {
-                        GameUpdateMessage drawRespMsg = msg.Copy();
-                        drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
-                        msg.IsGameRunning = false;
-                        //now send draw msg  to both players 
-                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
-                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
-                        //Game Draw
-                    }
-                    else if (win)
-                    {
-                        GameUpdateMessage msgWin = msg.Copy();
-                        msgWin.UpdateStatus = GameUpdateStatus.win;
-                        SendMessageToClient(this[msgWin.PlayerID], msg);
-                        //sent win msg
-                        GameUpdateMessage msgLose = msg.Copy();
-                        msgLose.UpdateStatus = GameUpdateStatus.lose;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgLose);
-                        //send lose msg
-                    }
-                    else if (!win)
-                    {
-                        GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
-                        msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
-                    }
+                    var local = _ServerRooms.Single(x => x.RoomID == msg.RoomID);
+                    local.UpdateGameBoard(msg.GameBoard);
+                    bool winMove = CheckFour(local.GameBoard, msg.TurnMove);
+                    int full = FullBoard(local.GameBoard);
 
-
-                    break;
-                case GameUpdateStatus.GameLeave:
-                    {
-                        message = _RoomsMessages[msg.RoomID];
-                        SendMessageToClient(base[message.Player1ID], msg);
-                        SendMessageToClient(base[message.Player2ID], msg.Copy());
-                        _RoomsMessages.Remove(msg.RoomID);
-                        _RoomsData.Remove(msg.RoomID);
-                        RoomUpdateMessage message2 = new RoomUpdateMessage { RoomID = msg.RoomID };
-                        message2.UpdateState = RoomUpdateState.Broadcast;
-                        message2.Player1ID = 0;
-                        message2.Player2ID = 0;
-                        BroadcastToClients(message2, null);
-                        break;
-                    }
-            }
-        }
-
-
-        bool GameAction(GameUpdateMessage msg)
-        {
-            int x = 1;
-            if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
-            {
-                if (GamePlan(msg, ref x, CheckPosition.NORTH))
-                {
-                    msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
-                }
-            }
-            if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
-            {
-                if (GamePlan(msg, ref x, CheckPosition.SOUTH))
-                {
-                    msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
-                }
-            }
-            /////////////////////////////////////////////
-            x = 1;
-            if (GamePlan(msg, ref x, CheckPosition.WEST))
-            {
-                msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win west");
-                if (x == 4)
-                {
-                    return true;
-                }
-            }
-            if (GamePlan(msg, ref x, CheckPosition.EAST))
-            {
-                msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win east");
-                if (x == 4)
-                {
-                    return true;
-                }
-            }
-            //////////////////////////////////////////////
-            x = 1;
-            if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
-            {
-                if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
-                {
-                    msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
-                }
-            }
-            if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
-            {
-                if (GamePlan(msg, ref x, CheckPosition.SOUTH_WEST))
-                {
-                    msg.IsGameRunning = false;
-                    // MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south west");
-                    if (x == 4)
-                    {
-                        return true;
-                    }
-                }
-            }
-            ////////////////////////////////////////////////
-            x = 1;
-
-            if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
-            {
-                //isGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                if (x == 4)
-                {
-                    return true;
-                }
-            }
-
-            if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
-            {
-                msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
-                if (x == 4)
-                {
-                    return true;
-                }
-            }
-            /////////////////
-            return false;
-        }
-        bool GamePlan(GameUpdateMessage msg, ref int x, CheckPosition cp)
-        {
-            if (x < 4)
-            {
-                int TokenIndex = msg.TokenPosition - 1;
-                int leftTokenIndex = TokenIndex + (int)cp;
-                if (leftTokenIndex >= 0 && leftTokenIndex < 42)
-                {
-                    //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
-                    if (_RoomsData[msg.RoomID].gameBourdlogic[msg.TokenPosition] == _RoomsData[msg.RoomID].gameBourdlogic[leftTokenIndex])
-                    {
-                        x++;
-                        GameUpdateMessage nextToken = msg.Copy();
-                        nextToken.TokenPosition = leftTokenIndex;
-                        return GamePlan(nextToken, ref x, cp);
-                    }
+                    GameUpdateMessage gameUpdate = local.GetGameUpdateMessage(this);
+                    if (!winMove && full != 7)
+                        gameUpdate.TurnMove = msg.TurnMove == PlayerMove.X ? PlayerMove.O : msg.TurnMove == PlayerMove.O ? PlayerMove.X : PlayerMove.N;
                     else
+                        gameUpdate.TurnMove = PlayerMove.N;
+                    gameUpdate.UpdateStatus = GameUpdateStatus.PlayerMove;
+                    SendMessageToClient(this[gameUpdate.Player1ID], gameUpdate);
+                    SendMessageToClient(this[gameUpdate.Player2ID], gameUpdate);
+
+                    if (winMove)
                     {
-                        return false;
+                        if (msg.TurnMove == PlayerMove.X)
+                        {
+                            gameUpdate.UpdateStatus = GameUpdateStatus.PlayerWin;
+                            SendMessageToClient(this[gameUpdate.Player1ID], gameUpdate);
+                            gameUpdate.UpdateStatus = GameUpdateStatus.PlayerLose;
+                            SendMessageToClient(this[gameUpdate.Player2ID], gameUpdate);
+                        }
+                        else if (msg.TurnMove == PlayerMove.O)
+                        {
+                            gameUpdate.UpdateStatus = GameUpdateStatus.PlayerLose;
+                            SendMessageToClient(this[gameUpdate.Player1ID], gameUpdate);
+                            gameUpdate.UpdateStatus = GameUpdateStatus.PlayerWin;
+                            SendMessageToClient(this[gameUpdate.Player2ID], gameUpdate);
+                        }
+                    }
+                    else if (full == 7)
+                    {
+                        gameUpdate.UpdateStatus = GameUpdateStatus.GameDraw;
+                        SendMessageToClient(this[gameUpdate.Player1ID], gameUpdate);
+                        SendMessageToClient(this[gameUpdate.Player2ID], gameUpdate);
+                    }
+                    break;
+            }
+        }
+
+        private bool CheckFour(PlayerMove[,] board, PlayerMove activePlayer)
+        {
+            bool win = false;
+            for (int i = 8; i >= 1; --i)
+            {
+                for (int ix = 9; ix >= 1; --ix)
+                {
+                    if (board[i, ix] == activePlayer &&
+                        board[i - 1, ix - 1] == activePlayer &&
+                        board[i - 2, ix - 2] == activePlayer &&
+                        board[i - 3, ix - 3] == activePlayer)
+                    {
+                        win = true;
+                    }
+                    if (board[i, ix] == activePlayer &&
+                        board[i, ix - 1] == activePlayer &&
+                        board[i, ix - 2] == activePlayer &&
+                        board[i, ix - 3] == activePlayer)
+                    {
+                        win = true;
+                    }
+                    if (board[i, ix] == activePlayer &&
+                        board[i - 1, ix] == activePlayer &&
+                        board[i - 2, ix] == activePlayer &&
+                        board[i - 3, ix] == activePlayer)
+                    {
+                        win = true;
+                    }
+                    if (board[i, ix] == activePlayer &&
+                        board[i - 1, ix + 1] == activePlayer &&
+                        board[i - 2, ix + 2] == activePlayer &&
+                        board[i - 3, ix + 3] == activePlayer)
+                    {
+                        win = true;
+                    }
+                    if (board[i, ix] == activePlayer &&
+                         board[i, ix + 1] == activePlayer &&
+                         board[i, ix + 2] == activePlayer &&
+                         board[i, ix + 3] == activePlayer)
+                    {
+                        win = true;
                     }
                 }
-                else return false;
             }
-            return true;
+            return win;
+        }
+        private int FullBoard(PlayerMove[,] board)
+        {
+            int full = 0;
+            for (int i = 1; i <= 7; ++i)
+            {
+                var temp = board[1, i];
+                if (temp == PlayerMove.O || temp == PlayerMove.X)
+                    ++full;
+            }
+            return full;
         }
     }
 
     public class ServerRoom
     {
-        public int RoomID { get; set; }
-        public Dictionary<int, int> _RoomMoveCounter;
-        public int[] gameBourdlogic = new int[42];
-
-        public ServerRoom()
+        public RoomUpdateMessage UpdateMessage { get; private set; }
+        public int RoomID => UpdateMessage.RoomID;
+        public PlayerMove[,] GameBoard { get; private set; }
+        public ServerRoom(RoomUpdateMessage msg)
         {
-            _RoomMoveCounter = new Dictionary<int, int>();
-            for (int i = 0; i < gameBourdlogic.Length; i++)
-            {
-                gameBourdlogic[i] = 0;
-            }
+            UpdateMessage = msg;
+            UpdateMessage.RoomID = msg.Player1ID + 250;
+            GameBoard = new PlayerMove[9, 10];
+        }
+        public GameUpdateMessage GetGameUpdateMessage(GameServer server)
+        {
+            GameUpdateMessage msg = new GameUpdateMessage();
+            msg.RoomID = RoomID;
+            msg.GameBoard = GameBoard;
+            msg.Player1ID = UpdateMessage.Player1ID;
+            msg.Player2ID = UpdateMessage.Player2ID;
+            msg.Player1Name = server[UpdateMessage.Player1ID].PlayerName;
+            msg.Player2Name = server[UpdateMessage.Player2ID].PlayerName;
+            msg.Player1Color = server[UpdateMessage.Player1ID].PlayerColor;
+            msg.Player2Color = server[UpdateMessage.Player2ID].PlayerColor;
+            return msg;
+        }
+        public void UpdateGameBoard(PlayerMove[,] board)
+        {
+            GameBoard = board;
         }
     }
 }
-
