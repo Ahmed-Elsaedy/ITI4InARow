@@ -117,8 +117,31 @@
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
                     _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    string[] viewspac = new string[42];
+                    for (int i = 0; i < viewspac.Length; i++)
+                    {
+                        if (_RoomsData[msg.RoomID].gameBoardlogic[i] == message.Player1ID)
+                        {
+                            viewspac[i] = _RoomsData[message.RoomID].Player1Color;
+                        }
+                        else if (_RoomsData[msg.RoomID].gameBoardlogic[i] == message.Player2ID)
+                        {
+                            viewspac[i] = _RoomsData[message.RoomID].Player2Color;
+                        }
+                        else
+                        {
+                            viewspac[i] = "White";
+                        }
+                    }
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
+                    GameUpdateMessage msgtospectator = msg.Copy();
+                    msgtospectator.UpdateStatus = GameUpdateStatus.viewMoveToSpectator;
+                    msgtospectator.viewSpectatorBoard = viewspac;
+                    foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
+                    {
+                        SendMessageToClient(spectator, msg);
+                    }
                     bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)

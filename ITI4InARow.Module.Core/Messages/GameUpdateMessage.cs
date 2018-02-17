@@ -40,7 +40,8 @@
         win,
         lose,
         MakeYourMove,
-        SpectatorJoin
+        SpectatorJoin,
+        viewMoveToSpectator
     }
 }
 

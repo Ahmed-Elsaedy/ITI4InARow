@@ -30,6 +30,7 @@
         private Label lbl_Pass;
         private NumericUpDown numRoomId;
         private Panel panel_Rooms;
+        private Button BtnRefresh;
         private Panel panel_Waiting;
 
         public RoomsForm(GameClient gameClient)
@@ -148,6 +149,7 @@
             this.col_Viewers = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnView = new System.Windows.Forms.Button();
             this._btnNew = new System.Windows.Forms.Button();
+            this.BtnRefresh = new System.Windows.Forms.Button();
             this.panel_Rooms.SuspendLayout();
             this.panel_Waiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoomId)).BeginInit();
@@ -156,6 +158,7 @@
             // 
             // panel_Rooms
             // 
+            this.panel_Rooms.Controls.Add(this.BtnRefresh);
             this.panel_Rooms.Controls.Add(this.panel_Waiting);
             this.panel_Rooms.Controls.Add(this.numRoomId);
             this.panel_Rooms.Controls.Add(this.btnJoin);
@@ -304,6 +307,16 @@
             this._btnNew.UseVisualStyleBackColor = true;
             this._btnNew.Click += new System.EventHandler(this._btnNew_Click);
             // 
+            // BtnRefresh
+            // 
+            this.BtnRefresh.Location = new System.Drawing.Point(196, 226);
+            this.BtnRefresh.Name = "BtnRefresh";
+            this.BtnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.BtnRefresh.TabIndex = 14;
+            this.BtnRefresh.Text = "Refresh";
+            this.BtnRefresh.UseVisualStyleBackColor = true;
+            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
+            // 
             // RoomsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -390,7 +403,12 @@
             RoomUpdateMessage reqViewRoom = (RoomUpdateMessage)_ListViewRooms.SelectedItems[0].Tag;
             reqViewRoom.UpdateState = RoomUpdateState.newSpectatorReq;
             _GameClient.SendMessageToServer(reqViewRoom);
-            //this.Hide();
+            this.Hide();
+        }
+
+        private void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            UpdateListViewItem();
         }
     }
 }

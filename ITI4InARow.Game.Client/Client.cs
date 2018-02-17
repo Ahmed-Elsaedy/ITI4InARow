@@ -169,10 +169,12 @@ namespace ITI4InARow.Game.Client
                     SwitchToIdleMode();
                     break;
                 case GameUpdateStatus.SpectatorJoin:
-                    for (int i = 0; i < e.viewSpectatorBoard.Length; i++)
-                    {
-                        //panel_GameSurface= Color.FromArgb(int.Parse(e.viewSpectatorBoard[i])));
-                    }
+                    panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
+                    SwitchToGamingMode();
+                    panel_GameSurface.Cursor = Cursors.No;
+                    break;
+                case GameUpdateStatus.viewMoveToSpectator:
+                    panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
                     break;
             }
         }
