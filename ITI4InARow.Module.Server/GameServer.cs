@@ -31,7 +31,8 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
-                    _RoomsData.Add(msg.RoomID, (new ServerRoom() {
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom()
+                    {
                     RoomID = msg.RoomID, _RoomMoveCounter = 0 ,Player1Color=client.PreferedColor
                     }));///////elcolor hna
                     message.UpdateState = RoomUpdateState.Broadcast;
@@ -74,7 +75,7 @@
                         RoomID = msg.RoomID,
                         UpdateStatus = GameUpdateStatus.GameStarted,
                         Player2Color = _RoomsData[msg.RoomID].Player1Color, //////
-                        PlayerID = msg.Player1ID,
+                        PlayerID = msg.Player2ID,
                         IsGameRunning = false // disable player 2
                     };
                     SendMessageToClient(base[msg.Player2ID], messageForPlayer2);
