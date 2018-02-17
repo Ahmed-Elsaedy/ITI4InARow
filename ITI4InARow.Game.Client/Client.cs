@@ -27,7 +27,7 @@ namespace ITI4InARow.Game.Client
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
-                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString();
+                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString(); 
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
                 panel_GameSurface.isGameRunning = false;
@@ -143,16 +143,7 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     m_GameMove = e;
-                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition,Color.FromArgb(int.Parse(e.Player2Color)) );
-                    //apply the action that come from server 
-                    if (e.IsGameRunning)
-                    {
-                        panel_GameSurface.isGameRunning = true;
-                    }
-                    else if (!e.IsGameRunning)
-                    {
-                        panel_GameSurface.isGameRunning = false;
-                    }
+                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition, Color.FromArgb(int.Parse(e.Player2Color)));
                     break;
 
                 case GameUpdateStatus.MakeYourMove:
@@ -164,16 +155,24 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.lose:
-                    MessageBox.Show("lose");
+                    MessageBox.Show("you lose");
+                    panel_GameSurface.isGameRunning = false;
                     break;
 
                 case GameUpdateStatus.win:
-                    MessageBox.Show("win");
+                    MessageBox.Show("you win");
+                    panel_GameSurface.isGameRunning = false;
                     break;
 
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
                     SwitchToIdleMode();
+                    break;
+                case GameUpdateStatus.SpectatorJoin:
+                    for (int i = 0; i < e.viewSpectatorBoard.Length; i++)
+                    {
+                        //panel_GameSurface= Color.FromArgb(int.Parse(e.viewSpectatorBoard[i])));
+                    }
                     break;
             }
         }
@@ -190,6 +189,59 @@ namespace ITI4InARow.Game.Client
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        class MenuColorTable : ProfessionalColorTable
+        {
+            public MenuColorTable()
+            {
+                // see notes
+                base.UseSystemColors = false;
+            }
+            public override System.Drawing.Color MenuBorder
+            {
+                get { return Color.Black; }
+            }
+            public override System.Drawing.Color MenuItemBorder
+            {
+                get { return Color.WhiteSmoke; }
+            }
+            public override Color MenuItemSelected
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color ToolStripDropDownBackground
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientBegin
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientEnd
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientMiddle
+            {
+                get { return Color.Black; }
+            }
         }
     }
 }

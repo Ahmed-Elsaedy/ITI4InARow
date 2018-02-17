@@ -218,6 +218,17 @@ namespace ITI4InARow.Game.UI
 
         }
 
+        public void fillcolorsforspectetorjoin(string[] viewSpectatorBoard)
+        {
+            for (int i = 0; i < viewSpectatorBoard.Length; i++)
+            {
+                if (!viewSpectatorBoard[i].Equals("White"))
+                {
+                    ((OvalShape)shapeContainer1.Shapes.get_Item(i)).FillColor = Color.FromArgb(int.Parse(viewSpectatorBoard[i]));
+                }
+            }
+        }
+
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)
         {
             if (x < 4)
