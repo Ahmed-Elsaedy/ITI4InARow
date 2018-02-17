@@ -75,7 +75,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)));
                         columns[0]--;
                     }
                 }
@@ -85,7 +85,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)));
                         columns[1]--;
                     }
                 }
@@ -95,7 +95,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)));
                         columns[2]--;
                     }
                 }
@@ -105,7 +105,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)));
                         columns[3]--;
                     }
                 }
@@ -115,7 +115,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)));
                         columns[4]--;
                     }
                 }
@@ -125,7 +125,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)));
                         columns[5]--;
                     }
                 }
@@ -135,7 +135,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)));
                         columns[6]--;
                     }
                 }
