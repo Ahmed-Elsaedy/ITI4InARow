@@ -36,7 +36,8 @@
         GameLeave,
         GameDraw,
         win,
-        lose
+        lose,
+        MakeYourMove
     }
 }
 
