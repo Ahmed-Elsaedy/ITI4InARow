@@ -39,7 +39,8 @@
         NewRoomRollback,
         Player2Connected,
         Broadcast,
-        RoomComplete
+        RoomComplete,
+        AvailableRoomsBroadcast
     }
 }
 

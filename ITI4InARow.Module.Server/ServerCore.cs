@@ -113,7 +113,7 @@
                     break;
             }
         }
-        private void OnServerStatusChanged(ServerStatus action, ServerClient serverClient)
+        protected virtual void OnServerStatusChanged(ServerStatus action, ServerClient serverClient)
         {
             switch (action)
             {

@@ -29,25 +29,6 @@ C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4
 C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.pdb
 C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Newtonsoft.Json.dll
 C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.ConnectForm.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.exe.config
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.exe
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.pdb
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Module.Client.dll
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Module.Core.dll
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Module.Client.pdb
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Module.Core.pdb
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.csprojResolveAssemblyReference.cache
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.UI.GameUI.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.RoomsForm.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.Client.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.ConnectForm.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.Properties.Resources.resources
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.csproj.GenerateResource.Cache
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.csproj.CoreCompileInputs.cache
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.exe
-C:\Users\Ahmed Mahmoud\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.pdb
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.exe.config
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.exe
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\ITI4InARow.Game.Client.pdb
