@@ -69,14 +69,13 @@ namespace ITI4InARow.Game.UI
             if (isGameRunning)
             {
                 playersMovesCount++;
-                //playerTurn = !playerTurn;
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
                     if (columns[0] > 0)
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[0]--;
                     }
                 }
@@ -86,7 +85,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[1]--;
                     }
                 }
@@ -96,7 +95,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[2]--;
                     }
                 }
@@ -106,7 +105,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[3]--;
                     }
                 }
@@ -116,7 +115,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[4]--;
                     }
                 }
@@ -126,7 +125,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[5]--;
                     }
                 }
@@ -136,7 +135,7 @@ namespace ITI4InARow.Game.UI
                     {
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).Enabled = false;
-                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)));
+                        PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition)));
                         columns[6]--;
                     }
                 }
@@ -146,7 +145,7 @@ namespace ITI4InARow.Game.UI
 
         internal void Apply_Other_Client_Action(int TokenPosition , Color otherPlayerColor)
         {
-            if (isGameRunning)
+            if (!isGameRunning)
             {
                 playersMovesCount++;
 
@@ -215,6 +214,7 @@ namespace ITI4InARow.Game.UI
                     }
                 } 
             }
+            isGameRunning = true;
 
         }
 
