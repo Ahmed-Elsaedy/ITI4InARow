@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Server));
             this._lblListBox = new System.Windows.Forms.Label();
             this._lblOutput = new System.Windows.Forms.Label();
             this._MainMenu = new System.Windows.Forms.MenuStrip();
@@ -49,7 +50,7 @@
             this._lblListBox.AutoSize = true;
             this._lblListBox.Location = new System.Drawing.Point(12, 35);
             this._lblListBox.Name = "_lblListBox";
-            this._lblListBox.Size = new System.Drawing.Size(94, 13);
+            this._lblListBox.Size = new System.Drawing.Size(93, 13);
             this._lblListBox.TabIndex = 4;
             this._lblListBox.Text = "Connected Clients";
             // 
@@ -58,7 +59,7 @@
             this._lblOutput.AutoSize = true;
             this._lblOutput.Location = new System.Drawing.Point(12, 169);
             this._lblOutput.Name = "_lblOutput";
-            this._lblOutput.Size = new System.Drawing.Size(76, 13);
+            this._lblOutput.Size = new System.Drawing.Size(73, 13);
             this._lblOutput.TabIndex = 6;
             this._lblOutput.Text = "Server Output";
             // 
@@ -86,7 +87,7 @@
             // _MenuItemStart
             // 
             this._MenuItemStart.Name = "_MenuItemStart";
-            this._MenuItemStart.Size = new System.Drawing.Size(152, 22);
+            this._MenuItemStart.Size = new System.Drawing.Size(98, 22);
             this._MenuItemStart.Text = "Start";
             this._MenuItemStart.Click += new System.EventHandler(this._MenuItemStart_Click);
             // 
@@ -94,7 +95,7 @@
             // 
             this._MenuItemStop.Enabled = false;
             this._MenuItemStop.Name = "_MenuItemStop";
-            this._MenuItemStop.Size = new System.Drawing.Size(152, 22);
+            this._MenuItemStop.Size = new System.Drawing.Size(98, 22);
             this._MenuItemStop.Text = "Stop";
             this._MenuItemStop.Click += new System.EventHandler(this._MenuItemStop_Click);
             // 
@@ -165,6 +166,7 @@
             this.Controls.Add(this._lblOutput);
             this.Controls.Add(this._lblListBox);
             this.Controls.Add(this._MainMenu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this._MainMenu;
             this.Name = "Server";
             this.Text = "Server";

@@ -144,6 +144,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoomsForm));
             this.panel_Rooms = new System.Windows.Forms.Panel();
             this.panel_Waiting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -195,7 +196,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(163, 142);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 13);
+            this.label3.Size = new System.Drawing.Size(111, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Waiting For Player 2...";
             // 
@@ -214,7 +215,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(79, 119);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(283, 13);
+            this.label2.Size = new System.Drawing.Size(278, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Please Inform Player 2 With Your New Room`s Password.";
             // 
@@ -322,6 +323,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(690, 413);
             this.Controls.Add(this.panel_Rooms);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RoomsForm";
