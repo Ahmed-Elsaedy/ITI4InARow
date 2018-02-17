@@ -241,6 +241,7 @@ namespace ITI4InARow.Game.UI
             int index = 1;
             foreach (OvalShape oval in shapeContainer1.Shapes)
             {
+                oval.Cursor = Cursors.No;
                 oval.Tag = index;
                 index++;
                 oval.MouseClick -= GameUI_MouseClick;
