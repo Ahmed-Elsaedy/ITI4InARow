@@ -32,6 +32,7 @@ namespace ITI4InARow.Game.Client
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Client));
             this._MainMenu = new System.Windows.Forms.MenuStrip();
             this.menuItem_Server = new System.Windows.Forms.ToolStripMenuItem();
             this._MenuItemConnect = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,6 +144,7 @@ namespace ITI4InARow.Game.Client
             this.Controls.Add(this._StatusStrip);
             this.Controls.Add(this._MainMenu);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
