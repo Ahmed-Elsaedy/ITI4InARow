@@ -144,15 +144,6 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.PlayerMove:
                     m_GameMove = e;
                     panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition,Color.FromArgb(int.Parse(e.Player2Color)) );
-                    //apply the action that come from server 
-                    if (e.IsGameRunning)
-                    {
-                        panel_GameSurface.isGameRunning = true;
-                    }
-                    else if (!e.IsGameRunning)
-                    {
-                        panel_GameSurface.isGameRunning = false;
-                    }
                     break;
 
                 case GameUpdateStatus.MakeYourMove:
