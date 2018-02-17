@@ -41,7 +41,8 @@
         Player2Connected,
         Broadcast,
         RoomComplete,
-        newSpectatorReq
+        newSpectatorReq,
+        AvailableRoomsBroadcast
     }
 }
 
