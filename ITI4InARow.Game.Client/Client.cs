@@ -4,7 +4,6 @@ using ITI4InARow.Module.Core;
 using ITI4InARow.Module.Client;
 using System.Drawing;
 using Microsoft.VisualBasic.PowerPacks;
-
 namespace ITI4InARow.Game.Client
 {
     public partial class Client : Form
@@ -25,7 +24,6 @@ namespace ITI4InARow.Game.Client
         {
             try
             {
-
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 //m_GameMove.MsgType = MessageType.GameUpdateMessage;
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
@@ -56,7 +54,8 @@ namespace ITI4InARow.Game.Client
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
                     PlayerName = form.NickName,
-                    PlayerColor = ChosenColor.Name.ToString()
+                    // PlayerColor = ChosenColor.Name.ToString()
+                    PlayerColor = ChosenColor.ToArgb().ToString()
                 };
                 m_Client.SendMessageToServer(message);
             }
@@ -129,7 +128,8 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
-                    panel_GameSurface.player2Color = Color.FromName(e.Player2Color);
+                   
+                    panel_GameSurface.player2Color = Color.FromArgb( int.Parse(e.Player2Color));
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;

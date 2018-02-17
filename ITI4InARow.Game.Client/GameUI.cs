@@ -72,7 +72,7 @@ namespace ITI4InARow.Game.UI
             {
                 playersMovesCount++;
                 TokenColor = player1Color;
-                playerTurn = !playerTurn;
+               // playerTurn = !playerTurn;
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
                     if (columns[0] > 0)
