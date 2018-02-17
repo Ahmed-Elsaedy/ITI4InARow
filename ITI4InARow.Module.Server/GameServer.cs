@@ -89,9 +89,11 @@
                 //handling masgs from client during game 
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
-                    msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
-                    SendMessageToClient(base[msg.PlayerID], msg);
+                    
                     _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
+                    msg.IsGameRunning = true;
+                    SendMessageToClient(base[msg.PlayerID], msg);
                     bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
@@ -102,7 +104,7 @@
                         msg.IsGameRunning = false;
                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
-                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
+                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player2ID], drawRespMsg);
                         //Game Draw
                     }
                     else if (win)
@@ -120,8 +122,8 @@
                     else if (!win)
                     {
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
-                        msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
-                        msg.IsGameRunning = true;
+                        msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.MakeYourMove;
+                        //msg.IsGameRunning = true;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
                     }
                     break;
@@ -225,7 +227,6 @@
                 int nextTokenIndex = TokenIndex + (int)cp;
                 if (nextTokenIndex >= 0 && nextTokenIndex < 42)
                 {
-                    //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
                     if (_RoomsData[msg.RoomID].gameBoardlogic[TokenIndex] == _RoomsData[msg.RoomID].gameBoardlogic[nextTokenIndex])
                     {
                         x++;

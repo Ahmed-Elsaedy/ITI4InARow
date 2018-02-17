@@ -14,6 +14,7 @@ namespace ITI4InARow.Game.UI
     public partial class GameUI : UserControl
     {
         int[] columns;
+        bool playerTurn;
         public Color player1Color;
         public Color player2Color;
         public bool isGameRunning;
@@ -29,6 +30,9 @@ namespace ITI4InARow.Game.UI
         private void InitGame()
         {
             columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
+            playerTurn = true;
+            // player1Color = Color.Purple;
+            //player2Color = Color.SpringGreen;
             playersMovesCount = 0;
             defaultOvalColor = Color.White;
         }
@@ -58,21 +62,18 @@ namespace ITI4InARow.Game.UI
 
         private void GameUI_MouseClick(object sender, MouseEventArgs e)
         {
-            GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()));
+            GameLogic(int.Parse(((OvalShape)sender).Tag.ToString()),player1Color);
         }
-        public void GameLogic(int TokenPosition)
+        public void GameLogic(int TokenPosition , Color TokenColor)
         {
-            Color TokenColor;
-            if (TokenPosition > 0 && TokenPosition <= 42 && isGameRunning)
+            if (isGameRunning)
             {
                 playersMovesCount++;
-                TokenColor = player1Color;
                 //playerTurn = !playerTurn;
                 if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
                     if (columns[0] > 0)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1));
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)));
@@ -83,8 +84,7 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[1] > 6)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)));
                         columns[1]--;
@@ -94,8 +94,7 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[2] > 12)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)));
                         columns[2]--;
@@ -105,8 +104,7 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[3] > 18)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)));
                         columns[3]--;
@@ -116,8 +114,7 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[4] > 24)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)));
                         columns[4]--;
@@ -127,8 +124,7 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[5] > 30)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)));
                         columns[5]--;
@@ -138,76 +134,88 @@ namespace ITI4InARow.Game.UI
                 {
                     if (columns[6] > 36)
                     {
-                        //ovalClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1));
-                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = player1Color;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = TokenColor;
                         ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).Enabled = false;
                         PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)));
                         columns[6]--;
                     }
                 }
-                isGameRunning = false;
-                //PlayerAction?.Invoke(this, ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)));
             }
-
+            isGameRunning = false;
         }
 
-        internal void Apply_Other_Client_Action(int Position)
+        internal void Apply_Other_Client_Action(int TokenPosition , Color otherPlayerColor)
         {
-            isGameRunning = true;
-            playersMovesCount++;
-            if (Position >= 1 && Position <= 6)
+            if (isGameRunning)
             {
-                if (columns[0] > 0)
-                {
-                    columns[0]--;
-                }
-            }
-            else if (Position >= 7 && Position <= 12)
-            {
-                if (columns[1] > 6)
-                {
-                    columns[1]--;
-                }
-            }
-            else if (Position >= 13 && Position <= 18)
-            {
-                if (columns[2] > 12)
-                {
-                    columns[2]--;
-                }
-            }
-            else if (Position >= 19 && Position <= 24)
-            {
-                if (columns[3] > 18)
-                {
-                    columns[3]--;
-                }
-            }
-            else if (Position >= 25 && Position <= 30)
-            {
-                if (columns[4] > 24)
-                {
-                    columns[4]--;
-                }
-            }
-            else if (Position >= 31 && Position <= 36)
-            {
-                if (columns[5] > 30)
-                {
-                    columns[5]--;
-                }
+                playersMovesCount++;
 
-            }
-            else if (Position >= 37 && Position <= 42)
-            {
-                if (columns[6] > 36)
+                if (TokenPosition >= 1 && TokenPosition <= 6)
                 {
-                    columns[6]--;
+                    if (columns[0] > 0)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[0] - 1)).Enabled = false;
+                        columns[0]--;
+                    }
                 }
+                else if (TokenPosition >= 7 && TokenPosition <= 12)
+                {
+                    if (columns[1] > 6)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[1] - 1)).Enabled = false;
+                        columns[1]--;
+                    }
+                }
+                else if (TokenPosition >= 13 && TokenPosition <= 18)
+                {
+                    if (columns[2] > 12)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[2] - 1)).Enabled = false;
+                        columns[2]--;
+                    }
+                }
+                else if (TokenPosition >= 19 && TokenPosition <= 24)
+                {
+                    if (columns[3] > 18)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[3] - 1)).Enabled = false;
+                        columns[3]--;
+                    }
+                }
+                else if (TokenPosition >= 25 && TokenPosition <= 30)
+                {
+                    if (columns[4] > 24)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[4] - 1)).Enabled = false;
+                        columns[4]--;
+                    }
+                }
+                else if (TokenPosition >= 31 && TokenPosition <= 36)
+                {
+                    if (columns[5] > 30)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[5] - 1)).Enabled = false;
+                        columns[5]--;
+                    }
+
+                }
+                else if (TokenPosition >= 37 && TokenPosition <= 42)
+                {
+                    if (columns[6] > 36)
+                    {
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).FillColor = otherPlayerColor;
+                        ((OvalShape)shapeContainer1.Shapes.get_Item(columns[6] - 1)).Enabled = false;
+                        columns[6]--;
+                    }
+                } 
             }
-            //OvalShape ovelClicked = ((OvalShape)shapeContainer1.Shapes.get_Item(TokenPosition - 1));
-            ((OvalShape)shapeContainer1.Shapes.get_Item(Position - 1)).FillColor = player2Color;
-            ((OvalShape)shapeContainer1.Shapes.get_Item(Position - 1)).Enabled = false;
+
         }
 
         bool GamePlan(OvalShape ovalClicked, ref int x, CheckPosition cp)

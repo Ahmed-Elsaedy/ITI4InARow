@@ -26,10 +26,11 @@ namespace ITI4InARow.Game.Client
             try
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
-                //m_GameMove.MsgType = MessageType.GameUpdateMessage;
+                m_GameMove.MsgType = MessageType.GameUpdateMessage;
+                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString();
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
-               // panel_GameSurface.isGameRunning = false;
+                panel_GameSurface.isGameRunning = false;
             }
             catch (NullReferenceException)
             {
@@ -55,7 +56,7 @@ namespace ITI4InARow.Game.Client
                 ProfileUpdateMessage message = new ProfileUpdateMessage
                 {
                     PlayerName = form.NickName,
-                    PlayerColor = ChosenColor.Name.ToString()
+                    PlayerColor = ChosenColor.ToArgb().ToString()
                 };
                 m_Client.SendMessageToServer(message);
             }
@@ -128,7 +129,7 @@ namespace ITI4InARow.Game.Client
                 //handling msgs from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
-                    panel_GameSurface.player2Color = Color.FromName(e.Player2Color);
+                    panel_GameSurface.player2Color = Color.FromArgb(int.Parse(e.Player2Color));
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;
@@ -142,9 +143,7 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     m_GameMove = e;
-                    //amr ana hena 3ayez anady 3ala function te3mel el action 3ala el user control bta3na 
-                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition);
-                    
+                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition,Color.FromArgb(int.Parse(e.Player2Color)) );
                     //apply the action that come from server 
                     if (e.IsGameRunning)
                     {
@@ -154,7 +153,22 @@ namespace ITI4InARow.Game.Client
                     {
                         panel_GameSurface.isGameRunning = false;
                     }
-                    //apaly the action that come from server 
+                    break;
+
+                case GameUpdateStatus.MakeYourMove:
+                    panel_GameSurface.isGameRunning = true;
+                    break;
+
+                case GameUpdateStatus.GameDraw:
+                    MessageBox.Show("draw");
+                    break;
+
+                case GameUpdateStatus.lose:
+                    MessageBox.Show("lose");
+                    break;
+
+                case GameUpdateStatus.win:
+                    MessageBox.Show("win");
                     break;
 
                 case GameUpdateStatus.GameLeave:
