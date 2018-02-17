@@ -143,7 +143,7 @@ namespace ITI4InARow.Game.Client
 
                 case GameUpdateStatus.PlayerMove:
                     m_GameMove = e;
-                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition,Color.FromArgb(int.Parse(e.Player2Color)) );
+                    panel_GameSurface.Apply_Other_Client_Action(m_GameMove.TokenPosition, Color.FromArgb(int.Parse(e.Player2Color)));
                     break;
 
                 case GameUpdateStatus.MakeYourMove:
@@ -155,11 +155,13 @@ namespace ITI4InARow.Game.Client
                     break;
 
                 case GameUpdateStatus.lose:
-                    MessageBox.Show("lose");
+                    MessageBox.Show("you lose");
+                    panel_GameSurface.isGameRunning = false;
                     break;
 
                 case GameUpdateStatus.win:
-                    MessageBox.Show("win");
+                    MessageBox.Show("you win");
+                    panel_GameSurface.isGameRunning = false;
                     break;
 
                 case GameUpdateStatus.GameLeave:
@@ -181,6 +183,59 @@ namespace ITI4InARow.Game.Client
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        class MenuColorTable : ProfessionalColorTable
+        {
+            public MenuColorTable()
+            {
+                // see notes
+                base.UseSystemColors = false;
+            }
+            public override System.Drawing.Color MenuBorder
+            {
+                get { return Color.Black; }
+            }
+            public override System.Drawing.Color MenuItemBorder
+            {
+                get { return Color.WhiteSmoke; }
+            }
+            public override Color MenuItemSelected
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color ToolStripDropDownBackground
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientBegin
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientEnd
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientMiddle
+            {
+                get { return Color.Black; }
+            }
         }
     }
 }

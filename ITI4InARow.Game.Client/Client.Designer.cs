@@ -40,9 +40,9 @@ namespace ITI4InARow.Game.Client
             this._MenuItemSRooms = new System.Windows.Forms.ToolStripMenuItem();
             this._StatusStrip = new System.Windows.Forms.StatusStrip();
             this._stl_Connection = new System.Windows.Forms.ToolStripStatusLabel();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel_GameSurface = new ITI4InARow.Game.UI.GameUI();
             this.btn_LeaveGame = new System.Windows.Forms.Button();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this._MainMenu.SuspendLayout();
             this._StatusStrip.SuspendLayout();
             this.panel_GameSurface.SuspendLayout();
@@ -65,8 +65,8 @@ namespace ITI4InARow.Game.Client
             this._MenuItemConnect,
             this._MenuItemDisconnect});
             this.menuItem_Server.Name = "menuItem_Server";
-            this.menuItem_Server.Size = new System.Drawing.Size(51, 20);
-            this.menuItem_Server.Text = "Server";
+            this.menuItem_Server.Size = new System.Drawing.Size(72, 20);
+            this.menuItem_Server.Text = "&Go Online";
             // 
             // _MenuItemConnect
             // 
@@ -88,8 +88,8 @@ namespace ITI4InARow.Game.Client
             this.menuItem_Game.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._MenuItemSRooms});
             this.menuItem_Game.Name = "menuItem_Game";
-            this.menuItem_Game.Size = new System.Drawing.Size(50, 20);
-            this.menuItem_Game.Text = "Game";
+            this.menuItem_Game.Size = new System.Drawing.Size(77, 20);
+            this.menuItem_Game.Text = "&Start Game";
             // 
             // _MenuItemSRooms
             // 
@@ -137,10 +137,12 @@ namespace ITI4InARow.Game.Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1003, 612);
             this.Controls.Add(this.panel_GameSurface);
             this.Controls.Add(this._StatusStrip);
             this.Controls.Add(this._MainMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Client";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Client";
@@ -169,6 +171,5 @@ namespace ITI4InARow.Game.Client
         private ToolStripMenuItem menuItem_Server;
         private UI.GameUI panel_GameSurface;
         private ColorDialog colorDialog1;
-
     }
 }
