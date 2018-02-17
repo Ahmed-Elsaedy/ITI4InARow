@@ -89,3 +89,5 @@ C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\IT
 C:\Users\amrhawk\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\obj\Debug\ITI4InARow.Game.Client.pdb
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.Design.dll
 C:\Users\Amr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.Design.dll
+C:\Users\shokr\Documents\GitHub\ITI4InARow\ITI4InARow.Game.Client\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
