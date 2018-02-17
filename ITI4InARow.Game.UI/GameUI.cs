@@ -292,7 +292,7 @@ namespace ITI4InARow.Game.UI
                 if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_EAST))
                 {
                     isGameRunning = false;
-                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
+                    MessageBox.Show(ovalClicked.FillColor.ToString() + " is0 win south east");
                     return;
                 }
                 /////////////////

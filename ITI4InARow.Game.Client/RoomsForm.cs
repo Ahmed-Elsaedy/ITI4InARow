@@ -292,6 +292,7 @@
             this.btnView.TabIndex = 9;
             this.btnView.Text = "Watch Game";
             this.btnView.UseVisualStyleBackColor = true;
+            this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
             // _btnNew
             // 
@@ -325,15 +326,7 @@
 
         }
 
-        private void BtnView_Click(object sender, EventArgs e)
-        {
-            /////////////////////////////////////////////////////////////////////////////
-            /////////////////////-_-/////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////
-            //this._MyRoomUpdate. = RoomUpdateState.Broadcast;
-            //this._GameClient.SendMessageToServer(this._MyRoomUpdate);
-            
-        }
+       
 
         private void RoomsForm_Load(object sender, EventArgs e)
         {
@@ -390,6 +383,14 @@
                 };
                 _ListViewRooms.Items.Add(item);
             }
+        }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            RoomUpdateMessage reqViewRoom = (RoomUpdateMessage)_ListViewRooms.SelectedItems[0].Tag;
+            reqViewRoom.UpdateState = RoomUpdateState.newSpectatorReq;
+            _GameClient.SendMessageToServer(reqViewRoom);
+            //this.Hide();
         }
     }
 }
