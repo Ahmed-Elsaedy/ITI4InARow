@@ -271,15 +271,15 @@ namespace ITI4InARow.Game.UI
                         MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
                     }
                 }
-                if (SouthBanned.IndexOf((int)ovalClicked.Tag) == -1)
-                {
+                //if (SouthBanned.IndexOf((int)ovalClicked.Tag) == -1)
+             //   {
                     if (GamePlan(ovalClicked, ref x, CheckPosition.SOUTH_WEST))
                     {
                         isGameRunning = false;
                         MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south west");
                         return;
                     }
-                }
+             //   }
                 ////////////////////////////////////////////////
                 x = 1;
 
