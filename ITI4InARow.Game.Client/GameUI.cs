@@ -159,12 +159,8 @@ namespace ITI4InARow.Game.UI
             }
         }
 
-        internal void HighlightedPlayer()
-        {
-            
-                lblplayerturn.BackColor = Color.White;
-            
-        }
+        internal void HighlightedPlayer()=> lblplayerturn.BackColor = Color.White;
+         
 
         internal void Apply_Other_Client_Action(int TokenPosition , Color otherPlayerColor)
         {
