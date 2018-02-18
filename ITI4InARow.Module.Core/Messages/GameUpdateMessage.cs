@@ -41,7 +41,8 @@
         lose,
         MakeYourMove,
         SpectatorJoin,
-        viewMoveToSpectator
+        viewMoveToSpectator,
+        ThereIsWinner
     }
 }
 

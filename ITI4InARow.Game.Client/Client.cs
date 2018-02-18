@@ -88,7 +88,10 @@ namespace ITI4InARow.Game.Client
 
         private void btn_LeaveGame_Click(object sender, EventArgs e)
         {
-            m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
+            if (m_GameMove != null)
+            {
+                m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
+            }
             m_Client.SendMessageToServer(m_GameMove);
             m_RoomsForm.EnableNewButton();
         }
@@ -179,6 +182,9 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.viewMoveToSpectator:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
                     break;
+                case GameUpdateStatus.ThereIsWinner:
+                    MessageBox.Show("There is Winner");
+                    break;
             }
         }
         private void Client_Load(object sender, EventArgs e)
@@ -194,6 +200,7 @@ namespace ITI4InARow.Game.Client
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
+            if (!panel_GameSurface.IsDisposed)
             panel_GameSurface.BoardReset();
         }
 
