@@ -27,7 +27,7 @@ namespace ITI4InARow.Game.Client
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
-                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString(); 
+                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString();
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
                 panel_GameSurface.isGameRunning = false;
@@ -197,54 +197,6 @@ namespace ITI4InARow.Game.Client
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-        class MenuColorTable : ProfessionalColorTable
-        {
-            public MenuColorTable()
-            {
-                // see notes
-                base.UseSystemColors = false;
-            }
-            public override System.Drawing.Color MenuBorder
-            {
-                get { return Color.Black; }
-            }
-            public override System.Drawing.Color MenuItemBorder
-            {
-                get { return Color.WhiteSmoke; }
-            }
-            public override Color MenuItemSelected
-            {
-                get { return Color.Red; }
-            }
-            public override Color MenuItemSelectedGradientBegin
-            {
-                get { return Color.Red; }
-            }
-            public override Color MenuItemSelectedGradientEnd
-            {
-                get { return Color.Red; }
-            }
-            public override Color MenuItemPressedGradientEnd
-            {
-                get { return Color.Red; }
-            }
-            public override Color ToolStripDropDownBackground
-            {
-                get { return Color.Black; }
-            }
-            public override Color ImageMarginGradientBegin
-            {
-                get { return Color.Black; }
-            }
-            public override Color ImageMarginGradientEnd
-            {
-                get { return Color.Black; }
-            }
-            public override Color ImageMarginGradientMiddle
-            {
-                get { return Color.Black; }
-            }
         }
     }
 }

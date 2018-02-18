@@ -30,7 +30,7 @@
         private NumericUpDown numRoomId;
         private Panel panel_Rooms;
         private Panel panel_Waiting;
-
+        private Button btnclose;
         List<RoomUpdateMessage> _RoomsUpdates = new List<RoomUpdateMessage>();
 
         public RoomsForm(GameClient gameClient)
@@ -161,6 +161,7 @@
             this.col_Viewers = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnView = new System.Windows.Forms.Button();
             this._btnNew = new System.Windows.Forms.Button();
+            this.btnclose = new System.Windows.Forms.Button();
             this.panel_Rooms.SuspendLayout();
             this.panel_Waiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numRoomId)).BeginInit();
@@ -169,19 +170,21 @@
             // 
             // panel_Rooms
             // 
+            this.panel_Rooms.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel_Rooms.Controls.Add(this.panel_Waiting);
             this.panel_Rooms.Controls.Add(this.numRoomId);
             this.panel_Rooms.Controls.Add(this.btnJoin);
             this.panel_Rooms.Controls.Add(this.groupBox1);
             this.panel_Rooms.Controls.Add(this.btnView);
             this.panel_Rooms.Controls.Add(this._btnNew);
-            this.panel_Rooms.Location = new System.Drawing.Point(1, 1);
+            this.panel_Rooms.Location = new System.Drawing.Point(1, 22);
             this.panel_Rooms.Name = "panel_Rooms";
             this.panel_Rooms.Size = new System.Drawing.Size(450, 261);
             this.panel_Rooms.TabIndex = 0;
             // 
             // panel_Waiting
             // 
+            this.panel_Waiting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel_Waiting.Controls.Add(this.label3);
             this.panel_Waiting.Controls.Add(this.btnCancel);
             this.panel_Waiting.Controls.Add(this.label2);
@@ -196,12 +199,13 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(163, 142);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(111, 13);
+            this.label3.Size = new System.Drawing.Size(116, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Waiting For Player 2...";
             // 
             // btnCancel
             // 
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Location = new System.Drawing.Point(181, 165);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -215,7 +219,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(79, 119);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(278, 13);
+            this.label2.Size = new System.Drawing.Size(283, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Please Inform Player 2 With Your New Room`s Password.";
             // 
@@ -243,6 +247,7 @@
             // 
             // btnJoin
             // 
+            this.btnJoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJoin.Location = new System.Drawing.Point(121, 226);
             this.btnJoin.Name = "btnJoin";
             this.btnJoin.Size = new System.Drawing.Size(75, 23);
@@ -299,6 +304,7 @@
             // 
             // btnView
             // 
+            this.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnView.Location = new System.Drawing.Point(273, 226);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(75, 23);
@@ -309,6 +315,7 @@
             // 
             // _btnNew
             // 
+            this._btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._btnNew.Location = new System.Drawing.Point(354, 226);
             this._btnNew.Name = "_btnNew";
             this._btnNew.Size = new System.Drawing.Size(75, 23);
@@ -317,12 +324,27 @@
             this._btnNew.UseVisualStyleBackColor = true;
             this._btnNew.Click += new System.EventHandler(this._btnNew_Click);
             // 
+            // btnclose
+            // 
+            this.btnclose.BackColor = System.Drawing.Color.Red;
+            this.btnclose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnclose.Location = new System.Drawing.Point(437, 1);
+            this.btnclose.Name = "btnclose";
+            this.btnclose.Size = new System.Drawing.Size(20, 20);
+            this.btnclose.TabIndex = 14;
+            this.btnclose.Text = "X";
+            this.btnclose.UseVisualStyleBackColor = false;
+            this.btnclose.Click += new System.EventHandler(this.button1_Click);
+            // 
             // RoomsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(690, 413);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(458, 285);
+            this.Controls.Add(this.btnclose);
             this.Controls.Add(this.panel_Rooms);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -407,6 +429,9 @@
             this.Hide();
         }
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -58,6 +58,7 @@ namespace ITI4InARow.Game.Client
             this._MainMenu.Name = "_MainMenu";
             this._MainMenu.Size = new System.Drawing.Size(1003, 24);
             this._MainMenu.TabIndex = 0;
+            this._MainMenu.RenderMode = ToolStripRenderMode.Professional;
             this._MainMenu.Text = "menuStrip1";
             // 
             // menuItem_Server
