@@ -32,9 +32,15 @@ namespace ITI4InARow.Game.UI
             columns = new int[] { 6, 12, 18, 24, 30, 36, 42 };
             playersMovesCount = 0;
             defaultOvalColor = Color.White;
+            
         }
         private void GameUI_Load(object sender, EventArgs e)
         {
+            //if (!isSpectatorMode && isGameRunning)
+            //{
+            //    lblplayerturn.BackColor = Color.White;
+            //}
+
             int index = 1;
             foreach (OvalShape oval in shapeContainer1.Shapes)
             {
@@ -73,6 +79,9 @@ namespace ITI4InARow.Game.UI
             {
                 if (isGameRunning)
                 {
+
+                    lblplayerturn2.BackColor = Color.White;
+                    lblplayerturn.BackColor = Color.Transparent;
                     playersMovesCount++;
                     if (TokenPosition >= 1 && TokenPosition <= 6)
                     {
@@ -145,14 +154,24 @@ namespace ITI4InARow.Game.UI
                         }
                     }
                 }
-                isGameRunning = false; 
+                isGameRunning = false;
+                
             }
+        }
+
+        internal void HighlightedPlayer()
+        {
+            
+                lblplayerturn.BackColor = Color.White;
+            
         }
 
         internal void Apply_Other_Client_Action(int TokenPosition , Color otherPlayerColor)
         {
             if (!isGameRunning)
             {
+                lblplayerturn.BackColor = Color.White;
+                lblplayerturn2.BackColor = Color.Transparent;
                 playersMovesCount++;
 
                 if (TokenPosition >= 1 && TokenPosition <= 6)
@@ -231,6 +250,8 @@ namespace ITI4InARow.Game.UI
         {
             isGameRunning = false;
             isSpectatorMode = true;
+            lblplayerturn.Hide();
+            lblplayerturn2.Hide();
             for (int i = 0; i < viewSpectatorBoard.Length; i++)
             {
                 if (!viewSpectatorBoard[i].Equals("White"))

@@ -133,6 +133,7 @@ namespace ITI4InARow.Game.Client
                     if (e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = true;
+                        panel_GameSurface.HighlightedPlayer();
                     }
                     else if (!e.IsGameRunning)
                     {

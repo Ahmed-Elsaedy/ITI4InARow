@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameUI));
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.ovalShape42 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape41 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
@@ -72,8 +71,9 @@
             this.ovalShape3 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape2 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
             this.ovalShape1 = new Microsoft.VisualBasic.PowerPacks.OvalShape();
-            this.BtnReset = new System.Windows.Forms.Button();
             this.btnclose = new System.Windows.Forms.Button();
+            this.lblplayerturn = new System.Windows.Forms.Label();
+            this.lblplayerturn2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // shapeContainer1
@@ -124,7 +124,7 @@
             this.ovalShape3,
             this.ovalShape2,
             this.ovalShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(885, 622);
+            this.shapeContainer1.Size = new System.Drawing.Size(893, 622);
             this.shapeContainer1.TabIndex = 0;
             this.shapeContainer1.TabStop = false;
             // 
@@ -716,21 +716,11 @@
             this.ovalShape1.Size = new System.Drawing.Size(90, 90);
             this.ovalShape1.Tag = "A1";
             // 
-            // BtnReset
-            // 
-            this.BtnReset.Location = new System.Drawing.Point(784, 265);
-            this.BtnReset.Name = "BtnReset";
-            this.BtnReset.Size = new System.Drawing.Size(75, 23);
-            this.BtnReset.TabIndex = 1;
-            this.BtnReset.Text = "Reset Game";
-            this.BtnReset.UseVisualStyleBackColor = true;
-            this.BtnReset.Click += new System.EventHandler(this.BtnReset_Click);
-            // 
             // btnclose
             // 
             this.btnclose.BackColor = System.Drawing.Color.Red;
             this.btnclose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnclose.Location = new System.Drawing.Point(838, 12);
+            this.btnclose.Location = new System.Drawing.Point(872, 0);
             this.btnclose.Name = "btnclose";
             this.btnclose.Size = new System.Drawing.Size(21, 23);
             this.btnclose.TabIndex = 2;
@@ -738,25 +728,44 @@
             this.btnclose.UseVisualStyleBackColor = false;
             this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
             // 
+            // lblplayerturn
+            // 
+            this.lblplayerturn.AutoSize = true;
+            this.lblplayerturn.BackColor = System.Drawing.Color.Transparent;
+            this.lblplayerturn.Font = new System.Drawing.Font("Showcard Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblplayerturn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblplayerturn.Location = new System.Drawing.Point(779, 286);
+            this.lblplayerturn.Name = "lblplayerturn";
+            this.lblplayerturn.Size = new System.Drawing.Size(89, 15);
+            this.lblplayerturn.TabIndex = 3;
+            this.lblplayerturn.Text = "Your Turn ";
+            // 
+            // lblplayerturn2
+            // 
+            this.lblplayerturn2.AutoSize = true;
+            this.lblplayerturn2.BackColor = System.Drawing.Color.Transparent;
+            this.lblplayerturn2.Font = new System.Drawing.Font("Showcard Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblplayerturn2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblplayerturn2.Location = new System.Drawing.Point(779, 321);
+            this.lblplayerturn2.Name = "lblplayerturn2";
+            this.lblplayerturn2.Size = new System.Drawing.Size(111, 15);
+            this.lblplayerturn2.TabIndex = 4;
+            this.lblplayerturn2.Text = "Player 2 Turn ";
+            // 
             // GameUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(885, 622);
+            this.Controls.Add(this.lblplayerturn2);
+            this.Controls.Add(this.lblplayerturn);
             this.Controls.Add(this.btnclose);
-            this.Controls.Add(this.BtnReset);
             this.Controls.Add(this.shapeContainer1);
-            //this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            //this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            //this.MaximizeBox = false;
-            //this.MinimizeBox = false;
             this.Name = "GameUI";
-            //this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "GameUI";
-            //this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameUI_FormClosing);
+            this.Size = new System.Drawing.Size(893, 622);
             this.Load += new System.EventHandler(this.GameUI_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -805,7 +814,8 @@
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape4;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape3;
         private Microsoft.VisualBasic.PowerPacks.OvalShape ovalShape2;
-        private System.Windows.Forms.Button BtnReset;
         private System.Windows.Forms.Button btnclose;
+        private System.Windows.Forms.Label lblplayerturn;
+        private System.Windows.Forms.Label lblplayerturn2;
     }
 }
