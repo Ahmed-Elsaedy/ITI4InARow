@@ -27,15 +27,15 @@ namespace ITI4InARow.Game.Client
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
-                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString();
+                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString(); 
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
                 panel_GameSurface.isGameRunning = false;
             }
             catch (NullReferenceException)
             {
-                //throw;
-                //MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                
+                MessageBox.Show("Player Move Invalid", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
@@ -90,6 +90,7 @@ namespace ITI4InARow.Game.Client
         {
             m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
             m_Client.SendMessageToServer(m_GameMove);
+            m_RoomsForm.EnableNewButton();
         }
         private void Client_ClientStatusChanged(object sender, ClientActionEventArgs e)
         {
@@ -111,8 +112,8 @@ namespace ITI4InARow.Game.Client
                     SwitchToIdleMode();
                     Text = "Client - Disconnected";
                     break;
-                    //case sending clint masseg
-                    //prossesincomemassege
+                    //sending messages 
+                    //process incoming messages 
             }
         }
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
@@ -126,7 +127,7 @@ namespace ITI4InARow.Game.Client
         {
             switch (e.UpdateStatus)
             {
-                //handling msgs from server during the game
+                //handling messages from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
                     panel_GameSurface.player2Color = Color.FromArgb(int.Parse(e.Player2Color));
@@ -168,6 +169,7 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
                     SwitchToIdleMode();
+                    m_RoomsForm.EnableNewButton();
                     break;
                 case GameUpdateStatus.SpectatorJoin:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
@@ -195,11 +197,60 @@ namespace ITI4InARow.Game.Client
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
+            panel_GameSurface.BoardReset();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+        class MenuColorTable : ProfessionalColorTable
+        {
+            public MenuColorTable()
+            {
+               
+                base.UseSystemColors = false;
+            }
+            public override System.Drawing.Color MenuBorder
+            {
+                get { return Color.Black; }
+            }
+            public override System.Drawing.Color MenuItemBorder
+            {
+                get { return Color.WhiteSmoke; }
+            }
+            public override Color MenuItemSelected
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientBegin
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemSelectedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color MenuItemPressedGradientEnd
+            {
+                get { return Color.Red; }
+            }
+            public override Color ToolStripDropDownBackground
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientBegin
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientEnd
+            {
+                get { return Color.Black; }
+            }
+            public override Color ImageMarginGradientMiddle
+            {
+                get { return Color.Black; }
+            }
         }
     }
 }

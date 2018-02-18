@@ -41,7 +41,8 @@ namespace ITI4InARow.Game.Server
                     _lbxConnectClients.Items.Add(e.Client);
                     break;
                 case ServerStatus.ClientDisconnected:
-                    var target = _lbxConnectClients.Items.Cast<ServerClient>().Single(x => x.ClientID == e.Client.ClientID);
+                    
+                    var target = _lbxConnectClients.Items.Cast<ServerClient>().FirstOrDefault(x => x.ClientID == e.Client.ClientID);
                     _lbxConnectClients.Items.Remove(target);
                     break;
             }

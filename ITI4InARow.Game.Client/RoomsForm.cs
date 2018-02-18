@@ -41,6 +41,8 @@
         }
 
         bool loadCachedMessage = false;
+        
+
         private void RoomsForm_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible == true && !loadCachedMessage)
@@ -72,6 +74,7 @@
         {
             _MyRoomUpdate.UpdateState = RoomUpdateState.NewRoomRollback;
             _GameClient.SendMessageToServer(_MyRoomUpdate);
+            _btnNew.Enabled = true;
         }
 
         private void btnJoin_Click(object sender, EventArgs e)
@@ -112,6 +115,7 @@
                     _RoomsUpdates.Remove(_RoomsUpdates.Single<RoomUpdateMessage>(x => x.RoomID == msg.RoomID));
                     _MyRoomUpdate = null;
                     SwitchToRoomsMode();
+                    _btnNew.Enabled = true;
                     break;
 
                 case RoomUpdateState.Player2Connected:
@@ -137,10 +141,19 @@
                     message.Player1ID = msg.Player1ID;
                     message.Player2ID = msg.Player2ID;
                     break;
+
+                    /// remove or check deh abl ma neb3at lel bashmohandis
+                case RoomUpdateState.newSpectatorReq:
+                    message = _RoomsUpdates.SingleOrDefault(x => x.RoomID == msg.RoomID);
+                    message.SpectatorsNum++;
+                    break;
             }
             UpdateListViewItem();
             UpdateButtonsStatus();
         }
+
+        internal void EnableNewButton() => _btnNew.Enabled = true;
+        
 
         private void InitializeComponent()
         {
@@ -412,7 +425,7 @@
             _ListViewRooms.Items.Clear();
             foreach (RoomUpdateMessage message in _RoomsUpdates)
             {
-                string[] items = new string[] { message.GetRoomStatus().ToString(), message.Player1ID.ToString(), message.Player2ID.ToString(), "0" };
+                string[] items = new string[] { message.GetRoomStatus().ToString(), message.Player1ID.ToString(), message.Player2ID.ToString(), message.SpectatorsNum.ToString()};
                 ListViewItem item = new ListViewItem(items)
                 {
                     Tag = message
@@ -427,6 +440,7 @@
             reqViewRoom.UpdateState = RoomUpdateState.newSpectatorReq;
             _GameClient.SendMessageToServer(reqViewRoom);
             this.Hide();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
