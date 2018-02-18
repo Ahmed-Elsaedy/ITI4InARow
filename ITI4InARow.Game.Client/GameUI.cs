@@ -156,6 +156,9 @@ namespace ITI4InARow.Game.UI
             }
         }
 
+        internal void HighlightedPlayer2() => lblplayerturn2.BackColor = Color.White;
+         
+
         internal void HighlightedPlayer()=> lblplayerturn.BackColor = Color.White;
          
 

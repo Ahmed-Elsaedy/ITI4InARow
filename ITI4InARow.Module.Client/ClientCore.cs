@@ -44,7 +44,7 @@
                     OnClientStatusChanged(ClientStatus.ProcessingIncommingMessage);
                     ProcessServerMessage(str, msgBase);
                 }
-                catch (Exception ex)
+                catch (Exception )
                 {
                     OnClientStatusChanged(ClientStatus.ConnectionException);
                     OnClientStatusChanged(ClientStatus.ClientDisconnected);
@@ -65,7 +65,7 @@
                 _Writer.Write(str);
                 _Writer.Flush();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 OnClientStatusChanged(ClientStatus.ConnectionException);
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
@@ -77,10 +77,13 @@
             switch (status)
             {
                 case ClientStatus.ClientDisconnected:
+                    if (_Reader != null)
+                    {
                         _Reader.Dispose();
                         _Writer.Dispose();
                         _Stream.Dispose();
                         _Client.Dispose();
+                    }
                     break;
             }
             ClientStatusChanged?.Invoke(this, new ClientActionEventArgs(status));

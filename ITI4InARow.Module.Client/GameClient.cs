@@ -24,10 +24,6 @@
         }
         protected override void OnRoomUpdateMessage(RoomUpdateMessage msg)
         {
-            switch (msg.UpdateState)
-            {
-
-            }
             RoomUpdateMessage?.Invoke(this, msg);
             LastRoomUpdateMsg = msg;
         }

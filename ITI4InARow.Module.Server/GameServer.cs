@@ -158,17 +158,14 @@
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
-<<<<<<< HEAD
-                        drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
-=======
-                        //sending draw msg to spectators
+                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
+                         //sending draw msg to spectators
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
                         foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
                         {
                             SendMessageToClient(spectator, drawRespMsg);
                         }
->>>>>>> efca19e4f7da97b9c0f8a3f1a2abaae3fbd19dc9
-                        //now send draw msg  to both players 
+                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player2ID], drawRespMsg);
                         foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
@@ -185,9 +182,7 @@
                         msgWin.UpdateStatus = GameUpdateStatus.win;
                         SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgWin);
                         //sent win msg
-                        
-                        msgWin.UpdateStatus = GameUpdateStatus.therisWinner;
-                        foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
+                         foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
                         {
                             SendMessageToClient(spectator, msgWin);
                         }

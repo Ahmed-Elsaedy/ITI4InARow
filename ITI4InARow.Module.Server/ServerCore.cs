@@ -42,7 +42,7 @@
                     OnServerStatusChanged(ServerStatus.ClientConnected, serverClient);
                     Task.Run(() => ServerClientThread(serverClient));
                 }
-                catch (Exception ex)
+                catch (Exception  )
                 {
                     OnServerStatusChanged(ServerStatus.ServerStopped, null);
                     //throw ex;
@@ -60,7 +60,7 @@
                     MessageBase msgObj = JsonConvert.DeserializeObject<MessageBase>(str);
                     OnMessageRecieved(serverClient, str, msgObj);
                 }
-                catch (Exception ex)
+                catch (Exception  )
                 {
                     OnServerStatusChanged(ServerStatus.ConnectionException, serverClient);
                     OnServerStatusChanged(ServerStatus.ClientDisconnected, serverClient);
@@ -78,7 +78,7 @@
                 client.Writer.Write(str);
                 client.Writer.Flush();
             }
-            catch (Exception ex)
+            catch (Exception  )
             {
                 OnServerStatusChanged(ServerStatus.ConnectionException, client);
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, client);

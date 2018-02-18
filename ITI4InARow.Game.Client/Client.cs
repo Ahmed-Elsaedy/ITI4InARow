@@ -27,7 +27,8 @@ namespace ITI4InARow.Game.Client
             {
                 m_GameMove.TokenPosition = (int)myShape.Tag;
                 m_GameMove.MsgType = MessageType.GameUpdateMessage;
-                m_GameMove.Player2Color = panel_GameSurface.player1Color.ToArgb().ToString(); 
+                Color Player1Color = panel_GameSurface.player1Color;
+                m_GameMove.Player2Color = Player1Color.ToArgb().ToString(); 
                 m_GameMove.UpdateStatus = GameUpdateStatus.PlayerMove;
                 m_Client.SendMessageToServer(m_GameMove);
                 panel_GameSurface.isGameRunning = false;
@@ -142,6 +143,7 @@ namespace ITI4InARow.Game.Client
                     else if (!e.IsGameRunning)
                     {
                         panel_GameSurface.isGameRunning = false;
+                        panel_GameSurface.HighlightedPlayer2();
                     }
                     m_GameMove = e;
                     break;
@@ -182,13 +184,10 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.viewMoveToSpectator:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
                     break;
-<<<<<<< HEAD
+ 
                 case GameUpdateStatus.ThereIsWinner:
-                    MessageBox.Show("There is Winner");
-=======
-                case GameUpdateStatus.therisWinner:
                     MessageBox.Show($"{e.PlayerID} win");
->>>>>>> efca19e4f7da97b9c0f8a3f1a2abaae3fbd19dc9
+ 
                     break;
             }
         }
