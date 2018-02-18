@@ -6,6 +6,8 @@
 
     public class GameUpdateMessage : MessageBase
     {
+        public string[] viewSpectatorBoard;
+
         public int PlayerID { get; set; }
         public string Player2Color { get; set; }
         public int RoomID { get; set; }
@@ -36,7 +38,10 @@
         GameLeave,
         GameDraw,
         win,
-        lose
+        lose,
+        MakeYourMove,
+        SpectatorJoin,
+        viewMoveToSpectator
     }
 }
 

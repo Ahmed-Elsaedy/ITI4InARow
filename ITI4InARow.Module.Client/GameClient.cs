@@ -2,6 +2,8 @@
 {
     using ITI4InARow.Module.Core;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class GameClient : ClientCore
     {
@@ -12,6 +14,8 @@
         public RoomUpdateMessage LastRoomUpdateMsg { get; private set; }
         public GameUpdateMessage LastGameUpdateMsg { get; private set; }
 
+        
+
         protected override void OnProfileUpdateMessage(ProfileUpdateMessage msg)
         {
             PlayerID = msg.ClientID;
@@ -20,6 +24,10 @@
         }
         protected override void OnRoomUpdateMessage(RoomUpdateMessage msg)
         {
+            switch (msg.UpdateState)
+            {
+
+            }
             RoomUpdateMessage?.Invoke(this, msg);
             LastRoomUpdateMsg = msg;
         }

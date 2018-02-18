@@ -31,7 +31,8 @@
                     _RoomsMessages.Add(msg.RoomID, msg);
                     SendMessageToClient(client, msg);
                     message = msg.Copy();
-                    _RoomsData.Add(msg.RoomID, (new ServerRoom() {
+                    _RoomsData.Add(msg.RoomID, (new ServerRoom()
+                    {
                     RoomID = msg.RoomID, _RoomMoveCounter = 0 ,Player1Color=client.PreferedColor
                     }));///////elcolor hna
                     message.UpdateState = RoomUpdateState.Broadcast;
@@ -74,10 +75,46 @@
                         RoomID = msg.RoomID,
                         UpdateStatus = GameUpdateStatus.GameStarted,
                         Player2Color = _RoomsData[msg.RoomID].Player1Color, //////
-                        PlayerID = msg.Player1ID,
+                        PlayerID = msg.Player2ID,
                         IsGameRunning = false // disable player 2
                     };
                     SendMessageToClient(base[msg.Player2ID], messageForPlayer2);
+                    break;
+                case RoomUpdateState.newSpectatorReq:
+                    _RoomsData[msg.RoomID].spectators.Add(client);
+                    string [] viewspac = new string[42];
+                    for (int i = 0; i < viewspac.Length; i++)
+                    {
+                        if (_RoomsData[msg.RoomID].gameBoardlogic[i] == msg.Player1ID)
+                        {
+                            viewspac[i] = _RoomsData[msg.RoomID].Player1Color;
+                        }
+                        else if (_RoomsData[msg.RoomID].gameBoardlogic[i] == msg.Player2ID)
+                        {
+                            viewspac[i] = _RoomsData[msg.RoomID].Player2Color;
+                        }
+                        else
+                        {
+                            viewspac[i] = "White";
+                        }
+                    }
+                    GameUpdateMessage msgForSpectator = new GameUpdateMessage()
+                    {
+                        UpdateStatus = GameUpdateStatus.SpectatorJoin,
+                        viewSpectatorBoard = viewspac
+                    };
+                    
+                    SendMessageToClient(client,msgForSpectator);
+                    break;
+
+                case RoomUpdateState.AvailableRoomsBroadcast:
+                    RoomUpdateMessage[] msgs = new RoomUpdateMessage[_RoomsMessages.Count];
+                    _RoomsMessages.Values.CopyTo(msgs, 0);
+                    foreach (var msgg in msgs)
+                    {
+                        msgg.UpdateState = RoomUpdateState.Broadcast;
+                        SendMessageToClient(client, msgg);
+                    }
                     break;
             }
         }
@@ -89,40 +126,62 @@
                 //handling masgs from client during game 
                 case GameUpdateStatus.PlayerMove:
                     message = _RoomsMessages[msg.RoomID];
+                    _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    string[] viewspac = new string[42];
+                    for (int i = 0; i < viewspac.Length; i++)
+                    {
+                        if (_RoomsData[msg.RoomID].gameBoardlogic[i] == message.Player1ID)
+                        {
+                            viewspac[i] = _RoomsData[message.RoomID].Player1Color;
+                        }
+                        else if (_RoomsData[msg.RoomID].gameBoardlogic[i] == message.Player2ID)
+                        {
+                            viewspac[i] = _RoomsData[message.RoomID].Player2Color;
+                        }
+                        else
+                        {
+                            viewspac[i] = "White";
+                        }
+                    }
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
-                    _RoomsData[msg.RoomID].gameBoardlogic[msg.TokenPosition - 1] = msg.PlayerID; //here i got te move saved in server with the id of its player
+                    GameUpdateMessage msgtospectator = msg.Copy();
+                    msgtospectator.UpdateStatus = GameUpdateStatus.viewMoveToSpectator;
+                    msgtospectator.viewSpectatorBoard = viewspac;
+                    foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
+                    {
+                        SendMessageToClient(spectator, msg);
+                    }
                     bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
-                        drawRespMsg.IsGameRunning = false;
+                        //drawRespMsg.IsGameRunning = false;
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
-                        msg.IsGameRunning = false;
+                        //msg.IsGameRunning = false;
                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
-                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
+                        SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player2ID], drawRespMsg);
                         //Game Draw
                     }
                     else if (win)
                     {
                         GameUpdateMessage msgWin = msg.Copy();
-                        msg.IsGameRunning = false;
+                        //msg.IsGameRunning = false;
                         msgWin.UpdateStatus = GameUpdateStatus.win;
-                        SendMessageToClient(this[msgWin.PlayerID], msg);
+                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgWin);
                         //sent win msg
                         GameUpdateMessage msgLose = msg.Copy();
                         msgLose.UpdateStatus = GameUpdateStatus.lose;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgLose);
+                        SendMessageToClient(this[msg.PlayerID], msgLose);
                         //send lose msg
                     }
                     else if (!win)
                     {
                         GameUpdateMessage msgOtherPlayerPlay = msg.Copy();
-                        msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.PlayerMove;
-                        msg.IsGameRunning = true;
-                        SendMessageToClient(this[(msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID], msgOtherPlayerPlay);
+                        msgOtherPlayerPlay.UpdateStatus = GameUpdateStatus.MakeYourMove;
+                        SendMessageToClient(this[msg.PlayerID], msgOtherPlayerPlay);
                     }
                     break;
 
@@ -140,11 +199,13 @@
                         BroadcastToClients(message2, null);
                         break;
                     }
+
             }
         }
 
         public bool GameAction(GameUpdateMessage msg)
         {
+            msg.TokenPosition--;
             int x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
@@ -221,11 +282,10 @@
         {
             if (x < 4)
             {
-                int TokenIndex = msg.TokenPosition - 1;
+                int TokenIndex = msg.TokenPosition ;
                 int nextTokenIndex = TokenIndex + (int)cp;
                 if (nextTokenIndex >= 0 && nextTokenIndex < 42)
                 {
-                    //if (ovalClicked.FillColor.Equals(((OvalShape)shapeContainer1.Shapes.get_Item(leftTokenIndex)).FillColor))
                     if (_RoomsData[msg.RoomID].gameBoardlogic[TokenIndex] == _RoomsData[msg.RoomID].gameBoardlogic[nextTokenIndex])
                     {
                         x++;
@@ -246,6 +306,7 @@
         public int RoomID { get; set; }
         public int _RoomMoveCounter;
         public int[] gameBoardlogic;
+        public List<ServerClient> spectators;
         public string Player1Color { get; set; }
         /// <summary>
         ///m7tagen nst3mlhm 
@@ -262,6 +323,7 @@
             {
                 gameBoardlogic[i] = -1;
             }
+            spectators = new List<ServerClient>();
         }
     }
 }

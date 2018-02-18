@@ -15,7 +15,6 @@
         private GameClient _GameClient;
         private ListView _ListViewRooms;
         private RoomUpdateMessage _MyRoomUpdate;
-        private List<RoomUpdateMessage> _RoomsUpdates;
         private Button btnCancel;
         private Button btnJoin;
         private Button btnView;
@@ -32,10 +31,25 @@
         private Panel panel_Rooms;
         private Panel panel_Waiting;
 
+        List<RoomUpdateMessage> _RoomsUpdates = new List<RoomUpdateMessage>();
+
         public RoomsForm(GameClient gameClient)
         {
             _GameClient = gameClient;
             InitializeComponent();
+            this.VisibleChanged += RoomsForm_VisibleChanged;
+        }
+
+        bool loadCachedMessage = false;
+        private void RoomsForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible == true && !loadCachedMessage)
+            {
+                RoomUpdateMessage roomUpdate = new RoomUpdateMessage();
+                roomUpdate.UpdateState = RoomUpdateState.AvailableRoomsBroadcast;
+                _GameClient.SendMessageToServer(roomUpdate);
+                loadCachedMessage = true;
+            }
         }
 
         private void _btnNew_Click(object sender, EventArgs e)
@@ -85,7 +99,6 @@
 
         private void GameClient_RoomUpdateMessage(object sender, RoomUpdateMessage msg)
         {
-            RoomUpdateMessage message;
             switch (msg.UpdateState)
             {
                 case RoomUpdateState.NewRoomRequest:
@@ -102,14 +115,13 @@
                     break;
 
                 case RoomUpdateState.Player2Connected:
-                    message = _RoomsUpdates.Single<RoomUpdateMessage>(x => x.RoomID == msg.RoomID);
+                    RoomUpdateMessage message = _RoomsUpdates.Single(x => x.RoomID == msg.RoomID);
                     message.Player2ID = msg.Player2ID;
                     message.UpdateState = RoomUpdateState.RoomComplete;
                     _GameClient.SendMessageToServer(message);
                     break;
-
                 case RoomUpdateState.Broadcast:
-                    message = _RoomsUpdates.SingleOrDefault<RoomUpdateMessage>(x => x.RoomID == msg.RoomID);
+                     message = _RoomsUpdates.SingleOrDefault(x => x.RoomID == msg.RoomID);
                     if ((message == null) || (msg.Player1ID <= 0))
                     {
                         if ((message == null) && (msg.Player1ID > 0))
@@ -118,7 +130,7 @@
                         }
                         else if ((message != null) && (msg.Player1ID == 0))
                         {
-                            _RoomsUpdates.Remove(msg);
+                            _RoomsUpdates.Remove(message);
                         }
                         break;
                     }
@@ -132,6 +144,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoomsForm));
             this.panel_Rooms = new System.Windows.Forms.Panel();
             this.panel_Waiting = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -292,6 +305,7 @@
             this.btnView.TabIndex = 9;
             this.btnView.Text = "Watch Game";
             this.btnView.UseVisualStyleBackColor = true;
+            this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
             // _btnNew
             // 
@@ -309,6 +323,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(690, 413);
             this.Controls.Add(this.panel_Rooms);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RoomsForm";
@@ -325,15 +340,7 @@
 
         }
 
-        private void BtnView_Click(object sender, EventArgs e)
-        {
-            /////////////////////////////////////////////////////////////////////////////
-            /////////////////////-_-/////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////////////////////////
-            //this._MyRoomUpdate. = RoomUpdateState.Broadcast;
-            //this._GameClient.SendMessageToServer(this._MyRoomUpdate);
-            
-        }
+       
 
         private void RoomsForm_Load(object sender, EventArgs e)
         {
@@ -391,5 +398,15 @@
                 _ListViewRooms.Items.Add(item);
             }
         }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            RoomUpdateMessage reqViewRoom = (RoomUpdateMessage)_ListViewRooms.SelectedItems[0].Tag;
+            reqViewRoom.UpdateState = RoomUpdateState.newSpectatorReq;
+            _GameClient.SendMessageToServer(reqViewRoom);
+            this.Hide();
+        }
+
+       
     }
 }

@@ -11,6 +11,7 @@
         public int RoomID { get; set; }
         public RoomUpdateState UpdateState { get; set; }
 
+        public string[] viewspac;
         public RoomUpdateMessage()
         {
             MsgType = MessageType.RoomUpdateMessage;
@@ -39,7 +40,9 @@
         NewRoomRollback,
         Player2Connected,
         Broadcast,
-        RoomComplete
+        RoomComplete,
+        newSpectatorReq,
+        AvailableRoomsBroadcast
     }
 }
 
