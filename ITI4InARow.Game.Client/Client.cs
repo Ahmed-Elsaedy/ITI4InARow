@@ -182,8 +182,13 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.viewMoveToSpectator:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
                     break;
+<<<<<<< HEAD
                 case GameUpdateStatus.ThereIsWinner:
                     MessageBox.Show("There is Winner");
+=======
+                case GameUpdateStatus.therisWinner:
+                    MessageBox.Show($"{e.PlayerID} win");
+>>>>>>> efca19e4f7da97b9c0f8a3f1a2abaae3fbd19dc9
                     break;
             }
         }

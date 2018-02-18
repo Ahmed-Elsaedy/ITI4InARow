@@ -42,7 +42,11 @@
         MakeYourMove,
         SpectatorJoin,
         viewMoveToSpectator,
+<<<<<<< HEAD
         ThereIsWinner
+=======
+        therisWinner
+>>>>>>> efca19e4f7da97b9c0f8a3f1a2abaae3fbd19dc9
     }
 }
 
