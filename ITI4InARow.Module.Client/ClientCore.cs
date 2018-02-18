@@ -48,7 +48,7 @@
                 {
                     OnClientStatusChanged(ClientStatus.ConnectionException);
                     OnClientStatusChanged(ClientStatus.ClientDisconnected);
-                    throw ex;
+                    //throw ex;
                 }
             }
         }

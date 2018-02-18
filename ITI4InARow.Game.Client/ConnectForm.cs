@@ -31,11 +31,11 @@ namespace ITI4InARow.Game.Client
         {
             if (string.IsNullOrEmpty(txt_NickName.Text))
             {
-                MessageBox.Show("please enter nick name");
+                MessageBox.Show("Please Enter Your Name");
             }
             else if (!colorSelected)
             {
-                MessageBox.Show("pleasse select your favoret color");
+                MessageBox.Show("Please Select a Color For Your Game Token");
             }
             else if (!string.IsNullOrEmpty(txt_NickName.Text))
             {
