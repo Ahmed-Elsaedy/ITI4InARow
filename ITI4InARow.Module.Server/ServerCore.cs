@@ -45,7 +45,7 @@
                 catch (Exception ex)
                 {
                     OnServerStatusChanged(ServerStatus.ServerStopped, null);
-                    throw ex;
+                    //throw ex;
                 }
             }
         }
@@ -82,7 +82,7 @@
             {
                 OnServerStatusChanged(ServerStatus.ConnectionException, client);
                 OnServerStatusChanged(ServerStatus.ClientDisconnected, client);
-                throw ex;
+                //throw ex;
             }
         }
         public void BroadcastToClients(MessageBase msg, ServerClient source = null)

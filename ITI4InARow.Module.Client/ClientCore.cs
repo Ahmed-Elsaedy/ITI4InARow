@@ -69,7 +69,7 @@
             {
                 OnClientStatusChanged(ClientStatus.ConnectionException);
                 OnClientStatusChanged(ClientStatus.ClientDisconnected);
-                throw ex;
+                //throw ex;
             }
         }
         private void OnClientStatusChanged(ClientStatus status)
