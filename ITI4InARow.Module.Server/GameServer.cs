@@ -261,12 +261,14 @@
            // }
             ////////////////////////////////////////////////
             x = 1;
-
-            if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
+            if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
-                msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                //if (x == 4) { return true; }
+                if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
+                {
+                    msg.IsGameRunning = false;
+                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
+                    //if (x == 4) { return true; }
+                }
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
