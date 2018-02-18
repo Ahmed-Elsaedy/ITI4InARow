@@ -150,7 +150,8 @@
                     msgtospectator.viewSpectatorBoard = viewspac;
                     foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
                     {
-                        SendMessageToClient(spectator, msg);
+                        //SendMessageToClient(spectator, msg);//////hahahahahahahahaha
+                        SendMessageToClient(spectator, msgtospectator);
                     }
                     bool win = GameAction(msg);
                     _RoomsData[msg.RoomID]._RoomMoveCounter += 1;
@@ -249,15 +250,15 @@
                    // if (x == 4) { return true; }
                 }
             }
-            if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
-            {
+           // if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
+           // {
                 if (GamePlan(msg, ref x, CheckPosition.SOUTH_WEST))
                 {
                     msg.IsGameRunning = false;
                     //if (x == 4) { return true; }      /// mdam d5fl el if condition how 5las fazzz msh m7taga check
                     return true;
                 }
-            }
+           // }
             ////////////////////////////////////////////////
             x = 1;
 
