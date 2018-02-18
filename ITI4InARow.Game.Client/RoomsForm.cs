@@ -41,6 +41,8 @@
         }
 
         bool loadCachedMessage = false;
+        
+
         private void RoomsForm_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible == true && !loadCachedMessage)
@@ -72,6 +74,7 @@
         {
             _MyRoomUpdate.UpdateState = RoomUpdateState.NewRoomRollback;
             _GameClient.SendMessageToServer(_MyRoomUpdate);
+            _btnNew.Enabled = true;
         }
 
         private void btnJoin_Click(object sender, EventArgs e)
@@ -112,6 +115,7 @@
                     _RoomsUpdates.Remove(_RoomsUpdates.Single<RoomUpdateMessage>(x => x.RoomID == msg.RoomID));
                     _MyRoomUpdate = null;
                     SwitchToRoomsMode();
+                    _btnNew.Enabled = true;
                     break;
 
                 case RoomUpdateState.Player2Connected:
@@ -147,6 +151,9 @@
             UpdateListViewItem();
             UpdateButtonsStatus();
         }
+
+        internal void EnableNewButton() => _btnNew.Enabled = true;
+        
 
         private void InitializeComponent()
         {

@@ -90,6 +90,7 @@ namespace ITI4InARow.Game.Client
         {
             m_GameMove.UpdateStatus = GameUpdateStatus.GameLeave;
             m_Client.SendMessageToServer(m_GameMove);
+            m_RoomsForm.EnableNewButton();
         }
         private void Client_ClientStatusChanged(object sender, ClientActionEventArgs e)
         {
@@ -168,6 +169,7 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.GameLeave:
                     m_GameMove = null;
                     SwitchToIdleMode();
+                    m_RoomsForm.EnableNewButton();
                     break;
                 case GameUpdateStatus.SpectatorJoin:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);

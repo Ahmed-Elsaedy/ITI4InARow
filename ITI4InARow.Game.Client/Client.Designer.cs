@@ -56,9 +56,9 @@ namespace ITI4InARow.Game.Client
             this.menuItem_Game});
             this._MainMenu.Location = new System.Drawing.Point(0, 0);
             this._MainMenu.Name = "_MainMenu";
+            this._MainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this._MainMenu.Size = new System.Drawing.Size(1003, 24);
             this._MainMenu.TabIndex = 0;
-            this._MainMenu.RenderMode = ToolStripRenderMode.Professional;
             this._MainMenu.Text = "menuStrip1";
             // 
             // menuItem_Server
@@ -156,6 +156,7 @@ namespace ITI4InARow.Game.Client
             this._StatusStrip.ResumeLayout(false);
             this._StatusStrip.PerformLayout();
             this.panel_GameSurface.ResumeLayout(false);
+            this.panel_GameSurface.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
