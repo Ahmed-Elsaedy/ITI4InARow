@@ -269,6 +269,7 @@
             this.btnclose.TabIndex = 15;
             this.btnclose.Text = "X";
             this.btnclose.UseVisualStyleBackColor = false;
+            this.btnclose.Click += new System.EventHandler(this.btnclose_Click);
             // 
             // ConnectForm
             // 

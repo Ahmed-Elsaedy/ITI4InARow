@@ -78,5 +78,10 @@ namespace ITI4InARow.Game.Client
                 colorSelected = true;
             }
         }
+
+        private void btnclose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
