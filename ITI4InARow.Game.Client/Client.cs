@@ -177,6 +177,9 @@ namespace ITI4InARow.Game.Client
                 case GameUpdateStatus.viewMoveToSpectator:
                     panel_GameSurface.fillcolorsforspectetorjoin(e.viewSpectatorBoard);
                     break;
+                case GameUpdateStatus.therisWinner:
+                    MessageBox.Show($"{e.PlayerID} win");
+                    break;
             }
         }
         private void Client_Load(object sender, EventArgs e)
