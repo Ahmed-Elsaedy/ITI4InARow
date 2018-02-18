@@ -168,7 +168,7 @@
             Writer = new BinaryWriter(Stream);
         }
         public override string ToString() =>
-            string.Format("{0}: {1} => {2}  : {3}", ClientID, TcpClient.Client.LocalEndPoint, TcpClient.Client.RemoteEndPoint, NickName);
+            string.Format("{0}: {1} => {2}  : {3}", ClientID, TcpClient.Client.LocalEndPoint, TcpClient.Client.RemoteEndPoint,NickName );
         public void Dispose()
         {
             Reader.Dispose();
