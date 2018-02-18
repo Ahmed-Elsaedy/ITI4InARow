@@ -11,6 +11,8 @@
         public int RoomID { get; set; }
         public RoomUpdateState UpdateState { get; set; }
 
+        public int SpectatorsNum { get; set; }
+
         public string[] viewspac;
         public RoomUpdateMessage()
         {

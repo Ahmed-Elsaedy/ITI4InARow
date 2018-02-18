@@ -34,8 +34,8 @@ namespace ITI4InARow.Game.Client
             }
             catch (NullReferenceException)
             {
-                //throw;
-                //MessageBox.Show("Wrong Move _playeAction Method", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                
+                MessageBox.Show("Player Move Invalid", "Game Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {
@@ -111,8 +111,8 @@ namespace ITI4InARow.Game.Client
                     SwitchToIdleMode();
                     Text = "Client - Disconnected";
                     break;
-                    //case sending clint masseg
-                    //prossesincomemassege
+                    //sending messages 
+                    //process incoming messages 
             }
         }
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
@@ -126,7 +126,7 @@ namespace ITI4InARow.Game.Client
         {
             switch (e.UpdateStatus)
             {
-                //handling msgs from server during the game
+                //handling messages from server during the game
                 case GameUpdateStatus.GameStarted:
                     SwitchToGamingMode();
                     panel_GameSurface.player2Color = Color.FromArgb(int.Parse(e.Player2Color));
@@ -192,6 +192,7 @@ namespace ITI4InARow.Game.Client
         private void SwitchToIdleMode()
         {
             panel_GameSurface.Hide();
+            panel_GameSurface.BoardReset();
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -202,7 +203,7 @@ namespace ITI4InARow.Game.Client
         {
             public MenuColorTable()
             {
-                // see notes
+               
                 base.UseSystemColors = false;
             }
             public override System.Drawing.Color MenuBorder

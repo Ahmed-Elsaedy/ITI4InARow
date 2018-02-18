@@ -143,6 +143,7 @@
                             viewspac[i] = "White";
                         }
                     }
+                    message.SpectatorsNum = _RoomsData[msg.RoomID].spectators.Count;
                     msg.PlayerID = (msg.PlayerID == message.Player1ID) ? message.Player2ID : message.Player1ID;
                     SendMessageToClient(base[msg.PlayerID], msg);
                     GameUpdateMessage msgtospectator = msg.Copy();
@@ -150,7 +151,7 @@
                     msgtospectator.viewSpectatorBoard = viewspac;
                     foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
                     {
-                        //SendMessageToClient(spectator, msg);//////hahahahahahahahaha
+                        
                         SendMessageToClient(spectator, msgtospectator);
                     }
                     bool win = GameAction(msg);
@@ -158,9 +159,9 @@
                     if (_RoomsData[msg.RoomID]._RoomMoveCounter == 42 && win == false)
                     {
                         GameUpdateMessage drawRespMsg = msg.Copy();
-                        //drawRespMsg.IsGameRunning = false;
+                        
                         drawRespMsg.UpdateStatus = GameUpdateStatus.GameDraw;
-                        //msg.IsGameRunning = false;
+                        
                         //now send draw msg  to both players 
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player1ID], drawRespMsg);
                         SendMessageToClient(this[_RoomsMessages[msg.RoomID].Player2ID], drawRespMsg);
@@ -213,8 +214,8 @@
                 if (GamePlan(msg, ref x, CheckPosition.NORTH))
                 {
                     msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win North");
-                   // if (x == 4) { return true; }
+                   
+                   
                 }
             }
             if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
@@ -222,63 +223,59 @@
                 if (GamePlan(msg, ref x, CheckPosition.SOUTH))
                 {
                     msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south");
-                    //  if (x == 4) { return true; } /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                   
                     return true;
                 }
             }
-            /////////////////////////////////////////////
+            
             x = 1;
             if (GamePlan(msg, ref x, CheckPosition.WEST))
             {
                 msg.IsGameRunning = false;
-               // if (x == 4) { return true; }
+               
             }
             if (GamePlan(msg, ref x, CheckPosition.EAST))
             {
                 msg.IsGameRunning = false;
-                //if (x == 4) { return true; }               /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                
                 return true;
             }
-            //////////////////////////////////////////////
+            
             x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_EAST))
                 {
                     msg.IsGameRunning = false;
-                   // if (x == 4) { return true; }
+                   
                 }
             }
-           // if (Helper.SouthBanned.IndexOf(msg.TokenPosition) == -1)
-           // {
+           
+           
                 if (GamePlan(msg, ref x, CheckPosition.SOUTH_WEST))
                 {
                     msg.IsGameRunning = false;
-                    //if (x == 4) { return true; }      /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                    
                     return true;
                 }
-           // }
-            ////////////////////////////////////////////////
+           
             x = 1;
             if (Helper.NorthBanned.IndexOf(msg.TokenPosition) == -1)
             {
                 if (GamePlan(msg, ref x, CheckPosition.NORTH_WEST))
                 {
                     msg.IsGameRunning = false;
-                    //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win north west");
-                    //if (x == 4) { return true; }
+                    
                 }
             }
 
             if (GamePlan(msg, ref x, CheckPosition.SOUTH_EAST))
             {
                 msg.IsGameRunning = false;
-                //MessageBox.Show(ovalClicked.FillColor.ToString() + " is win south east");
-                // if (x == 4) { return true; }     /// mdam d5fl el if condition how 5las fazzz msh m7taga check
+                
                 return true;
             }
-            /////////////////
+            
             return false;
         }
         bool GamePlan(GameUpdateMessage msg, ref int x, CheckPosition cp)
@@ -311,13 +308,9 @@
         public int[] gameBoardlogic;
         public List<ServerClient> spectators;
         public string Player1Color { get; set; }
-        /// <summary>
-        ///m7tagen nst3mlhm 
-        /// </summary>
+        
         public string Player2Color { get; set; }
-        /// <summary>
-        ///m7tagen nst3mlhm 
-        /// </summary>
+        
         public ServerRoom()
         {
             _RoomMoveCounter = 0;

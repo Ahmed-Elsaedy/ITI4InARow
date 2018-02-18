@@ -36,10 +36,7 @@ namespace ITI4InARow.Game.UI
         }
         private void GameUI_Load(object sender, EventArgs e)
         {
-            //if (!isSpectatorMode && isGameRunning)
-            //{
-            //    lblplayerturn.BackColor = Color.White;
-            //}
+           
 
             int index = 1;
             foreach (OvalShape oval in shapeContainer1.Shapes)
@@ -301,7 +298,7 @@ namespace ITI4InARow.Game.UI
                 e.Cancel = false;
             }
         }
-        private void BtnReset_Click(object sender, EventArgs e)
+        public void BoardReset()
         {
             InitGame();
             foreach (OvalShape oval in shapeContainer1.Shapes)

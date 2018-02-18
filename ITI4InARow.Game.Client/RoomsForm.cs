@@ -137,6 +137,12 @@
                     message.Player1ID = msg.Player1ID;
                     message.Player2ID = msg.Player2ID;
                     break;
+
+                    /// remove or check deh abl ma neb3at lel bashmohandis
+                case RoomUpdateState.newSpectatorReq:
+                    message = _RoomsUpdates.SingleOrDefault(x => x.RoomID == msg.RoomID);
+                    message.SpectatorsNum++;
+                    break;
             }
             UpdateListViewItem();
             UpdateButtonsStatus();
@@ -390,7 +396,7 @@
             _ListViewRooms.Items.Clear();
             foreach (RoomUpdateMessage message in _RoomsUpdates)
             {
-                string[] items = new string[] { message.GetRoomStatus().ToString(), message.Player1ID.ToString(), message.Player2ID.ToString(), "0" };
+                string[] items = new string[] { message.GetRoomStatus().ToString(), message.Player1ID.ToString(), message.Player2ID.ToString(), message.SpectatorsNum.ToString()};
                 ListViewItem item = new ListViewItem(items)
                 {
                     Tag = message
@@ -405,6 +411,7 @@
             reqViewRoom.UpdateState = RoomUpdateState.newSpectatorReq;
             _GameClient.SendMessageToServer(reqViewRoom);
             this.Hide();
+            
         }
 
        
