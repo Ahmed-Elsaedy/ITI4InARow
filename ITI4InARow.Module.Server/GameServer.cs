@@ -195,7 +195,6 @@
                         msgForSpectators.UpdateStatus = GameUpdateStatus.ThereIsWinner;
                         foreach (ServerClient spectator in _RoomsData[msg.RoomID].spectators)
                         {
-
                             SendMessageToClient(spectator, msgForSpectators);
                         }
                     }

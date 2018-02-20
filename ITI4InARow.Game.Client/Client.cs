@@ -187,7 +187,6 @@ namespace ITI4InARow.Game.Client
  
                 case GameUpdateStatus.ThereIsWinner:
                     MessageBox.Show($"{e.PlayerID} win");
- 
                     break;
             }
         }
@@ -216,7 +215,6 @@ namespace ITI4InARow.Game.Client
         {
             public MenuColorTable()
             {
-               
                 base.UseSystemColors = false;
             }
             public override System.Drawing.Color MenuBorder
